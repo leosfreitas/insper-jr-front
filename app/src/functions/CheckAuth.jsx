@@ -37,7 +37,7 @@ const verifyToken = async () => {
   }
 };
 
-export default function UseCheckAuth() {
+export default function CheckAuth() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   

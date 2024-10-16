@@ -5,12 +5,12 @@ import Login from './pages/Login';
 import HomeAluno from './pages/Aluno/HomeAluno';
 import HomeGestao from './pages/Gestao/HomeGestao';
 
-import verifyPermission from './functions/UserPermission';
-import UseCheckAuth from './functions/CheckAuth';
+import VerifyPermission from './functions/VerifyPermission';
+import CheckAuth from './functions/CheckAuth';
 
 
 function App() {
-  const { permission, isCheckingPermission } = verifyPermission();
+  const { permission, isCheckingPermission } = VerifyPermission();
 
   if (isCheckingPermission) {
     return <div></div>;
@@ -26,7 +26,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />
 
-        <Route element={<UseCheckAuth />}>
+        <Route element={<CheckAuth />}>
           {permission === 'ALUNO' && (
             <>
             <Route path="/home" element={<HomeAluno />} />

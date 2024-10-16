@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-const verifyPermission = () => {
+const VerifyPermission = () => {
   const [permission, setPermission] = useState(null);
   const [isCheckingPermission, setIsCheckingPermission] = useState(true);
 
@@ -46,4 +46,4 @@ const verifyPermission = () => {
   return { permission, isCheckingPermission };
 };
 
-export default verifyPermission;
+export default VerifyPermission;
