@@ -7,7 +7,7 @@ import HomeGestao from './pages/Gestao/HomeGestao';
 
 import VerifyPermission from './functions/VerifyPermission';
 import CheckAuth from './functions/CheckAuth';
-
+import NotFound from './functions/NotFound';
 
 function App() {
   const { permission, isCheckingPermission } = VerifyPermission();
@@ -38,7 +38,9 @@ function App() {
             </>
           )}
         </Route>
-    
+        <Route path="*" element={<Navigate to="/404" />} />
+        <Route path="/404" element={<NotFound />} />
+
 
       </Routes>
     </>
