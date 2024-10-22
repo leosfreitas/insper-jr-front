@@ -44,12 +44,11 @@ export default function Login() {
     <div>
       <HeaderLogin /> 
       <div className='login-container'>
-        <Grid container spacing={2} className="login-container">
-          <Grid item xs={5} style={{ alignItems: "center", justifyContent: "center", paddingRight: '90px', marginTop: '20px', paddingTop: '15vh' }}>
+        <Grid className="login-container">
+          <Grid>
             <Container>
               <div className='login-wrapper'>
                 <div className='login-text'>
-                  <Typography variant="h4" component="h1" id="login-text">Login</Typography>
                   <form onSubmit={handleSubmit} style={{ opacity: "0.9", backgroundColor: "white" }}>
                     <TextField
                       fullWidth
@@ -76,9 +75,8 @@ export default function Login() {
                     <div className='login-button'>
                       <Button
                         variant="contained"
-                        color="primary"
                         type="submit"
-                        style={{ marginTop: '10%' }}
+                        style={{ marginTop: '10%'}}
                       >
                         Entrar
                       </Button>

@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f4f4f9;
+    background-color: #f3f3f3;
   }
   
   .login-wrapper {
@@ -35,17 +35,6 @@
   
   .MuiTextField-root {
     margin-bottom: 20px;
-  }
-  
-  .MuiButton-containedPrimary {
-    background-color: #ab2325;
-    font-family: 'Open Sans', sans-serif;
-    padding: 10px 20px;
-    font-size: 1rem;
-  }
-  
-  .MuiButton-containedPrimary:hover {
-    background-color: #ab2325;
   }
   
   .Alert {
