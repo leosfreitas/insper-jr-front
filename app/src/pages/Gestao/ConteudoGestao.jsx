@@ -18,7 +18,7 @@ function ConteudoGestao() {
         e.preventDefault();
     
         try {
-          const response = await fetch("http://localhost:5000/aviso", {
+          const response = await fetch("http://127.0.0.1:5000/aviso", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ function ConteudoGestao() {
     const fetchAvisos = async () => {
         setLoading(true); // Mostrar loading enquanto faz a requisição
         try {
-            const response = await fetch(`http://localhost:5000/aviso`, {
+            const response = await fetch(`http://127.0.0.1:5000/aviso`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

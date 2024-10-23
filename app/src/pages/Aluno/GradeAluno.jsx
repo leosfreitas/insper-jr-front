@@ -24,7 +24,7 @@ function GradeAluno() {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:5000/aluno/grade/${formatDate(selectedDate)}`, {
+        fetch(`http://127.0.0.1:5000/aluno/grade/${formatDate(selectedDate)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
