@@ -8,14 +8,12 @@ function ConteudoGestao() {
     const cookies = new Cookies();
     const token = cookies.get("token");
 
-    // States para controlar o título, mensagem e avisos
     const [titulo, setTitulo] = useState('');
     const [mensagem, setMensagem] = useState('');
     const [avisos, setAvisos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Função para criar um aviso
     const handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -24,7 +22,7 @@ function ConteudoGestao() {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}` // Passa o token no cabeçalho
+              'Authorization': `Bearer ${token}` 
             },
             body: JSON.stringify({ titulo, mensagem })
           });
@@ -32,12 +30,8 @@ function ConteudoGestao() {
           if (response.ok) {
             const data = await response.json();
             console.log("Aviso criado com sucesso:", data);
-
-            // Esvaziar os campos de título e mensagem após a criação
             setTitulo('');
             setMensagem('');
-
-            // Atualiza os avisos após criar um novo
             fetchAvisos(); 
           } else {
             const errorData = await response.json();
@@ -48,7 +42,6 @@ function ConteudoGestao() {
         }
     };
 
-    // Função para buscar todos os avisos existentes
     const fetchAvisos = async () => {
         setLoading(true); // Mostrar loading enquanto faz a requisição
         try {
