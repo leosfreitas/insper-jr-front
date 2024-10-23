@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Logo from '../static/Logo.png';
 import Logout from '../../functions/Logout';
 import '../static/Header.css';
 
@@ -12,7 +13,7 @@ const HeaderAluno = () => {
   return (
     <header className="header">
       <div className="logo-container">
-        <img src='Logo.png' alt="Logo" className="logo" />
+        <img src={Logo} alt="Logo" className="logo" />
       </div>
       <div className="nav-container">
         <nav>

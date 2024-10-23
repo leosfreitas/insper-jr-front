@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logout from '../../functions/Logout';
+import Logo from '../static/Logo.png';
 import '../static/Header.css';
 
 const HeaderGestao = () => {
@@ -12,7 +13,7 @@ const HeaderGestao = () => {
   return (
     <header className="header">
       <div className="logo-container">
-        <img src='Logo.png' alt="Logo" className="logo" />
+        <img src={Logo} alt="Logo" className="logo" />
       </div>
       <div className="nav-container">
         <nav>
