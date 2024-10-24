@@ -11,13 +11,12 @@ const Logout = () => {
     const handleLogout = (e) => {
         e.preventDefault();
 
-        fetch('http://127.0.0.1:5000/logout', {
+        fetch('http://127.0.0.1:8000/auth/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ token: token })
         })
         .then(response => {
             if (!response.ok) {

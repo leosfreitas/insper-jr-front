@@ -24,7 +24,7 @@ function DetalhesAluno() {
     const token = cookies.get('token');
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:5000/aluno/${cpf}`, {
+        fetch(`http://127.0.0.1:8000/alunos/get/${cpf}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -10,7 +10,7 @@ const verifyToken = async () => {
     const token = cookies.get('token');
 
     if (token) {
-      const response = await fetch('http://127.0.0.1:5000/verify-token', {
+      const response = await fetch('http://127.0.0.1:8000/auth/verify-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

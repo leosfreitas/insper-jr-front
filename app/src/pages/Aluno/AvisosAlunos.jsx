@@ -25,7 +25,7 @@ function AvisosAluno() {
     useEffect(() => {
         const fetchAvisos = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:5000/aviso`, {
+                const response = await fetch(`http://127.0.0.1:8000/aviso/get`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

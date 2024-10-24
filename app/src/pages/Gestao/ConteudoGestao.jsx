@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import HeaderGestao from './HeaderGestao';
 import './static/ConteudoGestao.css';
 import Cookies from 'universal-cookie';
-import { Button, TextField, Container, Typography, Box, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 function ConteudoGestao() {
     const cookies = new Cookies();
@@ -10,6 +10,7 @@ function ConteudoGestao() {
 
     const [titulo, setTitulo] = useState('');
     const [mensagem, setMensagem] = useState('');
+    const [tipo, setTipo] = useState('Geral'); // Novo estado para o tipo de aviso
     const [avisos, setAvisos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,13 +19,13 @@ function ConteudoGestao() {
         e.preventDefault();
     
         try {
-          const response = await fetch("http://127.0.0.1:5000/aviso", {
+          const response = await fetch("http://127.0.0.1:8000/avisos/create", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}` 
             },
-            body: JSON.stringify({ titulo, mensagem })
+            body: JSON.stringify({ titulo, mensagem, tipo }) // Incluindo o tipo na requisição
           });
     
           if (response.ok) {
@@ -32,6 +33,7 @@ function ConteudoGestao() {
             console.log("Aviso criado com sucesso:", data);
             setTitulo('');
             setMensagem('');
+            setTipo('Geral'); // Resetando o tipo após a criação
             fetchAvisos(); 
           } else {
             const errorData = await response.json();
@@ -43,9 +45,9 @@ function ConteudoGestao() {
     };
 
     const fetchAvisos = async () => {
-        setLoading(true); // Mostrar loading enquanto faz a requisição
+        setLoading(true); 
         try {
-            const response = await fetch(`http://127.0.0.1:5000/aviso`, {
+            const response = await fetch(`http://127.0.0.1:8000/avisos/get`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,6 +101,18 @@ function ConteudoGestao() {
                             onChange={(e) => setMensagem(e.target.value)}
                             required
                         />
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel>Tipo</InputLabel>
+                            <Select
+                                value={tipo}
+                                onChange={(e) => setTipo(e.target.value)}
+                                label="Tipo"
+                            >
+                                <MenuItem value="Online">Online</MenuItem>
+                                <MenuItem value="Presencial">Presencial</MenuItem>
+                                <MenuItem value="Geral">Geral</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Button 
                             variant="contained" 
                             color="primary" 
@@ -113,7 +127,6 @@ function ConteudoGestao() {
                         Avisos Criados
                     </Typography>
 
-                    {/* Mostrar erros ou loading enquanto os avisos são buscados */}
                     {loading ? (
                         <CircularProgress />
                     ) : error ? (
@@ -126,6 +139,7 @@ function ConteudoGestao() {
                                         <TableCell>Título</TableCell>
                                         <TableCell>Autor</TableCell>
                                         <TableCell>Mensagem</TableCell>
+                                        <TableCell>Tipo</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -134,6 +148,7 @@ function ConteudoGestao() {
                                             <TableCell>{aviso.titulo}</TableCell>
                                             <TableCell>{aviso.autor}</TableCell>
                                             <TableCell>{aviso.mensagem}</TableCell>
+                                            <TableCell>{aviso.tipo}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

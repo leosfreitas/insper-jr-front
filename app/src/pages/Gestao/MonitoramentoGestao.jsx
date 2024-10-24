@@ -23,7 +23,7 @@ function MonitoramentoGestao() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5000/aluno', {
+        fetch('http://127.0.0.1:8000/alunos/get', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
