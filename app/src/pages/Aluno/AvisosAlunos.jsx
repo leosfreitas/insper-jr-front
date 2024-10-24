@@ -63,7 +63,6 @@ function AvisosAluno() {
             <div className='home-aluno'>
                 {error && <Alert severity="error">{error}</Alert>}
 
-                {/* Avisos Gerais */}
                 <Typography variant="h6" gutterBottom>
                     Avisos Gerais:
                 </Typography>
@@ -88,7 +87,6 @@ function AvisosAluno() {
                     </Table>
                 </TableContainer>
 
-                {/* Avisos da Sala */}
                 <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
                     Avisos da Sala: {sala}
                 </Typography>

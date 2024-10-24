@@ -63,6 +63,8 @@ function DetalhesAluno() {
                     <>
                         <Typography variant="h6">Nome: {aluno.nome}</Typography>
                         <Typography variant="h6">CPF: {aluno.cpf}</Typography>
+                        <Typography variant="h6">Email: {aluno.email}</Typography>
+                        <Typography variant="h6">Sala: {aluno.sala}</Typography>
                         <Box mt={3}>
                             <Typography variant="h5" gutterBottom>
                                 Notas do Aluno

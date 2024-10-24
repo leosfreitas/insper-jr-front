@@ -12,6 +12,7 @@ import HomeGestao from './pages/Gestao/HomeGestao';
 import ConteudoGestao from './pages/Gestao/ConteudoGestao';
 import MonitoramentoGestao from './pages/Gestao/MonitoramentoGestao';
 import MonitoramentoAluno from './pages/Gestao/MonitoramentoAluno';
+import MonitoramentoAdicionar from './pages/Gestao/MonitoramentoAdicionar';
 
 import VerifyPermission from './functions/VerifyPermission';
 import CheckAuth from './functions/CheckAuth';
@@ -49,6 +50,7 @@ function App() {
               <Route path="/conteudo" element={<ConteudoGestao />} />
               <Route path="/monitoramento" element={<MonitoramentoGestao />} />
               <Route path="/monitoramento/:cpf" element={<MonitoramentoAluno />} />
+              <Route path="/monitoramento/adicionar" element={<MonitoramentoAdicionar />} />
             </>
           )}
         </Route>
