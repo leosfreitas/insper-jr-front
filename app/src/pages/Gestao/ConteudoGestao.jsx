@@ -25,7 +25,7 @@ function ConteudoGestao() {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}` 
             },
-            body: JSON.stringify({ titulo, mensagem, tipo }) // Incluindo o tipo na requisição
+            body: JSON.stringify({ titulo, mensagem, tipo }) 
           });
     
           if (response.ok) {
@@ -33,7 +33,7 @@ function ConteudoGestao() {
             console.log("Aviso criado com sucesso:", data);
             setTitulo('');
             setMensagem('');
-            setTipo('Geral'); // Resetando o tipo após a criação
+            setTipo('Geral'); 
             fetchAvisos(); 
           } else {
             const errorData = await response.json();

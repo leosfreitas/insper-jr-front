@@ -16,7 +16,9 @@ import {
 import Cookies from 'universal-cookie';
 
 function AvisosAluno() {
-    const [avisos, setAvisos] = useState([]);
+    const [avisosGeral, setAvisosGeral] = useState([]);
+    const [avisosSala, setAvisosSala] = useState([]);
+    const [sala, setSala] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const cookies = new Cookies();
@@ -25,7 +27,7 @@ function AvisosAluno() {
     useEffect(() => {
         const fetchAvisos = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/aviso/get`, {
+                const response = await fetch(`http://127.0.0.1:8000/avisos/get`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -38,10 +40,10 @@ function AvisosAluno() {
                 }
 
                 const data = await response.json();
-                console.log('Avisos:', JSON.stringify(data, null, 2)); 
-                setAvisos(data.avisos);  
+                setAvisosGeral(data.avisosGeral);  
+                setAvisosSala(data.avisosSala);    
+                setSala(data.sala);               
             } catch (error) {
-                console.error('Erro ao buscar avisos:', error); 
                 setError(error.message); 
             } finally {
                 setLoading(false);
@@ -60,6 +62,11 @@ function AvisosAluno() {
             <HeaderAluno />
             <div className='home-aluno'>
                 {error && <Alert severity="error">{error}</Alert>}
+
+                {/* Avisos Gerais */}
+                <Typography variant="h6" gutterBottom>
+                    Avisos Gerais:
+                </Typography>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
@@ -70,7 +77,32 @@ function AvisosAluno() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {avisos.map((aviso) => (
+                            {avisosGeral.map((aviso) => (
+                                <TableRow key={aviso._id}>
+                                    <TableCell>{aviso.titulo}</TableCell>
+                                    <TableCell>{aviso.autor}</TableCell>
+                                    <TableCell>{aviso.mensagem}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+                {/* Avisos da Sala */}
+                <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
+                    Avisos da Sala: {sala}
+                </Typography>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Título</TableCell>
+                                <TableCell>Autor</TableCell>
+                                <TableCell>Mensagem</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {avisosSala.map((aviso) => (
                                 <TableRow key={aviso._id}>
                                     <TableCell>{aviso.titulo}</TableCell>
                                     <TableCell>{aviso.autor}</TableCell>
