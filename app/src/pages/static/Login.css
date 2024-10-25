@@ -1,27 +1,48 @@
-  
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f3f3f3;
-  }
-  
-  .login-wrapper {
-    background-color: white;
-    border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
+.login-container {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  min-height: 100vh;
+  background-color: #ffffff;
+  /* border: 5px solid blue; */
+  padding: 20px;
+}
+
+.logo-container-login {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 5px solid red; */
+  flex: 1; /* Flexibiliza o tamanho da logo-container */
+  /* margin-right: 180px; Espaçamento entre as divs */
+}
+.logo-login {
+  width: 500px;                     /* Defina a largura da logo */
+  height: 250px; 
+}
+.line-separator {
+  border-left: 2px solid gray;      /* Linha vertical */
+  height: 600px;                    /* Altura da linha, ajuste conforme necessário */ 
+  margin-right:200px;               /* Espaçamento ao redor da linha */
+}
+.login-wrapper {
+  background-color: #f6f6f6;
+  border-radius: 10px;
+  padding: 120px;
+  margin-right:50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px; /* Define a largura máxima da área de login */
+  /* border: 5px solid orange; */
+  border: 1px solid black;
+}
+
   .login-text h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     color: #333;
     text-align: center;
     margin-bottom: 20px;
+  
   }
   
   .login-button {

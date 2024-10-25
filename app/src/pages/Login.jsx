@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import { Button, TextField, Container, Typography, Alert, Grid, Box } from '@mui/material';
 import HeaderLogin from './HeaderLogin';
 import { useNavigate } from 'react-router-dom';
+import Logo from './static/Logo.png';
 import './static/Login.css';
 
 export default function Login() {
@@ -41,15 +42,14 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <HeaderLogin /> 
       <div className='login-container'>
-        <Grid className="login-container">
-          <Grid>
-            <Container>
+          <div className="logo-container-login">
+              <img src={Logo} alt="logo-login" className="logo-login" />
+                </div>
+                <div className="line-separator"></div> 
               <div className='login-wrapper'>
                 <div className='login-text'>
-                  <form onSubmit={handleSubmit} style={{ opacity: "0.9", backgroundColor: "white" }}>
+                  <form onSubmit={handleSubmit} style={{ opacity: "0.9" }}>
                     <TextField
                       fullWidth
                       type="email"
@@ -85,10 +85,6 @@ export default function Login() {
                   </form>
                 </div>
               </div>
-            </Container>
-          </Grid>
-        </Grid>
       </div>
-    </div>
   );
 }
