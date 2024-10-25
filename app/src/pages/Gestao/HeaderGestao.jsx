@@ -5,6 +5,7 @@ import Logo from '../static/Logo.png';
 import '../static/Header.css';
 
 const HeaderGestao = () => {
+  const location = useLocation(); 
 
   const getLinkClass = (path) => {
     return location.pathname === path ? 'active' : '';

@@ -10,8 +10,9 @@ import NotasAluno from './pages/Aluno/NotasAluno';
 import HomeGestao from './pages/Gestao/HomeGestao';
 import ConteudoGestao from './pages/Gestao/ConteudoGestao';
 import MonitoramentoGestao from './pages/Gestao/MonitoramentoGestao';
-import MonitoramentoAluno from './pages/Gestao/MonitoramentoAluno';
 import MonitoramentoAdicionar from './pages/Gestao/MonitoramentoAdicionar';
+import MonitoramentoEditar from './pages/Gestao/MonitoramentoEditar';
+import MonitoramentoNotas from './pages/Gestao/MonitoramentoNotas';
 
 import VerifyPermission from './functions/VerifyPermission';
 import CheckAuth from './functions/CheckAuth';
@@ -47,7 +48,8 @@ function App() {
               <Route path="/home" element={<HomeGestao />} />
               <Route path="/conteudo" element={<ConteudoGestao />} />
               <Route path="/monitoramento" element={<MonitoramentoGestao />} />
-              <Route path="/monitoramento/:cpf" element={<MonitoramentoAluno />} />
+              <Route path="/monitoramento/editar/:cpf" element={<MonitoramentoEditar />} />
+              <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotas />} />
               <Route path="/monitoramento/adicionar" element={<MonitoramentoAdicionar />} />
             </>
           )}

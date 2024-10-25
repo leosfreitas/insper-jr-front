@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import HeaderGestao from './HeaderGestao';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import './static/ConteudoGestao.css';
 import Cookies from 'universal-cookie';
-import { Button, TextField, Container, Typography, Box, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Select, MenuItem, FormControl, InputLabel, Grid } from '@mui/material';
 
 function ConteudoGestao() {
     const cookies = new Cookies();
@@ -206,25 +205,113 @@ function ConteudoGestao() {
     return (
         <>
             <HeaderGestao />
-            <Container>
-                <Box className='conteudo-gestao' sx={{ mt: 4 }}>
-                    <Typography variant="h4" gutterBottom>
-                        Selecionar Seção
-                    </Typography>
-                    <FormControl fullWidth margin="normal">
-                        <InputLabel>Selecionar</InputLabel>
-                        <Select
-                            value={view}
-                            onChange={(e) => setView(e.target.value)}
-                            label="Selecionar"
-                        >
-                            <MenuItem value="avisos">Avisos</MenuItem>
-                            <MenuItem value="grade">Grade</MenuItem>
-                        </Select>
-                    </FormControl>
 
-                    {view === 'avisos' && (
-                        <>
+            <Box 
+                sx={{
+                    backgroundColor: '#ab2325',
+                    color: 'white',
+                    width: '100%',
+                    height: '25vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                }}
+            >       
+                <Grid container rowSpacing={2}>
+                    <Grid item xs={12}>
+                        <Typography 
+                            variant="h4" 
+                            onClick={() => setView('avisos')} 
+                            sx={{ 
+                                cursor: 'pointer', 
+                                transition: '0.3s', 
+                                fontSize: view === 'avisos' ? '2.5rem' : '1.5rem',
+                            }}
+                        >
+                            Avisos
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography 
+                            variant="h4" 
+                            onClick={() => setView('grade')} 
+                            sx={{ 
+                                cursor: 'pointer', 
+                                transition: '0.3s', 
+                                fontSize: view === 'grade' ? '2.5rem' : '1.5rem', 
+                            }}
+                        >
+                            Grade
+                        </Typography>
+                    </Grid> 
+                </Grid>
+            </Box>
+
+            {view === 'avisos' && (
+                <>
+                    <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2' }}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Typography variant="h6">Título</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Autor</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Mensagem</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Tipo</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Ações</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {avisos.map((aviso) => (
+                                    <TableRow key={aviso._id}>
+                                        <TableCell>
+                                            <Typography variant="h5">{aviso.titulo}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">{aviso.autor}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">{aviso.mensagem}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">{aviso.tipo}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button 
+                                                variant="contained" 
+                                                color="error" 
+                                                onClick={() => handleDelete(aviso._id)} 
+                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                            >
+                                                Remover
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        </TableContainer>
+                        <Box 
+                            mt={3} 
+                            sx={{ 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                alignItems: 'center', 
+                                maxWidth: '25%', 
+                                marginTop: '16px !important',
+                                margin: '0 auto', 
+                            }}
+                        >
                             <Typography variant="h4" gutterBottom>
                                 Criar Aviso
                             </Typography>
@@ -270,176 +357,153 @@ function ConteudoGestao() {
                                     Criar Aviso
                                 </Button>
                             </form>
+                        </Box>
+                </>
+            )}
 
-                            <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-                                Avisos Criados
-                            </Typography>
-
-                            {loading ? (
-                                <CircularProgress />
-                            ) : error ? (
-                                <Alert severity="error">{error}</Alert>
-                            ) : (
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Título</TableCell>
-                                                <TableCell>Autor</TableCell>
-                                                <TableCell>Mensagem</TableCell>
-                                                <TableCell>Tipo</TableCell>
-                                                <TableCell>Ações</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {avisos.map((aviso) => (
-                                                <TableRow key={aviso._id}>
-                                                    <TableCell>{aviso.titulo}</TableCell>
-                                                    <TableCell>{aviso.autor}</TableCell>
-                                                    <TableCell>{aviso.mensagem}</TableCell>
-                                                    <TableCell>{aviso.tipo}</TableCell>
-                                                    <TableCell>
-                                                        <Button 
-                                                            variant="outlined" 
-                                                            color="error" 
-                                                            onClick={() => handleDelete(aviso._id)} 
-                                                        >
-                                                            Remover
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            )}
-                        </>
-                    )}
-
-                    {view === 'grade' && (
-                        <>
-                            <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-                                Criar Grade
-                            </Typography>
-                            <form onSubmit={handleGrade}>
-                                <TextField
-                                    label="Horário"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    value={horario}
-                                    onChange={(e) => setHorario(e.target.value)}
-                                    required
-                                />
-                                <TextField
-                                    label="Matéria"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    value={materia}
-                                    onChange={(e) => setMateria(e.target.value)}
-                                    required
-                                />
-                                <TextField
-                                    label="Local"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    value={local}
-                                    onChange={(e) => setLocal(e.target.value)}
-                                    required
-                                />
-                                <TextField
-                                    label="Tópico"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    value={topico}
-                                    onChange={(e) => setTopico(e.target.value)}
-                                    required
-                                />
-                                <TextField
-                                    label="Professor"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    value={professor}
-                                    onChange={(e) => setProfessor(e.target.value)}
-                                    required
-                                />
-                                <FormControl fullWidth margin="normal">
-                                    <InputLabel>Sala</InputLabel>
-                                    <Select
-                                        value={sala}
-                                        onChange={(e) => setSala(e.target.value)}
-                                        label="Sala"
-                                    >
-                                        <MenuItem value="Presencial">Presencial</MenuItem>
-                                        <MenuItem value="Online">Online</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <DatePicker
-                                    selected={data}
-                                    onChange={handleDateChange}
-                                    dateFormat="dd/MM/yyyy"
-                                    placeholderText="Selecionar data"
-                                    className="date-picker"
-                                />
-                                <Button 
-                                    variant="contained" 
-                                    color="primary" 
-                                    type="submit" 
-                                    sx={{ mt: 2 }}
+            {view === 'grade' && (
+                <>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Typography variant="h6">Data</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Horário</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Matéria</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Sala</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">Ações</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {grades.map((grade) => (
+                                    <TableRow key={grade._id}>
+                                        <TableCell>
+                                            <Typography variant="h5">{grade.data}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">{grade.horario}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">{grade.materia}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">{grade.sala}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button 
+                                                variant="contained" 
+                                                color="error" 
+                                                onClick={() => handleGradeDelete(grade._id)} 
+                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                            >
+                                                Remover
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Box 
+                        mt={3} 
+                        sx={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            alignItems: 'center', 
+                            maxWidth: '25%', 
+                            marginTop: '16px !important',
+                            margin: '0 auto', 
+                        }}
+                    >
+                        <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
+                            Criar Grade
+                        </Typography>
+                        <form onSubmit={handleGrade}>
+                            <TextField
+                                label="Horário"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                value={horario}
+                                onChange={(e) => setHorario(e.target.value)}
+                                required
+                            />
+                            <TextField
+                                label="Matéria"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                value={materia}
+                                onChange={(e) => setMateria(e.target.value)}
+                                required
+                            />
+                            <TextField
+                                label="Local"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                value={local}
+                                onChange={(e) => setLocal(e.target.value)}
+                                required
+                            />
+                            <TextField
+                                label="Tópico"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                value={topico}
+                                onChange={(e) => setTopico(e.target.value)}
+                                required
+                            />
+                            <TextField
+                                label="Professor"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                value={professor}
+                                onChange={(e) => setProfessor(e.target.value)}
+                                required
+                            />
+                            <FormControl fullWidth margin="normal">
+                                <InputLabel>Sala</InputLabel>
+                                <Select
+                                    value={sala}
+                                    onChange={(e) => setSala(e.target.value)}
+                                    label="Sala"
                                 >
-                                    Criar Grade
-                                </Button>
-                            </form>
-                            <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-                                Grades Criadas
-                            </Typography>
-
-                            {loading ? (
-                                <CircularProgress />
-                            ) : error ? (
-                                <Alert severity="error">{error}</Alert>
-                            ) : (
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Data</TableCell>
-                                                <TableCell>Horario</TableCell>
-                                                <TableCell>Materia</TableCell>
-                                                <TableCell>Sala</TableCell>
-                                                <TableCell>Ações</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {grades.map((grade) => (
-                                                <TableRow key={grade._id}>
-                                                    <TableCell>{grade.data}</TableCell>
-                                                    <TableCell>{grade.horario}</TableCell>
-                                                    <TableCell>{grade.materia}</TableCell>
-                                                    <TableCell>{grade.sala}</TableCell>
-                                                    <TableCell>
-                                                        <Button 
-                                                            variant="outlined" 
-                                                            color="error" 
-                                                            onClick={() => handleGradeDelete(grade._id)} 
-                                                        >
-                                                            Remover
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            )}
-                        </>
-                    )}
-                </Box>
-            </Container>
+                                    <MenuItem value="Presencial">Presencial</MenuItem>
+                                    <MenuItem value="Online">Online</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <DatePicker
+                                selected={data}
+                                onChange={handleDateChange}
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="Selecionar data"
+                                className="date-picker"
+                            />
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                type="submit" 
+                                sx={{ mt: 2 }}
+                            >
+                                Criar Grade
+                            </Button>
+                        </form>
+                    </Box>
+                </>
+            )}
         </>
     );
 }

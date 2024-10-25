@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderGestao from './HeaderGestao';
-import './static/MonitoramentoGestao.css';
 import Cookies from 'universal-cookie';
 import {
     Table,
@@ -45,8 +44,12 @@ function MonitoramentoGestao() {
         });
     }, [token]);
 
-    const handleViewDetails = (cpf) => {
-        navigate(`/monitoramento/${cpf}`); 
+    const handleViewEditar = (cpf) => {
+        navigate(`/monitoramento/editar/${cpf}`); 
+    };
+
+    const handleViewNotas = (cpf) => {
+        navigate(`/monitoramento/notas/${cpf}`);
     };
 
     const handleAddAluno = () => {
@@ -75,63 +78,102 @@ function MonitoramentoGestao() {
     };
 
     return (
-        <>
+        <>      
             <HeaderGestao />
-            <div className='home-gestao'>
-                {error ? (
-                    <Typography variant="h6" color="error">
-                        {error}
-                    </Typography>
-                ) : (
-                    <>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell><strong>Nome</strong></TableCell>
-                                        <TableCell><strong>Email</strong></TableCell>
-                                        <TableCell><strong>Ações</strong></TableCell> 
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {alunos.map((aluno) => (
-                                        <TableRow key={aluno.cpf}>
-                                            <TableCell>{aluno.nome}</TableCell>
-                                            <TableCell>{aluno.email}</TableCell>
-                                            <TableCell>
-                                                <Button 
-                                                    variant="contained" 
-                                                    color="primary" 
-                                                    onClick={() => handleViewDetails(aluno.cpf)} 
-                                                    style={{ marginRight: '10px' }}
-                                                >
-                                                    Ver Informações
-                                                </Button>
-                                                <Button 
-                                                    variant="contained" 
-                                                    color="secondary" 
-                                                    onClick={() => handleDeleteAluno(aluno.cpf)}
-                                                >
-                                                    Deletar
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <Box mt={3} display="flex" justifyContent="flex-end">
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleAddAluno} 
-                            >
-                                Adicionar Aluno
-                            </Button>
-                        </Box>
-                    </>
-                )}
-            </div>
+
+            <Box 
+                sx={{
+                    backgroundColor: '#ab2325',
+                    color: 'white',
+                    width: '100%',
+                    height: '25vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                }}
+            >   
+                <Typography variant="h4">Alunos</Typography>
+            </Box>
+            {error ? (
+                <Typography variant="h6" color="error">
+                    {error}
+                </Typography>
+            ) : (
+                <>
+                    <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2' }}> 
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    <Typography variant="h5">Nome</Typography>
+                                </TableCell>
+                                <TableCell align='right' sx={{paddingRight: '7.5%'}}> 
+                                    <Typography variant="h5">Ações</Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {alunos.map((aluno) => (
+                                <TableRow key={aluno.cpf}>
+                                    <TableCell>
+                                        <Typography variant="h5">{aluno.nome}</Typography>
+                                    </TableCell>
+                                    <TableCell align="right"> 
+                                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}> 
+                                            <Button 
+                                                variant="contained" 
+                                                color="primary" 
+                                                onClick={() => handleViewEditar(aluno.cpf)} 
+                                                sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
+                                            >
+                                                Editar
+                                            </Button>
+                                            <Button 
+                                                variant="contained" 
+                                                color="primary" 
+                                                onClick={() => handleViewNotas(aluno.cpf)} 
+                                                sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
+                                            >
+                                                Notas
+                                            </Button>
+                                            <Button 
+                                                variant="contained" 
+                                                color="secondary" 
+                                                onClick={() => handleDeleteAluno(aluno.cpf)}
+                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                            >
+                                                Remover
+                                            </Button>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Box 
+                    mt={3} 
+                    sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        maxWidth: '25%', 
+                        marginTop: '50px !important',
+                        margin: '0 auto', 
+                        }}
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddAluno} 
+                        sx={{ backgroundColor: '#015495'}}
+                    >
+                        Adicionar Aluno
+                    </Button>
+                </Box>
+                </>
+            )}
         </>
     );
 }
