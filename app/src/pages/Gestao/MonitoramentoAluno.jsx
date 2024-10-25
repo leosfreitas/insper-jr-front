@@ -26,33 +26,33 @@ function DetalhesAluno() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState(false);
+    const [newNota, setNewNota] = useState({ avaliacao: '', nota: '' }); 
     const cookies = new Cookies();
     const token = cookies.get('token');
 
-    useEffect(() => {
-        fetch(`http://127.0.0.1:8000/alunos/get/${cpf}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Falha ao buscar aluno');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setAluno(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error('Erro ao buscar aluno:', error);
-                setError(error.message);
-                setLoading(false);
+    const fetchAluno = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/alunos/get/${cpf}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
             });
-    }, [token, cpf]);
+    
+            if (!response.ok) {
+                throw new Error('Falha ao buscar aluno');
+            }
+    
+            const data = await response.json();
+            setAluno(data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Erro ao buscar aluno:', error);
+            setError(error.message);
+            setLoading(false);
+        }
+    };
 
     const handleEditToggle = () => {
         setEditing(!editing);
@@ -62,10 +62,8 @@ function DetalhesAluno() {
         const { name, value } = event.target;
         setAluno((prevState) => ({ ...prevState, [name]: value }));
     };
-    
 
     const handleSave = () => {
-        console.log(aluno);
         fetch(`http://127.0.0.1:8000/alunos/update/${aluno.cpf}`, {
             method: 'PUT',
             headers: {
@@ -81,7 +79,7 @@ function DetalhesAluno() {
                 return response.json();
             })
             .then(() => {
-                setEditing(false); 
+                setEditing(false);
             })
             .catch((error) => {
                 console.error('Erro ao salvar alterações:', error);
@@ -89,9 +87,56 @@ function DetalhesAluno() {
             });
     };
 
-    if (loading) {
-        return <CircularProgress />;
-    }
+    const handleAddNota = () => {
+        fetch(`http://127.0.0.1:8000/alunos/addNota/${cpf}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ avaliacao: newNota.avaliacao, nota: newNota.nota }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Falha ao adicionar a nota');
+                }
+                fetchAluno();
+                return response.json();
+            })
+            .catch((error) => {
+                console.error('Erro ao adicionar nota:', error);
+                setError(error.message);
+            });
+    };
+
+    const handleRemoveNota = (avaliacao) => {
+        fetch(`http://127.0.0.1:8000/alunos/removeNota/${cpf}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ avaliacao }), 
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao deletar a nota');
+            }
+            return response.json(); 
+        })
+        .then(() => {
+            fetchAluno(); 
+        })
+        .catch(error => {
+            console.error('Erro ao deletar a nota:', error);
+            setError(error.message);
+        });
+    };
+    
+
+    useEffect(() => {
+        fetchAluno();
+    }, [token, cpf]);
 
     return (
         <>
@@ -154,6 +199,7 @@ function DetalhesAluno() {
                                 </Button>
                             )}
                         </Box>
+
                         <Box mt={3}>
                             <Typography variant="h5" gutterBottom>
                                 Notas do Aluno
@@ -164,18 +210,58 @@ function DetalhesAluno() {
                                         <TableRow>
                                             <TableCell>Avaliação</TableCell>
                                             <TableCell>Nota</TableCell>
+                                            <TableCell>Ações</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {Object.entries(aluno.notas).map(([avaliacao, nota]) => (
-                                            <TableRow key={avaliacao}>
-                                                <TableCell>{avaliacao}</TableCell>
-                                                <TableCell>{nota}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
+                                    {aluno.notas && Object.entries(aluno.notas).map(([avaliacao, nota]) => (
+                                        <TableRow key={avaliacao}>
+                                            <TableCell>{avaliacao}</TableCell>
+                                            <TableCell>{nota}</TableCell>
+                                            <TableCell>
+                                                <Button
+                                                    variant="contained"
+                                                    color="secondary"
+                                                    onClick={() => handleRemoveNota(avaliacao)}
+                                                >
+                                                    Remover
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+
                                 </Table>
                             </TableContainer>
+
+                            <Box mt={3}>
+                                <Typography variant="h6" gutterBottom>
+                                    Adicionar Nova Nota
+                                </Typography>
+                                <TextField
+                                    label="Avaliação"
+                                    value={newNota.avaliacao}
+                                    name="avaliacao"
+                                    onChange={(e) => setNewNota({ ...newNota, avaliacao: e.target.value })}
+                                    fullWidth
+                                />
+                                <TextField
+                                    label="Nota"
+                                    value={newNota.nota}
+                                    name="nota"
+                                    onChange={(e) => setNewNota({ ...newNota, nota: e.target.value })}
+                                    fullWidth
+                                    style={{ marginTop: '16px' }}
+                                />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleAddNota}
+                                    style={{ marginTop: '16px' }}
+                                >
+                                    Adicionar Nota
+                                </Button>
+                            </Box>
                         </Box>
                     </>
                 )}

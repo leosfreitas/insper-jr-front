@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import HeaderAluno from './HeaderAluno';
-import './static/AvisosAluno.css';
 import {
     Table,
     TableBody,

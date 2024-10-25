@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; 
 import Logo from '../static/Logo.png';
 import Logout from '../../functions/Logout';
 import '../static/Header.css';
 
 const HeaderAluno = () => {
+  const location = useLocation(); 
 
   const getLinkClass = (path) => {
     return location.pathname === path ? 'active' : '';
@@ -20,9 +21,6 @@ const HeaderAluno = () => {
           <ul>
             <li className={getLinkClass('/home')}>
               <Link to="/home">Home</Link>
-            </li>
-            <li className={getLinkClass('/avisos')}>
-              <Link to="/avisos">Avisos</Link>
             </li>
             <li className={getLinkClass('/grade')}>
               <Link to="/grade">Grade Horária</Link>
