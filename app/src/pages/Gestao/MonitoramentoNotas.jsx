@@ -13,6 +13,11 @@ import {
     Box,
     Button,
     TextField,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
 } from '@mui/material';
 import HeaderGestao from './HeaderGestao';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -24,7 +29,7 @@ function MonitoramentoNotas() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [newNota, setNewNota] = useState({ avaliacao: '', nota: '' });
-    const [showForm, setShowForm] = useState(false); // Estado para controlar a exibição do formulário
+    const [openDialog, setOpenDialog] = useState(false);
     const cookies = new Cookies();
     const token = cookies.get('token');
 
@@ -66,7 +71,8 @@ function MonitoramentoNotas() {
                     throw new Error('Falha ao adicionar a nota');
                 }
                 fetchAluno();
-                setShowForm(false); // Ocultar o formulário após adicionar a nota
+                setOpenDialog(false);
+                setNewNota({ avaliacao: '', nota: '' });
                 return response.json();
             })
             .catch((error) => {
@@ -124,106 +130,97 @@ function MonitoramentoNotas() {
                 />
                 <AddIcon
                     style={{ fontSize: '40px', position: 'absolute', right: '20px', cursor: 'pointer' }}
-                    onClick={() => setShowForm(!showForm)} 
+                    onClick={() => setOpenDialog(true)} 
                 />
                 {aluno ? (
-                <Typography variant="h4">{aluno.nome}</Typography>
+                    <Typography variant="h4">{aluno.nome}</Typography>
                 ) : (
                     <Typography variant="h4">Carregando...</Typography> 
                 )}
             </Box>
-                {aluno && (
-                    <>
-                        <Box mt={3}>
-                            <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2' }}>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
+            {aluno && (
+                <>  
+                    <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2', maxHeight: '50vh', overflowY: 'auto' }}>
+                        <Table stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Typography variant="h5">Avaliação</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h5">Nota</Typography>
+                                    </TableCell>
+                                    <TableCell align='right'> 
+                                        <Typography variant="h5">Ações</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {aluno.notas && Object.entries(aluno.notas).map(([avaliacao, nota]) => (
+                                    <TableRow key={avaliacao}>
                                         <TableCell>
-                                            <Typography variant="h6">
-                                                Avaliação
-                                            </Typography>
+                                            <Typography variant="h6">{avaliacao}</Typography>
                                         </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">
-                                                Nota
-                                            </Typography>
+                                        <TableCell >
+                                            <Typography variant="h6">{nota}</Typography>
                                         </TableCell>
-                                        <TableCell align='right' sx={{paddingRight: '3%'}}>
-                                            <Typography variant="h6">
-                                                Ações
-                                            </Typography>
+                                        <TableCell align='right'>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                onClick={() => handleRemoveNota(avaliacao)}
+                                            >
+                                                Remover
+                                            </Button>
                                         </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                    {aluno.notas && Object.entries(aluno.notas).map(([avaliacao, nota]) => (
-                                        <TableRow key={avaliacao}>
-                                            <TableCell>
-                                                <Typography variant="h5">{avaliacao}</Typography>
-                                            </TableCell>
-                                            <TableCell >
-                                                <Typography variant="h5">{nota}</Typography>
-                                            </TableCell>
-                                            <TableCell align='right'>
-                                                <Button
-                                                    variant="contained"
-                                                    color="secondary"
-                                                    sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
-                                                    onClick={() => handleRemoveNota(avaliacao)}
-                                                >
-                                                    Remover
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                                </Table>
-                            </TableContainer>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
-                            {showForm && ( 
-                                <Box 
-                                    mt={3} 
-                                    sx={{ 
-                                        display: 'flex', 
-                                        flexDirection: 'column', 
-                                        alignItems: 'center', 
-                                        maxWidth: '25%', 
-                                        marginTop: '16px !important',
-                                        margin: '0 auto', 
-                                    }}
+                    <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                        <DialogTitle>Adicionar Nova Nota</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                label="Avaliação"
+                                value={newNota.avaliacao}
+                                name="avaliacao"
+                                onChange={(e) => setNewNota({ ...newNota, avaliacao: e.target.value })}
+                                fullWidth
+                                margin="dense"
+                            />
+                            <TextField
+                                label="Nota"
+                                value={newNota.nota}
+                                name="nota"
+                                onChange={(e) => setNewNota({ ...newNota, nota: e.target.value })}
+                                fullWidth
+                                margin="dense"
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={() => setOpenDialog(false)}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
-                                    <Typography variant="h6" gutterBottom>
-                                        Adicionar Nova Nota
-                                    </Typography>
-                                    <TextField
-                                        label="Avaliação"
-                                        value={newNota.avaliacao}
-                                        name="avaliacao"
-                                        onChange={(e) => setNewNota({ ...newNota, avaliacao: e.target.value })}
-                                        fullWidth
-                                    />
-                                    <TextField
-                                        label="Nota"
-                                        value={newNota.nota}
-                                        name="nota"
-                                        onChange={(e) => setNewNota({ ...newNota, nota: e.target.value })}
-                                        fullWidth
-                                        sx={{ marginTop: '16px' }} 
-                                    />
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleAddNota}
-                                        sx={{ marginTop: '16px', backgroundColor: '#015495' }} 
-                                    >
-                                        Adicionar Nota
-                                    </Button>
-                                </Box>
-                            )}
-                        </Box>
-                    </>
-                )}
+                                Cancelar
+                            </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleAddNota}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                                >
+                                Adicionar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </>
+            )}
         </>
     );
 }

@@ -3,7 +3,30 @@ import HeaderGestao from './HeaderGestao';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Cookies from 'universal-cookie';
-import { Button, TextField, Container, Typography, Box, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Select, MenuItem, FormControl, InputLabel, Grid } from '@mui/material';
+import { 
+    Button, 
+    Table, 
+    TableBody, 
+    TableCell, 
+    TableContainer, 
+    TableHead, 
+    TableRow, 
+    Paper, 
+    Select, 
+    MenuItem, 
+    FormControl, 
+    InputLabel, 
+    Grid,
+    Box,
+    Typography,
+    TextField,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+
 
 function ConteudoGestao() {
     const cookies = new Cookies();
@@ -16,6 +39,8 @@ function ConteudoGestao() {
     const [grades, setGrades] = useState([]);   
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [openGrade, setOpenGrade] = useState(false);
+    const [openAviso, setOpenAviso] = useState(false);
 
     const [data, setData] = useState(new Date());
     const [horario, setHorario] = useState('');
@@ -197,6 +222,19 @@ function ConteudoGestao() {
         }
     };
 
+    const OpenGradeDialog = () => {
+        setOpenGrade(true);
+    };
+
+    const OpenAvisoDialog = () => {
+        setOpenAviso(true);
+    };
+
+    const CloseAvisoDialog = () => {
+        setOpenAviso(false);
+        setError(null);
+    };
+
     useEffect(() => {
         fetchAvisos();
         fetchGrades();
@@ -205,7 +243,6 @@ function ConteudoGestao() {
     return (
         <>
             <HeaderGestao />
-
             <Box 
                 sx={{
                     backgroundColor: '#ab2325',
@@ -217,6 +254,7 @@ function ConteudoGestao() {
                     justifyContent: 'center',
                     textAlign: 'center',
                 }}
+                
             >       
                 <Grid container rowSpacing={2}>
                     <Grid item xs={12}>
@@ -246,28 +284,39 @@ function ConteudoGestao() {
                         </Typography>
                     </Grid> 
                 </Grid>
+                {view === 'avisos' ? (
+                    <AddIcon
+                        style={{ fontSize: '40px', position: 'absolute', right: '20px', cursor: 'pointer' }}
+                        onClick={OpenAvisoDialog}
+                    />
+                        ) : (
+                    <AddIcon
+                        style={{ fontSize: '40px', position: 'absolute', right: '20px', cursor: 'pointer' }}
+                        onClick={OpenGradeDialog}
+                    />
+                )}
             </Box>
 
             {view === 'avisos' && (
-                <>
-                    <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2' }}>
-                        <Table>
+                <>  
+                    <TableContainer component={Paper} sx={{ maxHeight: '50vh' }}>
+                        <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Typography variant="h6">Título</Typography>
+                                        <Typography variant="h5">Título</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h6">Autor</Typography>
+                                        <Typography variant="h5">Autor</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h6">Mensagem</Typography>
+                                        <Typography variant="h5">Mensagem</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h6">Tipo</Typography>
+                                        <Typography variant="h5">Tipo</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h6">Ações</Typography>
+                                        <Typography variant="h5">Ações</Typography>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -275,16 +324,16 @@ function ConteudoGestao() {
                                 {avisos.map((aviso) => (
                                     <TableRow key={aviso._id}>
                                         <TableCell>
-                                            <Typography variant="h5">{aviso.titulo}</Typography>
+                                            <Typography variant="h6">{aviso.titulo}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">{aviso.autor}</Typography>
+                                            <Typography variant="h6">{aviso.autor}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">{aviso.mensagem}</Typography>
+                                            <Typography variant="h6">{aviso.mensagem}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">{aviso.tipo}</Typography>
+                                            <Typography variant="h6">{aviso.tipo}</Typography>
                                         </TableCell>
                                         <TableCell>
                                             <Button 
@@ -300,104 +349,99 @@ function ConteudoGestao() {
                                 ))}
                             </TableBody>
                         </Table>
-                        </TableContainer>
-                        <Box 
-                            mt={3} 
-                            sx={{ 
-                                display: 'flex', 
-                                flexDirection: 'column', 
-                                alignItems: 'center', 
-                                maxWidth: '25%', 
-                                marginTop: '16px !important',
-                                margin: '0 auto', 
-                            }}
-                        >
-                            <Typography variant="h4" gutterBottom>
-                                Criar Aviso
-                            </Typography>
-                            <form onSubmit={handleSubmit}>
-                                <TextField
-                                    label="Título"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    value={titulo}
-                                    onChange={(e) => setTitulo(e.target.value)}
-                                    required
-                                />
-                                <TextField
-                                    label="Mensagem"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    multiline
-                                    rows={4}
-                                    value={mensagem}
-                                    onChange={(e) => setMensagem(e.target.value)}
-                                    required
-                                />
-                                <FormControl fullWidth margin="normal">
-                                    <InputLabel>Tipo</InputLabel>
-                                    <Select
-                                        value={tipo}
-                                        onChange={(e) => setTipo(e.target.value)}
-                                        label="Tipo"
+                    </TableContainer>
+                    <Dialog open={openAviso} onClose={CloseAvisoDialog}>
+                        <DialogTitle>Criar Aviso</DialogTitle>
+                            <DialogContent>
+                                <form onSubmit={handleSubmit}>
+                                    <TextField
+                                        label="Título"
+                                        variant="outlined"
+                                        fullWidth
+                                        margin="normal"
+                                        value={titulo}
+                                        onChange={(e) => setTitulo(e.target.value)}
+                                        required
+                                    />
+                                    <TextField
+                                        label="Mensagem"
+                                        variant="outlined"
+                                        fullWidth
+                                        margin="normal"
+                                        multiline
+                                        rows={4}
+                                        value={mensagem}
+                                        onChange={(e) => setMensagem(e.target.value)}
+                                        required
+                                    />
+                                    <FormControl fullWidth margin="normal">
+                                        <InputLabel>Tipo</InputLabel>
+                                        <Select
+                                            value={tipo}
+                                            onChange={(e) => setTipo(e.target.value)}
+                                            label="Tipo"
+                                            required
+                                        >
+                                            <MenuItem value="Online">Online</MenuItem>
+                                            <MenuItem value="Presencial">Presencial</MenuItem>
+                                            <MenuItem value="Geral">Geral</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <Button 
+                                        variant="contained" 
+                                        color="primary" 
+                                        type="submit" 
                                     >
-                                        <MenuItem value="Online">Online</MenuItem>
-                                        <MenuItem value="Presencial">Presencial</MenuItem>
-                                        <MenuItem value="Geral">Geral</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <Button 
-                                    variant="contained" 
-                                    color="primary" 
-                                    type="submit" 
-                                    sx={{ mt: 2 }}
-                                >
-                                    Criar Aviso
-                                </Button>
-                            </form>
-                        </Box>
+                                        Criar Aviso
+                                    </Button>
+                                </form>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={CloseAvisoDialog} color="secondary">
+                                Cancelar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </>
             )}
 
             {view === 'grade' && (
-                <>
-                    <TableContainer component={Paper}>
-                        <Table>
+                <>  
+                    <TableContainer component={Paper}  sx={{ backgroundColor: '#f2f2f2', maxHeight: '50vh', overflowY: 'auto' }}>
+                        <Table stickyHeader>
                             <TableHead>
-                                <TableRow>
-                                    <TableCell>
-                                        <Typography variant="h6">Data</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h6">Horário</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h6">Matéria</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h6">Sala</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h6">Ações</Typography>
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Typography variant="h5">Título</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">Autor</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">Mensagem</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">Tipo</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h5">Ações</Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
                             <TableBody>
                                 {grades.map((grade) => (
                                     <TableRow key={grade._id}>
                                         <TableCell>
-                                            <Typography variant="h5">{grade.data}</Typography>
+                                            <Typography variant="h6">{grade.data}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">{grade.horario}</Typography>
+                                            <Typography variant="h6">{grade.horario}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">{grade.materia}</Typography>
+                                            <Typography variant="h6">{grade.materia}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">{grade.sala}</Typography>
+                                            <Typography variant="h6">{grade.sala}</Typography>
                                         </TableCell>
                                         <TableCell>
                                             <Button 

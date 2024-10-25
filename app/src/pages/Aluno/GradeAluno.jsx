@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import HeaderAluno from './HeaderAluno';
-import './static/GradeAluno.css';
 import Cookies from 'universal-cookie';
-import { Grid, Card, CardContent, Typography, Container, Alert } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Container, Alert, Box, IconButton } from '@mui/material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import './static/DatePickerStyler.css'
 
 function GradeAluno() {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -61,55 +62,70 @@ function GradeAluno() {
         fetchGrades();
     }, [token, selectedDate]);
 
+    const CustomDateInput = forwardRef(({ onClick }, ref) => (
+        <IconButton onClick={onClick} ref={ref}>
+            <CalendarMonthIcon style={{ fontSize: '40px', color: 'white' }} />
+        </IconButton>
+    ));
+
     return (
         <>
             <HeaderAluno />
+            <Box 
+                sx={{
+                    backgroundColor: '#ab2325',
+                    color: 'white',
+                    width: '100%',
+                    height: '25vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                }}
+            >   
+                <Typography variant="h4">Grade Horária</Typography>
+                <DatePicker 
+                    selected={selectedDate} 
+                    onChange={handleDateChange} 
+                    dateFormat="dd/MM/yyyy" 
+                    customInput={<CustomDateInput />}
+                />
+            </Box>
             <Container>
-                <div className='grade-aluno'>
-                    <div className="calendario-container">
-                        <Typography variant="h5" gutterBottom>Selecione uma data:</Typography>
-                        <DatePicker 
-                            selected={selectedDate} 
-                            onChange={handleDateChange} 
-                            dateFormat="dd/MM/yyyy" 
-                            inline
-                        />
-                    </div>
-                    {loading ? (
-                        <Typography variant="h6">Carregando...</Typography>
-                    ) : (
-                        <Grid container spacing={3} style={{ marginTop: '20px' }}>
-                            {error && <Alert severity="error">{error}</Alert>}
-                            {grades.length === 0 ? (
-                                <Typography variant="h6">Nenhuma grade encontrada para esta data.</Typography>
-                            ) : (
-                                grades.map(({ _id, horario, materia, local, topico, professor }) => (
-                                    <Grid item xs={12} sm={6} md={4} key={_id}>
-                                        <Card>
-                                            <CardContent>
-                                                <Typography variant="h6" component="div">
-                                                    {horario}
-                                                </Typography>
-                                                <Typography color="text.secondary">
-                                                    Matéria: {materia}
-                                                </Typography>
-                                                <Typography color="text.secondary">
-                                                    Sala ou link: {local}
-                                                </Typography>
-                                                <Typography color="text.secondary">
-                                                    Tópico: {topico}
-                                                </Typography>
-                                                <Typography color="text.secondary">
-                                                    Professor:{professor}
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                ))
-                            )}
-                        </Grid>
-                    )}
-                </div>
+                {loading ? (
+                    <Typography variant="h6">Carregando...</Typography>
+                ) : (
+                    <Grid container spacing={3} style={{ marginTop: '20px' }}>
+                        {error && <Alert severity="error">{error}</Alert>}
+                        {grades.length === 0 ? (
+                            <Typography variant="h6">Nenhuma grade encontrada para esta data.</Typography>
+                        ) : (
+                            grades.map(({ _id, horario, materia, local, topico, professor }) => (
+                                <Grid item xs={12} sm={6} md={4} key={_id}>
+                                    <Card>
+                                        <CardContent>
+                                            <Typography variant="h6" component="div">
+                                                {horario}
+                                            </Typography>
+                                            <Typography color="text.secondary">
+                                                Matéria: {materia}
+                                            </Typography>
+                                            <Typography color="text.secondary">
+                                                Sala ou link: {local}
+                                            </Typography>
+                                            <Typography color="text.secondary">
+                                                Tópico: {topico}
+                                            </Typography>
+                                            <Typography color="text.secondary">
+                                                Professor: {professor}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))
+                        )}
+                    </Grid>
+                )}
             </Container>
         </>
     );

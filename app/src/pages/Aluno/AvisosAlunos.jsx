@@ -58,7 +58,6 @@ function AvisosAluno() {
 
     return (
         <>
-            <HeaderAluno />
             <div className='home-aluno'>
                 {error && <Alert severity="error">{error}</Alert>}
 

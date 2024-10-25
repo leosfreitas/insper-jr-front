@@ -1,0 +1,25 @@
+.react-datepicker {
+    border: 1px solid #000000;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.react-datepicker__day--selected, .react-datepicker__day--keyboard-selected {
+    background-color: #ab2325;
+    color: white;
+    border-radius: 50%;
+}
+
+.react-datepicker__day--selected:hover, .react-datepicker__day--keyboard-selected:hover {
+    background-color: #ab2325 !important;
+    transition: 0.3s;
+}
+
+.react-datepicker__navigation--previous {
+    border-right-color: white;
+}
+
+.react-datepicker__navigation--next {
+    border-left-color: white;
+}
