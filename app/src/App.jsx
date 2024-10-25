@@ -4,7 +4,6 @@ import React from 'react';
 import Login from './pages/Login';
 
 import HomeAluno from './pages/Aluno/HomeAluno';
-import AvisosAluno from './pages/Aluno/AvisosAlunos';
 import GradeAluno from './pages/Aluno/GradeAluno';
 import NotasAluno from './pages/Aluno/NotasAluno';
 
@@ -39,7 +38,6 @@ function App() {
           {permission === 'ALUNO' && (
             <>
             <Route path="/home" element={<HomeAluno />} />
-            <Route path="/avisos" element={<AvisosAluno />} />
             <Route path="/grade" element={<GradeAluno />} />
             <Route path="/notas" element={<NotasAluno />} />
             </>

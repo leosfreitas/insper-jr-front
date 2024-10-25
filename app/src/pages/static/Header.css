@@ -50,7 +50,10 @@
 }
 
 .header nav ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: white;
-  transform: scale(1.05);
+  color: grey;
+}
+
+header nav ul li.active a{
+  color: red;
+  font-weight: bold; 
 }
