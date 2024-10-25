@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, Button, MenuItem, Typography } from '@mui/material';
+import { TextField, Button, MenuItem, Typography, Box } from '@mui/material';
 import HeaderGestao from './HeaderGestao';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 
 const MonitoramentoAdicionar = () => {
     const [nome, setNome] = useState('');
@@ -53,8 +55,35 @@ const MonitoramentoAdicionar = () => {
     return (
         <>
             <HeaderGestao />
-            <div className='home-gestao'>
-                <Typography variant="h4" gutterBottom>Adicionar Aluno</Typography>
+            <Box 
+                sx={{
+                    backgroundColor: '#ab2325',
+                    color: 'white',
+                    width: '100%',
+                    height: '25vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                }}
+            >
+                <ArrowBackIcon
+                    style={{ fontSize: '40px', position: 'absolute', left: '20px', cursor: 'pointer' }}
+                    onClick={() => window.location.href = '/monitoramento'}
+                />
+                <Typography variant="h4">Adicionar Aluno</Typography>
+            </Box>
+            <Box 
+                mt={3} 
+                sx={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    maxWidth: '25%', 
+                    marginTop: '50px !important',
+                    margin: '0 auto', 
+                    }}
+            >
                 <form onSubmit={handleSubmit}>
                     <TextField
                         label="Nome"
@@ -65,10 +94,10 @@ const MonitoramentoAdicionar = () => {
                         margin="normal"
                     />
                     <TextField
-                        label="Senha"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        label="Email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                         fullWidth
                         margin="normal"
@@ -77,15 +106,6 @@ const MonitoramentoAdicionar = () => {
                         label="CPF"
                         value={cpf}
                         onChange={(e) => setCpf(e.target.value)}
-                        required
-                        fullWidth
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
                         required
                         fullWidth
                         margin="normal"
@@ -101,16 +121,30 @@ const MonitoramentoAdicionar = () => {
                         <MenuItem value="Online">Online</MenuItem>
                         <MenuItem value="Presencial">Presencial</MenuItem>
                     </TextField>
+                    <TextField
+                        label="Senha"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        fullWidth
+                        margin="normal"
+                    />
                     {error && (
                         <Typography variant="h6" color="error">
                             {error}
                         </Typography>
                     )}
-                    <Button type="submit" variant="contained" color="primary" fullWidth>
-                        Adicionar Aluno
+                    <Button sx={{backgroundColor: '#015495', marginTop: '16px'}}
+                        type="submit" 
+                        variant="contained" 
+                        color="primary" 
+                        fullWidth
+                        >
+                        Enviar
                     </Button>
                 </form>
-            </div>
+            </Box>
         </>
     );
 };

@@ -2,25 +2,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #f2f2f2;
   color: white;
   padding: 10px 20px;
   width: 100%;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-  position: fixed;
-  top: 0;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.5);
   left: 0;
-  z-index: 1000;
 }
 
 .logo-container {
-  flex: 1; 
   display: flex;
   align-items: center;
 }
 
 .nav-container {
-  flex: 2; 
+  margin-right: 3%;
   display: flex;
   justify-content: center; 
 }
@@ -50,10 +46,16 @@
 }
 
 .header nav ul li a:hover {
+  transition: 0.3s;
   color: grey;
 }
 
 header nav ul li.active a{
-  color: red;
+  color: #015495;
   font-weight: bold; 
+}
+
+.header nav ul li.active a:hover {
+  transition: 0.3s;
+  color: #568db8;
 }
