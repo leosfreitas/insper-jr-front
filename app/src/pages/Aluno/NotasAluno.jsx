@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import HeaderAluno from './HeaderAluno';
-import './static/NotasAluno.css';
 import Cookies from 'universal-cookie';
 import {
     CircularProgress,
     Typography,
     Alert,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Box
 } from '@mui/material';
 
 function NotasAluno() {
@@ -44,39 +51,61 @@ function NotasAluno() {
     }
 
     return (
-        <div className='notas-container'>
+        <>
             <HeaderAluno />
-            <div className='back-nota-aluno'>
-                <div className='provas-write'>
-                    <h1>Provas</h1>
-                </div>
-                <div className='notas-write'>
-                    <h1>Notas</h1>
-                </div>
-            </div>
+            <Box
+                sx={{
+                    backgroundColor: '#ab2325',
+                    color: 'white',
+                    width: '100%',
+                    height: '20vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                }}
+            >
+                <Typography variant="h4">Notas do Aluno</Typography>
+            </Box>
 
-            {error && <Alert severity="error">{error}</Alert>}
-
-            {Object.keys(notas).length === 0 ? (
-                <Typography variant="h6">Nenhuma nota encontrada.</Typography>
+            {error ? (
+                <Alert severity="error">{error}</Alert>
+            ) : Object.keys(notas).length === 0 ? (
+                <Typography variant="h6" sx={{ mt: 3, textAlign: 'center' }}>
+                    Nenhuma nota encontrada.
+                </Typography>
             ) : (
-                <div className='notas-list'>
-                    {Object.entries(notas).map(([avaliacao, nota]) => {
-                        const notaRender = typeof nota === 'object' ? JSON.stringify(nota) : nota;
-                        return (
-                            <div key={avaliacao} className='avaliacao-nota'>
-                                <div className='avaliacao'>
-                                    <h2>{avaliacao}</h2>
-                                </div>
-                                <div className='nota'>
-                                    <h2>{notaRender}</h2>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                <TableContainer component={Paper} sx={{ width: '100%', mt: 3, marginTop: '0px' }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    <Typography variant="h5">Avaliação</Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Typography variant="h5">Nota</Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {Object.entries(notas).map(([avaliacao, nota]) => {
+                                const notaRender = typeof nota === 'object' ? JSON.stringify(nota) : nota;
+                                return (
+                                    <TableRow key={avaliacao}>
+                                        <TableCell>
+                                            <Typography variant="h6">{avaliacao}</Typography>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <Typography variant="h6">{notaRender}</Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             )}
-        </div>
+        </>
     );
 }
 
