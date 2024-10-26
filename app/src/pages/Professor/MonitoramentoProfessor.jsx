@@ -18,7 +18,6 @@ import HeaderProfessor from './HeaderProfessor';
 function MonitoramentoProfessor() {
     const [alunos, setAlunos] = useState([]); 
     const [error, setError] = useState(null); 
-    const [loading, setLoading] = useState(true);
     const cookies = new Cookies();
     const token = cookies.get('token'); 
     const navigate = useNavigate();
@@ -75,7 +74,7 @@ function MonitoramentoProfessor() {
                     {error}
                 </Typography>
             ) : (
-                <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2', maxHeight: '50vh', overflowY: 'auto' }}> 
+                <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}> 
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>

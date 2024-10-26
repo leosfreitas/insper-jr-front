@@ -14,7 +14,6 @@ import MonitoramentoNotas from './pages/Gestao/MonitoramentoNotas';
 
 import HomeProfessor from './pages/Professor/HomeProfessor';
 import ConteudoProfessor from './pages/Professor/ConteudoProfessor';
-import MonitoramentoProfessor from './pages/Professor/MonitoramentoProfessor';
 import MonitoramentoNotasProfessor from './pages/Professor/MonitoramentoNotasProfessor';
 
 import VerifyPermission from './functions/VerifyPermission';
@@ -58,7 +57,6 @@ function App() {
             <>
               <Route path="/home" element={<HomeProfessor />} />
               <Route path="/conteudo" element={<ConteudoProfessor />} />
-              <Route path="/monitoramento" element={<MonitoramentoProfessor />} />
               <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotasProfessor />} />
             </>
           )}

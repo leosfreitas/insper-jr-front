@@ -231,24 +231,20 @@ function MonitoramentoGestao() {
                 }}
             >   
                 <Typography variant="h4">Alunos</Typography>
-                <AddIcon
-                    style={{ fontSize: '40px', position: 'absolute', right: '20px', cursor: 'pointer' }}
-                    onClick={handleOpenCreateDialog} 
-                />
             </Box>
             {error ? (
                 <Typography variant="h6" color="error">
                     {error}
                 </Typography>
             ) : (
-                <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2', maxHeight: '50vh', overflowY: 'auto' }}> 
+                <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}> 
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <TableCell>
                                     <Typography variant="h5">Nome</Typography>
                                 </TableCell>
-                                <TableCell align='right' sx={{ paddingRight: '7.5%', position: 'sticky' }}> 
+                                <TableCell align='right'> 
                                     <Typography variant="h5">Ações</Typography>
                                 </TableCell>
                             </TableRow>
@@ -295,6 +291,20 @@ function MonitoramentoGestao() {
                     </Table>
                 </TableContainer>
             )}
+            <Box sx={{ 
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '5vh',
+                }}>
+                <Button 
+                    variant="contained" 
+                    color="error" 
+                    onClick={handleOpenCreateDialog} 
+                    sx={{ backgroundColor: '#015495'}} 
+                >
+                    Adicionar Aluno
+                </Button>
+            </Box>
             <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
                 <DialogTitle>Adicionar Aluno</DialogTitle>
                 <DialogContent>

@@ -69,7 +69,7 @@ function MonitoramentoNotasProfessor() {
             >   
                 <ArrowBackIcon
                     style={{ fontSize: '40px', position: 'absolute', left: '20px', cursor: 'pointer' }}
-                    onClick={() => window.location.href = '/monitoramento'}
+                    onClick={() => window.location.href = '/home'}
                 />
                 {aluno ? (
                     <Typography variant="h4">{aluno.nome}</Typography>
@@ -79,7 +79,7 @@ function MonitoramentoNotasProfessor() {
             </Box>
             {aluno && (
                 <>  
-                    <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2', maxHeight: '50vh', overflowY: 'auto' }}>
+                    <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}>
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>

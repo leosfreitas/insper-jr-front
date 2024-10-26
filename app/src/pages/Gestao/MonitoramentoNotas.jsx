@@ -128,10 +128,6 @@ function MonitoramentoNotas() {
                     style={{ fontSize: '40px', position: 'absolute', left: '20px', cursor: 'pointer' }}
                     onClick={() => window.location.href = '/monitoramento'}
                 />
-                <AddIcon
-                    style={{ fontSize: '40px', position: 'absolute', right: '20px', cursor: 'pointer' }}
-                    onClick={() => setOpenDialog(true)} 
-                />
                 {aluno ? (
                     <Typography variant="h4">{aluno.nome}</Typography>
                 ) : (
@@ -140,7 +136,7 @@ function MonitoramentoNotas() {
             </Box>
             {aluno && (
                 <>  
-                    <TableContainer component={Paper} sx={{ backgroundColor: '#f2f2f2', maxHeight: '50vh', overflowY: 'auto' }}>
+                    <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}>
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
@@ -179,6 +175,20 @@ function MonitoramentoNotas() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Box sx={{ 
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '5vh',
+                        }}>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={() => setOpenDialog(true)} 
+                            sx={{ backgroundColor: '#015495'}} 
+                        >   
+                            Adicionar Nota
+                        </Button>
+                    </Box>
 
                     <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
                         <DialogTitle>Adicionar Nova Nota</DialogTitle>

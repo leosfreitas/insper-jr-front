@@ -50,6 +50,10 @@ function ConteudoProfessor() {
         return `${day}-${month}-${year}`;
     };
 
+    function formatDateView(string) {
+        return string.replace(/-/g, "/");
+    }
+
     const handleDateChange = (date) => {
         setData(date);
     };
@@ -276,22 +280,11 @@ function ConteudoProfessor() {
                         </Typography>
                     </Grid> 
                 </Grid>
-                {view === 'avisos' ? (
-                    <AddIcon
-                        style={{ fontSize: '40px', position: 'absolute', right: '20px', cursor: 'pointer' }}
-                        onClick={OpenAvisoDialog}
-                    />
-                        ) : (
-                    <AddIcon
-                        style={{ fontSize: '40px', position: 'absolute', right: '20px', cursor: 'pointer' }}
-                        onClick={OpenGradeDialog}
-                    />
-                )}
             </Box>
 
             {view === 'avisos' && (
                 <>  
-                    <TableContainer component={Paper} sx={{ maxHeight: '50vh' }}>
+                    <TableContainer component={Paper} sx={{ height: '50vh' }}>
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
@@ -313,35 +306,57 @@ function ConteudoProfessor() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {avisos.map((aviso) => (
-                                    <TableRow key={aviso._id}>
-                                        <TableCell>
-                                            <Typography variant="h6">{aviso.titulo}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{aviso.autor}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{aviso.mensagem}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{aviso.tipo}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Button 
-                                                variant="contained" 
-                                                color="error" 
-                                                onClick={() => handleDelete(aviso._id)} 
-                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
-                                            >
-                                                Remover
-                                            </Button>
+                                {Array.isArray(avisos) && avisos.length > 0 ? (
+                                    avisos.map((aviso) => (
+                                        <TableRow key={aviso._id}>
+                                            <TableCell>
+                                                <Typography variant="h6">{aviso.titulo}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h6">{aviso.autor}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h6">{aviso.mensagem}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h6">{aviso.tipo}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Button 
+                                                    variant="contained" 
+                                                    color="error" 
+                                                    onClick={() => handleDelete(aviso._id)} 
+                                                    sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                >
+                                                    Remover
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={5} align="center">
+                                            <Typography variant="h6">Nenhum aviso disponível</Typography>
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Box sx={{ 
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '5vh',
+                        }}>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={OpenAvisoDialog}
+                            sx={{ backgroundColor: '#015495'}} 
+                        >
+                            Adicionar Aviso
+                        </Button>
+                    </Box>
                     <Dialog open={openAviso} onClose={CloseAvisoDialog}>
                         <DialogTitle>Criar Aviso</DialogTitle>
                             <DialogContent>
@@ -399,7 +414,7 @@ function ConteudoProfessor() {
 
             {view === 'grade' && (
                 <>  
-                    <TableContainer component={Paper}  sx={{ backgroundColor: '#f2f2f2', maxHeight: '50vh', overflowY: 'auto' }}>
+                    <TableContainer component={Paper}  sx={{ height: '50vh', overflowY: 'auto' }}>
                         <Table stickyHeader>
                             <TableHead>
                                     <TableRow>
@@ -413,6 +428,9 @@ function ConteudoProfessor() {
                                             <Typography variant="h5">Matéria</Typography>
                                         </TableCell>
                                         <TableCell>
+                                            <Typography variant="h5">Professor</Typography>
+                                        </TableCell>
+                                        <TableCell>
                                             <Typography variant="h5">Sala</Typography>
                                         </TableCell>
                                         <TableCell>
@@ -421,35 +439,60 @@ function ConteudoProfessor() {
                                     </TableRow>
                                 </TableHead>
                             <TableBody>
-                                {grades.map((grade) => (
-                                    <TableRow key={grade._id}>
-                                        <TableCell>
-                                            <Typography variant="h6">{grade.data}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{grade.horario}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{grade.materia}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{grade.sala}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Button 
-                                                variant="contained" 
-                                                color="error" 
-                                                onClick={() => handleGradeDelete(grade._id)} 
-                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
-                                            >
-                                                Remover
-                                            </Button>
+                            {Array.isArray(grades) && grades.length > 0 ? (
+                                    grades.map((grade) => (
+                                        <TableRow key={grade._id}>
+                                            <TableCell>
+                                                <Typography variant="h6">{formatDateView(grade.data)}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h6">{grade.horario}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h6">{grade.materia}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h6">{grade.professor}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h6">{grade.sala}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Button 
+                                                    variant="contained" 
+                                                    color="error" 
+                                                    onClick={() => handleGradeDelete(grade._id)} 
+                                                    sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                >
+                                                    Remover
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={5} align="center">
+                                            <Typography variant="h6">Nenhuma Grade disponível</Typography>
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Box sx={{ 
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '5vh',
+                        }}>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={OpenGradeDialog}
+                            sx={{ backgroundColor: '#015495'}} 
+                        >
+                            Adicionar Grade
+                        </Button>
+                    </Box>
                     <Dialog open={openGrade} onClose={CloseGradeDialog}>
                         <DialogTitle>Criar Grade</DialogTitle>
                             <DialogContent>

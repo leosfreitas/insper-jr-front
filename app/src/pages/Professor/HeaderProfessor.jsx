@@ -25,9 +25,6 @@ const HeaderProfessor = () => {
             <li className={getLinkClass('/conteudo')}>
               <Link to="/conteudo">Gerenciamento de Conteúdo</Link>
             </li>
-            <li className={getLinkClass('/monitoramento')}>
-              <Link to="/monitoramento">Monitoramento Acadêmico</Link>
-            </li>
             <li>
               <Logout />
             </li>
