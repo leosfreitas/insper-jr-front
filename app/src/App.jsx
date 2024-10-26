@@ -12,6 +12,11 @@ import ConteudoGestao from './pages/Gestao/ConteudoGestao';
 import MonitoramentoGestao from './pages/Gestao/MonitoramentoGestao';
 import MonitoramentoNotas from './pages/Gestao/MonitoramentoNotas';
 
+import HomeProfessor from './pages/Professor/HomeProfessor';
+import ConteudoProfessor from './pages/Professor/ConteudoProfessor';
+import MonitoramentoProfessor from './pages/Professor/MonitoramentoProfessor';
+import MonitoramentoNotasProfessor from './pages/Professor/MonitoramentoNotasProfessor';
+
 import VerifyPermission from './functions/VerifyPermission';
 import CheckAuth from './functions/CheckAuth';
 import NotFound from './functions/NotFound';
@@ -47,6 +52,14 @@ function App() {
               <Route path="/conteudo" element={<ConteudoGestao />} />
               <Route path="/monitoramento" element={<MonitoramentoGestao />} />
               <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotas />} />
+            </>
+          )}
+          {permission === 'PROFESSOR' && (
+            <>
+              <Route path="/home" element={<HomeProfessor />} />
+              <Route path="/conteudo" element={<ConteudoProfessor />} />
+              <Route path="/monitoramento" element={<MonitoramentoProfessor />} />
+              <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotasProfessor />} />
             </>
           )}
         </Route>

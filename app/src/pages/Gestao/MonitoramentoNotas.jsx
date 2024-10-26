@@ -150,7 +150,7 @@ function MonitoramentoNotas() {
                                     <TableCell>
                                         <Typography variant="h5">Nota</Typography>
                                     </TableCell>
-                                    <TableCell align='right'> 
+                                    <TableCell> 
                                         <Typography variant="h5">Ações</Typography>
                                     </TableCell>
                                 </TableRow>
@@ -164,7 +164,7 @@ function MonitoramentoNotas() {
                                         <TableCell >
                                             <Typography variant="h6">{nota}</Typography>
                                         </TableCell>
-                                        <TableCell align='right'>
+                                        <TableCell>
                                             <Button
                                                 variant="contained"
                                                 color="secondary"
