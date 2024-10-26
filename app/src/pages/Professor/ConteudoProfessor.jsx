@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import HeaderGestao from './HeaderGestao';
+import HeaderProfessor from './HeaderProfessor';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Cookies from 'universal-cookie';
@@ -27,7 +27,8 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-function ConteudoGestao() {
+
+function ConteudoProfessor() {
     const cookies = new Cookies();
     const token = cookies.get("token");
 
@@ -49,13 +50,13 @@ function ConteudoGestao() {
         return `${day}-${month}-${year}`;
     };
 
-    const handleDateChange = (date) => {
-        setData(date);
-    };
-
     function formatDateView(string) {
         return string.replace(/-/g, "/");
     }
+
+    const handleDateChange = (date) => {
+        setData(date);
+    };
 
     const handleGrade = async (e) => {
         e.preventDefault();
@@ -237,7 +238,7 @@ function ConteudoGestao() {
 
     return (
         <>
-            <HeaderGestao />
+            <HeaderProfessor />
             <Box 
                 sx={{
                     backgroundColor: '#ab2325',
@@ -580,4 +581,4 @@ function ConteudoGestao() {
     );
 }
 
-export default ConteudoGestao;
+export default ConteudoProfessor;
