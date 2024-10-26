@@ -3,13 +3,13 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import HeaderAluno from './HeaderAluno';
 import Cookies from 'universal-cookie';
-import { Grid, Card, CardContent, Typography, Container, Alert, Box, IconButton } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Container, Alert, Box, IconButton, FormControl, InputLabel } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import './static/DatePickerStyler.css'
+import './static/DatePickerStyler.css';
 
 function GradeAluno() {
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [grades, setGrades] = useState([]); 
+    const [grades, setGrades] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const cookies = new Cookies();
@@ -44,16 +44,16 @@ function GradeAluno() {
                 console.log("Dados recebidos da API:", data);
 
                 if (Array.isArray(data)) {
-                    setGrades(data);  
+                    setGrades(data);
                 } else {
-                    setGrades([]); 
+                    setGrades([]);
                     setError('A resposta da API não é um array');
                 }
                 setError(null);
             } catch (error) {
                 console.error('Erro ao buscar grades:', error);
                 setError(error.message);
-                setGrades([]); 
+                setGrades([]);
             } finally {
                 setLoading(false);
             }
@@ -63,8 +63,17 @@ function GradeAluno() {
     }, [token, selectedDate]);
 
     const CustomDateInput = forwardRef(({ onClick }, ref) => (
-        <IconButton onClick={onClick} ref={ref}>
-            <CalendarMonthIcon style={{ fontSize: '40px', color: 'white' }} />
+        <IconButton onClick={onClick} ref={ref} sx={{
+            backgroundColor: '#ab2325', 
+            color: 'white', 
+            borderRadius: '5px',
+            padding: '10px',
+            marginLeft: '10px',
+            '&:hover': {
+                backgroundColor: '#a02024',
+            },
+        }}>
+            <CalendarMonthIcon style={{ fontSize: '40px' }} />
         </IconButton>
     ));
 
@@ -81,15 +90,21 @@ function GradeAluno() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     textAlign: 'center',
+                    position: 'relative', // Para posicionar o botão
+                    padding: '0 20px',
                 }}
             >   
                 <Typography variant="h4">Grade Horária</Typography>
-                <DatePicker 
-                    selected={selectedDate} 
-                    onChange={handleDateChange} 
-                    dateFormat="dd/MM/yyyy" 
-                    customInput={<CustomDateInput />}
-                />
+                <FormControl variant="outlined" sx={{ position: 'absolute', right: '130px', top:'20px' }}>
+                    <InputLabel sx={{ color: 'white' }}></InputLabel>
+                    <DatePicker 
+                        selected={selectedDate} 
+                        onChange={handleDateChange} 
+                        dateFormat="dd/MM/yyyy" 
+                        customInput={<CustomDateInput />}
+                        showPopperArrow={false}
+                    />
+                </FormControl>
             </Box>
             <Container>
                 {loading ? (

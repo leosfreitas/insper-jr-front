@@ -11,6 +11,9 @@ import {
     CircularProgress,
     Typography,
     Alert,
+    Box,
+    Tabs,
+    Tab,
 } from '@mui/material';
 import Cookies from 'universal-cookie';
 
@@ -20,6 +23,7 @@ function AvisosAluno() {
     const [sala, setSala] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [value, setValue] = useState(0); // Estado para gerenciar a aba ativa
     const cookies = new Cookies();
     const token = cookies.get('token');
 
@@ -52,63 +56,123 @@ function AvisosAluno() {
         fetchAvisos();
     }, [token]);
 
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
     if (loading) {
-        return <CircularProgress />;
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <CircularProgress />
+            </Box>
+        );
     }
 
     return (
         <>
-            <div className='home-aluno'>
-                {error && <Alert severity="error">{error}</Alert>}
+            <HeaderAluno />
+            <Box
+                sx={{
+                    backgroundColor: '#ab2325',
+                    color: 'white',
+                    width: '100%',
+                    height: '25vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    mb: 4
+                }}
+            >
+                <Typography variant="h4">Avisos e Comunicados</Typography>
+            </Box>
 
-                <Typography variant="h6" gutterBottom>
-                    Avisos Gerais:
-                </Typography>
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Título</TableCell>
-                                <TableCell>Autor</TableCell>
-                                <TableCell>Mensagem</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {avisosGeral.map((aviso) => (
-                                <TableRow key={aviso._id}>
-                                    <TableCell>{aviso.titulo}</TableCell>
-                                    <TableCell>{aviso.autor}</TableCell>
-                                    <TableCell>{aviso.mensagem}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+            <Box >
+                {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-                <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
-                    Avisos da Sala: {sala}
-                </Typography>
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Título</TableCell>
-                                <TableCell>Autor</TableCell>
-                                <TableCell>Mensagem</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {avisosSala.map((aviso) => (
-                                <TableRow key={aviso._id}>
-                                    <TableCell>{aviso.titulo}</TableCell>
-                                    <TableCell>{aviso.autor}</TableCell>
-                                    <TableCell>{aviso.mensagem}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
+                <Tabs value={value} onChange={handleChange} sx={{ mb: 3 }}>
+                    <Tab label="Avisos Gerais" />
+                    <Tab label={`Avisos da Sala: ${sala}`} />
+                </Tabs>
+
+                {value === 0 && ( // Avisos Gerais
+                    <Box sx={{ width: '100%' }}>
+                        <TableContainer component={Paper} sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell sx={{ width: '25%' }}>
+                                            <Typography variant="h6">Título</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ width: '25%' }}>
+                                            <Typography variant="h6">Autor</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ width: '50%' }}>
+                                            <Typography variant="h6">Mensagem</Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {avisosGeral.length > 0 ? (
+                                        avisosGeral.map((aviso) => (
+                                            <TableRow key={aviso._id}>
+                                                <TableCell>{aviso.titulo}</TableCell>
+                                                <TableCell>{aviso.autor}</TableCell>
+                                                <TableCell>{aviso.mensagem}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={3} align="center">
+                                                <Typography variant="body1">Nenhum aviso geral disponível</Typography>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                )}
+
+                {value === 1 && ( // Avisos da Sala
+                    <Box sx={{ width: '100%' }}>
+                        <TableContainer component={Paper} sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell sx={{ width: '25%' }}>
+                                            <Typography variant="h6">Título</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ width: '25%' }}>
+                                            <Typography variant="h6">Autor</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ width: '50%' }}>
+                                            <Typography variant="h6">Mensagem</Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {avisosSala.length > 0 ? (
+                                        avisosSala.map((aviso) => (
+                                            <TableRow key={aviso._id}>
+                                                <TableCell>{aviso.titulo}</TableCell>
+                                                <TableCell>{aviso.autor}</TableCell>
+                                                <TableCell>{aviso.mensagem}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={3} align="center">
+                                                <Typography variant="body1">Nenhum aviso disponível para a sala {sala}</Typography>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                )}
+            </Box>
         </>
     );
 }

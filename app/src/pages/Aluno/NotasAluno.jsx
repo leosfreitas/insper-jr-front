@@ -58,7 +58,7 @@ function NotasAluno() {
                     backgroundColor: '#ab2325',
                     color: 'white',
                     width: '100%',
-                    height: '20vh',
+                    height: '25vh',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -75,15 +75,15 @@ function NotasAluno() {
                     Nenhuma nota encontrada.
                 </Typography>
             ) : (
-                <TableContainer component={Paper} sx={{ width: '100%', mt: 3, marginTop: '0px' }}>
-                    <Table>
+                <TableContainer component={Paper} sx={{ maxHeight: '62vh', overflowY: 'auto', mt: 3 }} >
+                    <Table stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                    <Typography variant="h5">Avaliação</Typography>
+                                    <Typography  variant="h4" >Avaliação</Typography>
                                 </TableCell>
-                                <TableCell align="right">
-                                    <Typography variant="h5">Nota</Typography>
+                                <TableCell align="right" sx={{ paddingRight: '80px' }}>
+                                    <Typography  variant="h4">Nota</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -95,7 +95,7 @@ function NotasAluno() {
                                         <TableCell>
                                             <Typography variant="h6">{avaliacao}</Typography>
                                         </TableCell>
-                                        <TableCell align="right">
+                                        <TableCell align="right"  sx={{ paddingRight: '90px' }}>
                                             <Typography variant="h6">{notaRender}</Typography>
                                         </TableCell>
                                     </TableRow>
