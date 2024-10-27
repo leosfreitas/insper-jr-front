@@ -11,6 +11,8 @@ import {
     TableContainer, 
     TableHead, 
     TableRow, 
+    Tabs,
+    Tab,
     Paper, 
     Select, 
     MenuItem, 
@@ -229,6 +231,9 @@ function ConteudoGestao() {
         setOpenGrade(false);
         setError(null);
     };
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     useEffect(() => {
         fetchAvisos();
@@ -250,38 +255,17 @@ function ConteudoGestao() {
                     textAlign: 'center',
                 }}
                 
-            >       
-                <Grid container rowSpacing={2}>
-                    <Grid item xs={12}>
-                        <Typography 
-                            variant="h4" 
-                            onClick={() => setView('avisos')} 
-                            sx={{ 
-                                cursor: 'pointer', 
-                                transition: '0.3s', 
-                                fontSize: view === 'avisos' ? '2.5rem' : '1.5rem',
-                            }}
-                        >
-                            Avisos
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography 
-                            variant="h4" 
-                            onClick={() => setView('grade')} 
-                            sx={{ 
-                                cursor: 'pointer', 
-                                transition: '0.3s', 
-                                fontSize: view === 'grade' ? '2.5rem' : '1.5rem', 
-                            }}
-                        >
-                            Grade
-                        </Typography>
-                    </Grid> 
-                </Grid>
-            </Box>
+            >
+            <Typography variant="h4">Avisos e Comunicados</Typography>       
 
-            {view === 'avisos' && (
+            </Box>
+            <Box>
+            <Tabs value={value} onChange={handleChange}>
+                    <Tab label="Avisos" sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
+                    <Tab label="Grade" sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
+                </Tabs>
+
+             {/* {value === 0 && (
                 <>  
                     <TableContainer component={Paper} sx={{ height: '50vh' }}>
                         <Table stickyHeader>
@@ -411,7 +395,7 @@ function ConteudoGestao() {
                 </>
             )}
 
-            {view === 'grade' && (
+            {value === 1 && (
                 <>  
                     <TableContainer component={Paper}  sx={{ height: '50vh', overflowY: 'auto' }}>
                         <Table stickyHeader>
@@ -575,7 +559,8 @@ function ConteudoGestao() {
                         </DialogActions>
                     </Dialog>
                 </>
-            )}
+            )}  */}
+            </Box>
         </>
     );
 }

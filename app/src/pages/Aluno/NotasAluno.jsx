@@ -75,7 +75,7 @@ function NotasAluno() {
                     Nenhuma nota encontrada.
                 </Typography>
             ) : (
-                <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }} >
+                <TableContainer component={Paper} sx={{ height: '63vh', overflowY: 'auto' }} >
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
