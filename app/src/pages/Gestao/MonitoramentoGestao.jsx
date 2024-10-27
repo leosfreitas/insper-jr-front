@@ -244,8 +244,8 @@ function MonitoramentoGestao() {
                                 <TableCell>
                                     <Typography variant="h5">Nome</Typography>
                                 </TableCell>
-                                <TableCell align='right'> 
-                                    <Typography variant="h5">Ações</Typography>
+                                <TableCell align='right' sx={{paddingRight: '6%'}}> 
+                                    <Typography variant="h5" >Ações</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>

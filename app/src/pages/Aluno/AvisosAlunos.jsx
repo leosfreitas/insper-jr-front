@@ -23,7 +23,7 @@ function AvisosAluno() {
     const [sala, setSala] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [value, setValue] = useState(0); // Estado para gerenciar a aba ativa
+    const [value, setValue] = useState(0); 
     const cookies = new Cookies();
     const token = cookies.get('token');
 
@@ -81,7 +81,6 @@ function AvisosAluno() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     textAlign: 'center',
-                    mb: 4
                 }}
             >
                 <Typography variant="h4">Avisos e Comunicados</Typography>
@@ -90,25 +89,24 @@ function AvisosAluno() {
             <Box >
                 {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-                <Tabs value={value} onChange={handleChange} sx={{ mb: 3 }}>
-                    <Tab label="Avisos Gerais" />
-                    <Tab label={`Avisos da Sala: ${sala}`} />
+                <Tabs value={value} onChange={handleChange}>
+                    <Tab label="Avisos Gerais" sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
+                    <Tab label={`Avisos da Sala: ${sala}`} sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
                 </Tabs>
 
-                {value === 0 && ( // Avisos Gerais
-                    <Box sx={{ width: '100%' }}>
-                        <TableContainer component={Paper} sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
+                {value === 0 && ( 
+                        <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}>
                             <Table stickyHeader>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h6">Título</Typography>
+                                            <Typography variant="h5">Título</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h6">Autor</Typography>
+                                            <Typography variant="h5">Autor</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '50%' }}>
-                                            <Typography variant="h6">Mensagem</Typography>
+                                            <Typography variant="h5">Mensagem</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -116,9 +114,15 @@ function AvisosAluno() {
                                     {avisosGeral.length > 0 ? (
                                         avisosGeral.map((aviso) => (
                                             <TableRow key={aviso._id}>
-                                                <TableCell>{aviso.titulo}</TableCell>
-                                                <TableCell>{aviso.autor}</TableCell>
-                                                <TableCell>{aviso.mensagem}</TableCell>
+                                                <TableCell>
+                                                    <Typography variant="h6">{aviso.titulo}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="h6">{aviso.autor}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="h6">{aviso.mensagem}</Typography>
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     ) : (
@@ -131,23 +135,21 @@ function AvisosAluno() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    </Box>
                 )}
 
-                {value === 1 && ( // Avisos da Sala
-                    <Box sx={{ width: '100%' }}>
-                        <TableContainer component={Paper} sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
+                {value === 1 && ( 
+                        <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}>
                             <Table stickyHeader>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h6">Título</Typography>
+                                            <Typography variant="h5">Título</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h6">Autor</Typography>
+                                            <Typography variant="h5">Autor</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '50%' }}>
-                                            <Typography variant="h6">Mensagem</Typography>
+                                            <Typography variant="h5">Mensagem</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -155,9 +157,15 @@ function AvisosAluno() {
                                     {avisosSala.length > 0 ? (
                                         avisosSala.map((aviso) => (
                                             <TableRow key={aviso._id}>
-                                                <TableCell>{aviso.titulo}</TableCell>
-                                                <TableCell>{aviso.autor}</TableCell>
-                                                <TableCell>{aviso.mensagem}</TableCell>
+                                                <TableCell>
+                                                    <Typography variant="h6">{aviso.titulo}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="h6">{aviso.autor}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="h6">{aviso.mensagem}</Typography>
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     ) : (
@@ -170,7 +178,6 @@ function AvisosAluno() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    </Box>
                 )}
             </Box>
         </>

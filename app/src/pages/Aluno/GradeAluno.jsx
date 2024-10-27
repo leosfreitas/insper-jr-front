@@ -90,12 +90,12 @@ function GradeAluno() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     textAlign: 'center',
-                    position: 'relative', // Para posicionar o botão
+                    position: 'relative', 
                     padding: '0 20px',
                 }}
             >   
                 <Typography variant="h4">Grade Horária</Typography>
-                <FormControl variant="outlined" sx={{ position: 'absolute', right: '130px', top:'20px' }}>
+                <FormControl variant="outlined" sx={{ position: 'absolute', right: '10%', top:'10%' }}>
                     <InputLabel sx={{ color: 'white' }}></InputLabel>
                     <DatePicker 
                         selected={selectedDate} 

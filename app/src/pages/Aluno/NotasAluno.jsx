@@ -75,15 +75,15 @@ function NotasAluno() {
                     Nenhuma nota encontrada.
                 </Typography>
             ) : (
-                <TableContainer component={Paper} sx={{ maxHeight: '62vh', overflowY: 'auto', mt: 3 }} >
+                <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }} >
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                    <Typography  variant="h4" >Avaliação</Typography>
+                                    <Typography variant="h5">Avaliação</Typography>
                                 </TableCell>
-                                <TableCell align="right" sx={{ paddingRight: '80px' }}>
-                                    <Typography  variant="h4">Nota</Typography>
+                                <TableCell align="right" sx={{ paddingRight: '5%' }}>
+                                    <Typography variant="h5">Nota</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -95,7 +95,7 @@ function NotasAluno() {
                                         <TableCell>
                                             <Typography variant="h6">{avaliacao}</Typography>
                                         </TableCell>
-                                        <TableCell align="right"  sx={{ paddingRight: '90px' }}>
+                                        <TableCell align="right"  sx={{ paddingRight: '5%' }}>
                                             <Typography variant="h6">{notaRender}</Typography>
                                         </TableCell>
                                     </TableRow>
