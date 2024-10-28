@@ -16,12 +16,12 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
+    Select,
+    MenuItem,
 } from '@mui/material';
 import HeaderGestao from './HeaderGestao';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
 
 function MonitoramentoNotas() {
     const { cpf } = useParams();
@@ -30,6 +30,13 @@ function MonitoramentoNotas() {
     const [loading, setLoading] = useState(true);
     const [newNota, setNewNota] = useState({ avaliacao: '', nota: '' });
     const [openDialog, setOpenDialog] = useState(false);
+    const [filterNota, setFilterNota] = useState('');
+    const [filterAvaliacao, setFilterAvaliacao] = useState('');
+    const [filteredNotas, setFilteredNotas] = useState([]);
+    const [minNota, setMinNota] = useState('');
+    const [maxNota, setMaxNota] = useState('');
+
+    const [openFilterDialog, setOpenFilterDialog] = useState(false);
     const cookies = new Cookies();
     const token = cookies.get('token');
 
@@ -49,6 +56,7 @@ function MonitoramentoNotas() {
 
             const data = await response.json();
             setAluno(data);
+            setFilteredNotas(Object.entries(data.notas));
             setLoading(false);
         } catch (error) {
             console.error('Erro ao buscar aluno:', error);
@@ -105,6 +113,27 @@ function MonitoramentoNotas() {
         });
     };
 
+    const handleOpenFilter = () => {
+        setOpenFilterDialog(true);
+    };
+
+    const handleCloseFilter = () => {
+        setOpenFilterDialog(false);
+    };
+
+    const handleFilterNotas = () => {
+        const filtered = Object.entries(aluno.notas).filter(([avaliacao, nota]) => {
+            const notaNum = parseFloat(nota);
+            
+            return (
+                (filterAvaliacao === '' || avaliacao.toLowerCase().includes(filterAvaliacao.toLowerCase())) &&
+                (minNota === '' || notaNum >= parseFloat(minNota)) &&
+                (maxNota === '' || notaNum <= parseFloat(maxNota))
+            );
+        });
+        setFilteredNotas(filtered);
+        handleCloseFilter();
+    };
     useEffect(() => {
         fetchAluno();
     }, [token, cpf]);
@@ -152,7 +181,7 @@ function MonitoramentoNotas() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {aluno.notas && Object.entries(aluno.notas).map(([avaliacao, nota]) => (
+                                {filteredNotas.map(([avaliacao, nota]) => (
                                     <TableRow key={avaliacao}>
                                         <TableCell>
                                             <Typography variant="h6">{avaliacao}</Typography>
@@ -183,6 +212,7 @@ function MonitoramentoNotas() {
                         display: 'flex',
                         justifyContent: 'center',
                         marginTop: '5vh',
+                        gap: 3,
                         }}>
                         <Button 
                             variant="contained" 
@@ -191,6 +221,14 @@ function MonitoramentoNotas() {
                             sx={{ backgroundColor: '#015495'}} 
                         >   
                             Adicionar Nota
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={handleOpenFilter} 
+                            sx={{ backgroundColor: '#015495'}} 
+                        >
+                            Filtrar notas
                         </Button>
                     </Box>
 
@@ -230,6 +268,65 @@ function MonitoramentoNotas() {
                                 sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Adicionar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
+                    <Dialog open={openFilterDialog} onClose={handleCloseFilter}>
+                        <DialogTitle>Filtrar Notas</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                label="Avaliação"
+                                fullWidth
+                                margin="normal"
+                                value={filterAvaliacao}
+                                onChange={(e) => setFilterAvaliacao(e.target.value)}
+                            />
+                            
+                            <TextField
+                                select
+                                label="Notas Acima de"
+                                fullWidth
+                                margin="normal"
+                                value={minNota}
+                                onChange={(e) => setMinNota(e.target.value)}
+                            >
+                                <MenuItem value="">Nenhuma</MenuItem>
+                                {[...Array(10).keys()].map((num) => (
+                                    <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>
+                                ))}
+                            </TextField>
+                            
+                            <TextField
+                                select
+                                label="Notas Abaixo de"
+                                fullWidth
+                                margin="normal"
+                                value={maxNota}
+                                onChange={(e) => setMaxNota(e.target.value)}
+                            >
+                                <MenuItem value="">Nenhuma</MenuItem>
+                                {[...Array(10).keys()].map((num) => (
+                                    <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>
+                                ))}
+                            </TextField>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleCloseFilter}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleFilterNotas}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            >
+                                Filtrar
                             </Button>
                         </DialogActions>
                     </Dialog>
