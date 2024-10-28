@@ -28,6 +28,9 @@ const HeaderGestao = () => {
             <li className={getLinkClass('/monitoramento')}>
               <Link to="/monitoramento">Monitoramento Acadêmico</Link>
             </li>
+            <li className={getLinkClass('/usuarios')}>
+              <Link to="/usuarios">Controle de Usuários</Link>
+            </li>
             <li>
               <Logout />
             </li>

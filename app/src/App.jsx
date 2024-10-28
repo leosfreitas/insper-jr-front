@@ -11,6 +11,7 @@ import HomeGestao from './pages/Gestao/HomeGestao';
 import ConteudoGestao from './pages/Gestao/ConteudoGestao';
 import MonitoramentoGestao from './pages/Gestao/MonitoramentoGestao';
 import MonitoramentoNotas from './pages/Gestao/MonitoramentoNotas';
+import ControleUsuarios from './pages/Gestao/ControleUsuarios';
 
 import HomeProfessor from './pages/Professor/HomeProfessor';
 import ConteudoProfessor from './pages/Professor/ConteudoProfessor';
@@ -49,6 +50,7 @@ function App() {
             <>
               <Route path="/home" element={<HomeGestao />} />
               <Route path="/conteudo" element={<ConteudoGestao />} />
+              <Route path="/usuarios" element={<ControleUsuarios />} />
               <Route path="/monitoramento" element={<MonitoramentoGestao />} />
               <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotas />} />
             </>
