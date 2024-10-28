@@ -134,6 +134,7 @@ function MonitoramentoNotas() {
         setFilteredNotas(filtered);
         handleCloseFilter();
     };
+    
     useEffect(() => {
         fetchAluno();
     }, [token, cpf]);
@@ -228,7 +229,7 @@ function MonitoramentoNotas() {
                             onClick={handleOpenFilter} 
                             sx={{ backgroundColor: '#015495'}} 
                         >
-                            Filtrar notas
+                            Filtrar Dados
                         </Button>
                     </Box>
 
