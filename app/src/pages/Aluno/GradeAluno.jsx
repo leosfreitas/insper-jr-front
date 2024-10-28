@@ -26,6 +26,21 @@ function GradeAluno() {
         setSelectedDate(date);
     };
 
+    const CustomDateInput = forwardRef(({ onClick }, ref) => (
+        <IconButton onClick={onClick} ref={ref} sx={{
+            backgroundColor: '#ab2325', 
+            color: 'white', 
+            borderRadius: '5px',
+            padding: '10px',
+            marginLeft: '10px',
+            '&:hover': {
+                backgroundColor: '#a02024',
+            },
+        }}>
+            <CalendarMonthIcon style={{ fontSize: '40px' }} />
+        </IconButton>
+    ));
+
     useEffect(() => {
         const fetchGrades = async () => {
             setLoading(true);
@@ -62,21 +77,6 @@ function GradeAluno() {
         fetchGrades();
     }, [token, selectedDate]);
 
-    const CustomDateInput = forwardRef(({ onClick }, ref) => (
-        <IconButton onClick={onClick} ref={ref} sx={{
-            backgroundColor: '#ab2325', 
-            color: 'white', 
-            borderRadius: '5px',
-            padding: '10px',
-            marginLeft: '10px',
-            '&:hover': {
-                backgroundColor: '#a02024',
-            },
-        }}>
-            <CalendarMonthIcon style={{ fontSize: '40px' }} />
-        </IconButton>
-    ));
-
     return (
         <>
             <HeaderAluno />
@@ -91,12 +91,19 @@ function GradeAluno() {
                     justifyContent: 'center',
                     textAlign: 'center',
                     position: 'relative', 
-                    padding: '0 20px',
                 }}
             >   
                 <Typography variant="h4">Grade Horária</Typography>
-                <FormControl variant="outlined" sx={{ position: 'absolute', right: '10%', top:'10%' }}>
-                    <InputLabel sx={{ color: 'white' }}></InputLabel>
+            </Box>
+
+            <Box
+                sx={{
+                    textAlign: 'center',
+                    marginTop: '20px', 
+                }}
+            >
+                <Typography variant="h6">Selecione a data:</Typography>
+                <FormControl variant="outlined" sx={{ display: 'inline-block', marginTop: '10px' }}>
                     <DatePicker 
                         selected={selectedDate} 
                         onChange={handleDateChange} 
@@ -106,6 +113,7 @@ function GradeAluno() {
                     />
                 </FormControl>
             </Box>
+
             <Container>
                 {loading ? (
                     <Typography variant="h6">Carregando...</Typography>
@@ -113,7 +121,9 @@ function GradeAluno() {
                     <Grid container spacing={3} style={{ marginTop: '20px' }}>
                         {error && <Alert severity="error">{error}</Alert>}
                         {grades.length === 0 ? (
-                            <Typography variant="h6">Nenhuma grade encontrada para esta data.</Typography>
+                            <Grid item xs={12}>
+                                <Typography variant="h6" align="center">Nenhuma aula encontrada para esta data.</Typography>
+                            </Grid>
                         ) : (
                             grades.map(({ _id, horario, materia, local, topico, professor }) => (
                                 <Grid item xs={12} sm={6} md={4} key={_id}>

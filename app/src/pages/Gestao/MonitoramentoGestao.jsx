@@ -245,8 +245,11 @@ function MonitoramentoGestao() {
                                 <TableCell>
                                     <Typography variant="h5">Nome</Typography>
                                 </TableCell>
-                                <TableCell align='right' sx={{paddingRight: '6%'}}> 
-                                    <Typography variant="h5" >Ações</Typography>
+                                <TableCell align='center' sx={{paddingRight: '18%'}}>
+                                    <Typography variant="h5">Notas</Typography>
+                                </TableCell>
+                                <TableCell align="right" sx={{ paddingRight: '5%' }}> 
+                                    <Typography variant="h5">Ações</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -257,6 +260,16 @@ function MonitoramentoGestao() {
                                     <TableCell>
                                         <Typography variant="h6">{aluno.nome}</Typography>
                                     </TableCell>
+                                    <TableCell>
+                                    <Button 
+                                            variant="contained" 
+                                            color="primary" 
+                                            onClick={() => handleViewNotas(aluno.cpf)} 
+                                            sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
+                                        >
+                                            Visualizar
+                                        </Button>
+                                    </TableCell>
                                     <TableCell align="right"> 
                                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}> 
                                             <Button 
@@ -266,14 +279,6 @@ function MonitoramentoGestao() {
                                                 sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
                                             >
                                                 Editar
-                                            </Button>
-                                            <Button 
-                                                variant="contained" 
-                                                color="primary" 
-                                                onClick={() => handleViewNotas(aluno.cpf)} 
-                                                sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
-                                            >
-                                                Notas
                                             </Button>
                                             <Button 
                                                 variant="contained" 

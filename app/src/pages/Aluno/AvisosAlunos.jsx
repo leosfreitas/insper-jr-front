@@ -89,9 +89,45 @@ function AvisosAluno() {
             <Box >
                 {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-                <Tabs value={value} onChange={handleChange}>
-                    <Tab label="Avisos Gerais" sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
-                    <Tab label={`Avisos da Sala: ${sala}`} sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                        sx: {
+                        backgroundColor: '#015495', 
+                        height: '4px',
+                        },
+                    }}
+                    sx={{
+                        backgroundColor: '#f5f5f5', 
+                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
+                        padding: '8px', 
+                    }}
+                    >
+                    <Tab
+                        label="Avisos Gerais"
+                        sx={{
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        color: '#333', 
+                        '&.Mui-selected': {
+                            color: '#015495', 
+                        },
+                        transition: 'background-color 0.3s', 
+                        }}
+                    />
+                    <Tab
+                        label={`Avisos da Sala: ${sala}`}
+                        sx={{
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        color: '#333', 
+                        '&.Mui-selected': {
+                            color: '#015495', 
+                        },
+                        transition: 'background-color 0.3s', 
+                        }}
+                    />
                 </Tabs>
 
                 {value === 0 && ( 

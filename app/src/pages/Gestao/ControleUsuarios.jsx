@@ -27,6 +27,10 @@ function ControleUsuarios() {
     const [users, setUsers] = useState([]); 
     const [error, setError] = useState(null); 
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
+    const [openFilterDialog, setOpenFilterDialog] = useState(false);
+    const [originalUsers, setOriginalUsers] = useState([]);
+    const [filterNome, setFilterNome] = useState('');
+    const [filterPermissao, setFilterPermissao] = useState('Todas');
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [userEdit, setUserEdit] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -56,7 +60,8 @@ function ControleUsuarios() {
             return response.json();
         })
         .then(data => {
-            setUsers(data.users || []);  
+            setUsers(data.users || []);
+            setOriginalUsers(data.users || []);  
         })
         .catch(error => {
             setError(error.message);
@@ -140,6 +145,14 @@ function ControleUsuarios() {
         setOpenCreateDialog(true);
     };
 
+    const handleOpenFilterDialog = () => {
+        setOpenFilterDialog(true);
+    };
+
+    const handleCloseFilterDialog = () => {
+        setOpenFilterDialog(false);
+    };
+
     const handleCloseCreateDialog = () => {
         setOpenCreateDialog(false);
         setNewUser({
@@ -199,6 +212,18 @@ function ControleUsuarios() {
         });
     };    
 
+    const handleFilterUsers = () => {
+        const filteredUsers = originalUsers.filter(user => {
+            return (
+                (filterNome === '' || user.nome.toLowerCase().includes(filterNome.toLowerCase())) &&
+                (filterPermissao === 'Todas' || user.permissao === filterPermissao)
+            );
+        });
+    
+        setUsers(filteredUsers); 
+        handleCloseFilterDialog(); 
+    };
+
     useEffect(() => {
         fetchUsers();
     }, [token]);
@@ -242,7 +267,7 @@ function ControleUsuarios() {
                                 <TableCell>
                                     <Typography variant="h5">Permissão</Typography>
                                 </TableCell>
-                                <TableCell align='right'> 
+                                <TableCell align='right' sx={{paddingRight: '4.5%'}}> 
                                     <Typography variant="h5">Ações</Typography>
                                 </TableCell>
                             </TableRow>
@@ -288,6 +313,7 @@ function ControleUsuarios() {
                 display: 'flex',
                 justifyContent: 'center',
                 marginTop: '5vh',
+                gap: 3,
                 }}>
                 <Button 
                     variant="contained" 
@@ -296,6 +322,14 @@ function ControleUsuarios() {
                     sx={{ backgroundColor: '#015495'}} 
                 >
                     Adicionar Usuário
+                </Button>
+                <Button 
+                    variant="contained" 
+                    color="error" 
+                    onClick={handleOpenFilterDialog} 
+                    sx={{ backgroundColor: '#015495'}} 
+                >
+                    Filtrar dados
                 </Button>
             </Box>
             <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
@@ -438,6 +472,50 @@ function ControleUsuarios() {
                             sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                             Editar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog open={openFilterDialog} onClose={handleCloseFilterDialog}>
+                    <DialogTitle>Filtrar Usuários</DialogTitle>
+                    <DialogContent>
+                    <TextField
+                        label="Nome"
+                        fullWidth
+                        margin="normal"
+                        value={filterNome}
+                        onChange={(e) => setFilterNome(e.target.value)}
+                    />
+                    <TextField
+                        select
+                        label="Permissão"
+                        fullWidth
+                        margin="normal"
+                        value={filterPermissao} 
+                        onChange={(e) => setFilterPermissao(e.target.value)} 
+                    >
+                        <MenuItem value="Todas">Todas</MenuItem> 
+                        <MenuItem value="GESTAO">Gestão</MenuItem>
+                        <MenuItem value="PROFESSOR">Professor</MenuItem>
+                    </TextField>
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            onClick={handleCloseFilterDialog}
+                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            >
+                            Cancelar
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            onClick={handleFilterUsers}
+                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            >
+                            Filtrar
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -86,7 +86,7 @@ function MonitoramentoNotasProfessor() {
                                     <TableCell>
                                         <Typography variant="h5">Avaliação</Typography>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell align="right" sx={{ paddingRight: '5%' }}>
                                         <Typography variant="h5">Nota</Typography>
                                     </TableCell>
                                 </TableRow>
@@ -97,7 +97,7 @@ function MonitoramentoNotasProfessor() {
                                         <TableCell>
                                             <Typography variant="h6">{avaliacao}</Typography>
                                         </TableCell>
-                                        <TableCell >
+                                        <TableCell align="right" sx={{ paddingRight: '5%' }}>
                                             <Typography variant="h6">{nota}</Typography>
                                         </TableCell>
                                     </TableRow>

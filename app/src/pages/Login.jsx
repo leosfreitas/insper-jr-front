@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
-import { Button, TextField, Container, Typography, Alert, Grid, Box } from '@mui/material';
-import HeaderLogin from './HeaderLogin';
+import { Button, TextField, Container, Alert, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Logo from './static/Logo.png';
-import './static/Login.css';
 
 export default function Login() {
   const cookies = new Cookies(); 
@@ -42,49 +40,43 @@ export default function Login() {
   };
 
   return (
-      <div className='login-container'>
-          <div className="logo-container-login">
-              <img src={Logo} alt="logo-login" className="logo-login" />
-                </div>
-                <div className="line-separator"></div> 
-              <div className='login-wrapper'>
-                <div className='login-text'>
-                  <form onSubmit={handleSubmit} style={{ opacity: "0.9" }}>
-                    <TextField
-                      fullWidth
-                      type="email"
-                      name="email"
-                      label="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Digite seu email"
-                      variant="outlined"
-                      margin="normal"
-                    />
-                    <TextField
-                      fullWidth
-                      type="password"
-                      name="password"
-                      label="Senha"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Digite sua senha"
-                      variant="outlined"
-                      margin="normal"
-                    />
-                    <div className='login-button'>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        style={{ marginTop: '10%'}}
-                      >
-                        Entrar
-                      </Button>
-                    </div>
-                    {error && <Alert severity="error" className='Alert'>{error}</Alert>}
-                  </form>
-                </div>
-              </div>
-      </div>
+    <Container component="main" maxWidth="xs" sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+        <img src={Logo} alt="logo-login" className="logo-login" style={{ width: '100%', height: 'auto', marginBottom: '5%' }} />
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <TextField
+            fullWidth
+            type="email"
+            name="email"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Digite seu email"
+            variant="outlined"
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            type="password"
+            name="password"
+            label="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Digite sua senha"
+            variant="outlined"
+            margin="normal"
+          />
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            sx={{ marginTop: 3, backgroundColor: '#015495' }}
+          >
+            Entrar
+          </Button>
+          {error && <Alert severity="error" className='Alert' sx={{ marginTop: 2 }}>{error}</Alert>}
+        </form>
+      </Box>
+    </Container>
   );
 }

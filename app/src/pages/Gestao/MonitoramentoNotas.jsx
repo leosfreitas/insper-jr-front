@@ -143,10 +143,10 @@ function MonitoramentoNotas() {
                                     <TableCell>
                                         <Typography variant="h5">Avaliação</Typography>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell >
                                         <Typography variant="h5">Nota</Typography>
                                     </TableCell>
-                                    <TableCell> 
+                                    <TableCell align="right" sx={{ paddingRight: '5%' }}>
                                         <Typography variant="h5">Ações</Typography>
                                     </TableCell>
                                 </TableRow>
@@ -157,14 +157,18 @@ function MonitoramentoNotas() {
                                         <TableCell>
                                             <Typography variant="h6">{avaliacao}</Typography>
                                         </TableCell>
-                                        <TableCell >
+                                        <TableCell>
                                             <Typography variant="h6">{nota}</Typography>
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="right" sx={{ paddingRight: '4%' }}>
                                             <Button
                                                 variant="contained"
                                                 color="secondary"
-                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                sx={{ 
+                                                    backgroundColor: '#ab2325', 
+                                                    '&:hover': { backgroundColor: '#b71c1c' },
+                                                    marginLeft: '8px' 
+                                                }} 
                                                 onClick={() => handleRemoveNota(avaliacao)}
                                             >
                                                 Remover

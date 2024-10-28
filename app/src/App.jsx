@@ -1,4 +1,5 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 
 import Login from './pages/Login';
@@ -22,6 +23,12 @@ import CheckAuth from './functions/CheckAuth';
 import NotFound from './functions/NotFound';
 
 function App() {
+  const theme = createTheme({
+    typography: {
+      fontFamily: 'Open Sans, sans-serif', 
+    },
+  });
+
   const { permission, isCheckingPermission } = VerifyPermission();
 
   if (isCheckingPermission) {
@@ -30,45 +37,45 @@ function App() {
 
   return (
     <>
-      <Routes>
-        <Route
-          path="/"
-          element={permission === null ? <Navigate to="/login" /> : <Navigate to="/home" />}
-        />
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route
+            path="/"
+            element={permission === null ? <Navigate to="/login" /> : <Navigate to="/home" />}
+          />
 
-        <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
 
-        <Route element={<CheckAuth />}>
-          {permission === 'ALUNO' && (
-            <>
-            <Route path="/home" element={<HomeAluno />} />
-            <Route path="/grade" element={<GradeAluno />} />
-            <Route path="/notas" element={<NotasAluno />} />
-            </>
-          )}
-          {permission === 'GESTAO' && (
-            <>
-              <Route path="/home" element={<HomeGestao />} />
-              <Route path="/conteudo" element={<ConteudoGestao />} />
-              <Route path="/usuarios" element={<ControleUsuarios />} />
-              <Route path="/monitoramento" element={<MonitoramentoGestao />} />
-              <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotas />} />
-            </>
-          )}
-          {permission === 'PROFESSOR' && (
-            <>
-              <Route path="/home" element={<HomeProfessor />} />
-              <Route path="/conteudo" element={<ConteudoProfessor />} />
-              <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotasProfessor />} />
-            </>
-          )}
-        </Route>
-        <Route path="*" element={<Navigate to="/404" />} />
-        <Route path="/404" element={<NotFound />} />
-
-
-      </Routes>
-    </>
+          <Route element={<CheckAuth />}>
+            {permission === 'ALUNO' && (
+              <>
+              <Route path="/home" element={<HomeAluno />} />
+              <Route path="/grade" element={<GradeAluno />} />
+              <Route path="/notas" element={<NotasAluno />} />
+              </>
+            )}
+            {permission === 'GESTAO' && (
+              <>
+                <Route path="/home" element={<HomeGestao />} />
+                <Route path="/conteudo" element={<ConteudoGestao />} />
+                <Route path="/usuarios" element={<ControleUsuarios />} />
+                <Route path="/monitoramento" element={<MonitoramentoGestao />} />
+                <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotas />} />
+              </>
+            )}
+            {permission === 'PROFESSOR' && (
+              <>
+                <Route path="/home" element={<HomeProfessor />} />
+                <Route path="/conteudo" element={<ConteudoProfessor />} />
+                <Route path="/monitoramento/notas/:cpf" element={<MonitoramentoNotasProfessor />} />
+              </>
+            )}
+          </Route>
+          <Route path="*" element={<Navigate to="/404" />} />
+          <Route path="/404" element={<NotFound />} />
+        </Routes>
+       </ThemeProvider>
+      </>
   );
 }
 

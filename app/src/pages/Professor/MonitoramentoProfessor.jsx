@@ -81,7 +81,7 @@ function MonitoramentoProfessor() {
                                 <TableCell>
                                     <Typography variant="h5">Nome</Typography>
                                 </TableCell>
-                                <TableCell> 
+                                <TableCell align="right" sx={{ paddingRight: '5%' }}>
                                     <Typography variant="h5">Ações</Typography>
                                 </TableCell>
                             </TableRow>
@@ -93,24 +93,23 @@ function MonitoramentoProfessor() {
                                     <TableCell>
                                         <Typography variant="h6">{aluno.nome}</Typography>
                                     </TableCell>
-                                    <TableCell> 
-                                        <Box> 
-                                            <Button 
-                                                variant="contained" 
-                                                color="primary" 
-                                                onClick={() => handleViewNotas(aluno.cpf)} 
-                                                sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
-                                            >
-                                                Visualizar Notas
-                                            </Button>
-                                        </Box>
+                                    <TableCell align="right" sx={{ paddingRight: '3%' }}> 
+                                        <Button 
+                                            variant="contained" 
+                                            color="primary" 
+                                            onClick={() => handleViewNotas(aluno.cpf)} 
+                                            sx={{ backgroundColor: '#015495'}} 
+                                        >
+                                            Visualizar Notas
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ) : null
                         ))}
-                    </TableBody>
+                        </TableBody>
                     </Table>
                 </TableContainer>
+
             )}
         </>
     );

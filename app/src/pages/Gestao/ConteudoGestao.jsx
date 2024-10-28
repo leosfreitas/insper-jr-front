@@ -6,13 +6,13 @@ import Cookies from 'universal-cookie';
 import { 
     Button, 
     Table, 
+    Tabs,
+    Tab,
     TableBody, 
     TableCell, 
     TableContainer, 
     TableHead, 
     TableRow, 
-    Tabs,
-    Tab,
     Paper, 
     Select, 
     MenuItem, 
@@ -27,7 +27,6 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 
 function ConteudoGestao() {
     const cookies = new Cookies();
@@ -231,9 +230,6 @@ function ConteudoGestao() {
         setOpenGrade(false);
         setError(null);
     };
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     useEffect(() => {
         fetchAvisos();
@@ -242,7 +238,7 @@ function ConteudoGestao() {
 
     return (
         <>
-            <HeaderGestao />
+        <HeaderGestao />
             <Box 
                 sx={{
                     backgroundColor: '#ab2325',
@@ -254,20 +250,54 @@ function ConteudoGestao() {
                     justifyContent: 'center',
                     textAlign: 'center',
                 }}
-                
             >
-            <Typography variant="h4">Avisos e Comunicados</Typography>       
-
+                <Typography variant="h4">Avisos e Grade Horária</Typography>
             </Box>
-            <Box>
-            <Tabs value={value} onChange={handleChange}>
-                    <Tab label="Avisos" sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
-                    <Tab label="Grade" sx={{fontSize: '1rem', fontWeight: 'bold'}}/>
-                </Tabs>
-
-             {/* {value === 0 && (
+        <Tabs
+            value={view} 
+            onChange={(event, newValue) => setView(newValue)} 
+            TabIndicatorProps={{
+                sx: {
+                    backgroundColor: '#015495',
+                    height: '4px',
+                },
+            }}
+            sx={{
+                backgroundColor: '#f5f5f5',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                padding: '8px',
+            }}
+            >
+            <Tab
+                label="Avisos"
+                value="avisos" 
+                sx={{
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                    color: '#333',
+                    '&.Mui-selected': {
+                        color: '#015495',
+                    },
+                    transition: 'background-color 0.3s',
+                }}
+            />
+            <Tab
+                label="Grade Horária"
+                value="grade" 
+                sx={{
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                    color: '#333',
+                    '&.Mui-selected': {
+                        color: '#015495',
+                    },
+                    transition: 'background-color 0.3s',
+                }}
+            />
+            </Tabs>
+            {view === 'avisos' && (
                 <>  
-                    <TableContainer component={Paper} sx={{ height: '50vh' }}>
+                    <TableContainer component={Paper} sx={{ height: '45vh' }}>
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
@@ -395,9 +425,9 @@ function ConteudoGestao() {
                 </>
             )}
 
-            {value === 1 && (
+            {view === 'grade' && (
                 <>  
-                    <TableContainer component={Paper}  sx={{ height: '50vh', overflowY: 'auto' }}>
+                    <TableContainer component={Paper}  sx={{ height: '45vh', overflowY: 'auto' }}>
                         <Table stickyHeader>
                             <TableHead>
                                     <TableRow>
@@ -559,8 +589,7 @@ function ConteudoGestao() {
                         </DialogActions>
                     </Dialog>
                 </>
-            )}  */}
-            </Box>
+            )}
         </>
     );
 }

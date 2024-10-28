@@ -24,8 +24,9 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Tabs,
+    Tab,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 
 
 function ConteudoProfessor() {
@@ -252,39 +253,54 @@ function ConteudoProfessor() {
                 }}
                 
             >       
-                <Grid container rowSpacing={2}>
-                    <Grid item xs={12}>
-                        <Typography 
-                            variant="h4" 
-                            onClick={() => setView('avisos')} 
-                            sx={{ 
-                                cursor: 'pointer', 
-                                transition: '0.3s', 
-                                fontSize: view === 'avisos' ? '2.5rem' : '1.5rem',
-                            }}
-                        >
-                            Avisos
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography 
-                            variant="h4" 
-                            onClick={() => setView('grade')} 
-                            sx={{ 
-                                cursor: 'pointer', 
-                                transition: '0.3s', 
-                                fontSize: view === 'grade' ? '2.5rem' : '1.5rem', 
-                            }}
-                        >
-                            Grade
-                        </Typography>
-                    </Grid> 
-                </Grid>
+            <Typography variant="h4">Avisos e Grade Horária</Typography>
             </Box>
+            <Tabs
+                value={view} 
+                onChange={(event, newValue) => setView(newValue)} 
+                TabIndicatorProps={{
+                    sx: {
+                        backgroundColor: '#015495',
+                        height: '4px',
+                    },
+                }}
+                sx={{
+                    backgroundColor: '#f5f5f5',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    padding: '8px',
+                }}
+                >
+                <Tab
+                    label="Avisos"
+                    value="avisos" 
+                    sx={{
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        color: '#333',
+                        '&.Mui-selected': {
+                            color: '#015495',
+                        },
+                        transition: 'background-color 0.3s',
+                    }}
+                />
+                <Tab
+                    label="Grade Horária"
+                    value="grade" 
+                    sx={{
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        color: '#333',
+                        '&.Mui-selected': {
+                            color: '#015495',
+                        },
+                        transition: 'background-color 0.3s',
+                    }}
+                />
+            </Tabs>
 
             {view === 'avisos' && (
                 <>  
-                    <TableContainer component={Paper} sx={{ height: '50vh' }}>
+                    <TableContainer component={Paper} sx={{ height: '45vh' }}>
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
@@ -414,7 +430,7 @@ function ConteudoProfessor() {
 
             {view === 'grade' && (
                 <>  
-                    <TableContainer component={Paper}  sx={{ height: '50vh', overflowY: 'auto' }}>
+                    <TableContainer component={Paper}  sx={{ height: '45vh', overflowY: 'auto' }}>
                         <Table stickyHeader>
                             <TableHead>
                                     <TableRow>
