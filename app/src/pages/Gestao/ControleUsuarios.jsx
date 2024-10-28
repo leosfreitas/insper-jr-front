@@ -35,7 +35,7 @@ function ControleUsuarios() {
         nome: '',
         cpf: '',
         email: '',
-        permissao: 'ALUNO',
+        permissao: 'PROFESSOR',
         password: '',
     });
     const cookies = new Cookies();
@@ -146,7 +146,7 @@ function ControleUsuarios() {
             nome: '',
             cpf: '',
             email: '',
-            permissao: 'ALUNO',
+            permissao: 'PROFESSOR',
             password: '',
         });
         setError(null);
@@ -340,7 +340,6 @@ function ControleUsuarios() {
                     >
                         <MenuItem value="GESTAO">Gestão</MenuItem>
                         <MenuItem value="PROFESSOR">Professor</MenuItem>
-                        <MenuItem value="ALUNO">Aluno</MenuItem>
                     </TextField>
                     <TextField
                         label="Senha"
@@ -419,7 +418,6 @@ function ControleUsuarios() {
                                 >
                                     <MenuItem value="GESTAO">Gestão</MenuItem>
                                     <MenuItem value="PROFESSOR">Professor</MenuItem>
-                                    <MenuItem value="ALUNO">Aluno</MenuItem>
                                 </Select>
                             </>
                         )}
