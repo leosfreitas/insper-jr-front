@@ -11,13 +11,23 @@ import {
     TableRow,
     Paper,
     Box,
-    Button
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    TextField,
+    MenuItem
 } from '@mui/material';
 import HeaderProfessor from './HeaderProfessor';
 
 function MonitoramentoProfessor() {
     const [alunos, setAlunos] = useState([]); 
     const [error, setError] = useState(null); 
+    const [openFilterDialog, setOpenFilterDialog] = useState(false);
+    const [filterNome, setFilterNome] = useState('');
+    const [filterSala, setFilterSala] = useState('Todas');
+    const [originalAlunos, setOriginalAlunos] = useState([]);
     const cookies = new Cookies();
     const token = cookies.get('token'); 
     const navigate = useNavigate();
@@ -37,6 +47,7 @@ function MonitoramentoProfessor() {
             return response.json();
         })
         .then(data => {
+            setOriginalAlunos(data.alunos || []);
             setAlunos(data.alunos || []);  
         })
         .catch(error => {
@@ -47,6 +58,27 @@ function MonitoramentoProfessor() {
     const handleViewNotas = (cpf) => {
         navigate(`/monitoramento/notas/${cpf}`);
     };
+
+    const handleFilterOpen = () => {
+        setOpenFilterDialog(true);
+    };
+
+    const handleFilterClose = () => {
+        setOpenFilterDialog(false);
+    };
+
+    const handleFilterUsers = () => {
+        const filteredAlunos = originalAlunos.filter(alunos => {
+            return (
+                (filterNome === '' || alunos.nome.toLowerCase().includes(filterNome.toLowerCase())) &&
+                (filterSala === 'Todas' || alunos.sala === filterSala)
+            );
+        });
+
+        setAlunos(filteredAlunos); 
+        handleFilterClose(); 
+    };
+
 
     useEffect(() => {
         fetchAlunos();
@@ -82,7 +114,7 @@ function MonitoramentoProfessor() {
                                     <Typography variant="h5">Nome</Typography>
                                 </TableCell>
                                 <TableCell align="right" sx={{ paddingRight: '5%' }}>
-                                    <Typography variant="h5">Ações</Typography>
+                                    <Typography variant="h5">Notas</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -93,14 +125,14 @@ function MonitoramentoProfessor() {
                                     <TableCell>
                                         <Typography variant="h6">{aluno.nome}</Typography>
                                     </TableCell>
-                                    <TableCell align="right" sx={{ paddingRight: '3%' }}> 
+                                    <TableCell align="right" sx={{ paddingRight: '4%' }}> 
                                         <Button 
                                             variant="contained" 
                                             color="primary" 
                                             onClick={() => handleViewNotas(aluno.cpf)} 
                                             sx={{ backgroundColor: '#015495'}} 
                                         >
-                                            Visualizar Notas
+                                            Visualizar
                                         </Button>
                                     </TableCell>
                                 </TableRow>
@@ -109,8 +141,63 @@ function MonitoramentoProfessor() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-
             )}
+            <Box sx={{ 
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '5vh',
+                }}>
+                <Button 
+                    variant="contained" 
+                    color="error" 
+                    onClick={handleFilterOpen} 
+                    sx={{ backgroundColor: '#015495'}} 
+                >
+                    Filtrar dados
+                </Button>
+            </Box>
+            <Dialog open={openFilterDialog} onClose={handleFilterClose}>
+                <DialogTitle>Filtrar Alunos</DialogTitle>
+                <DialogContent>
+                <TextField
+                    label="Nome"
+                    fullWidth
+                    margin="normal"
+                    value={filterNome}
+                    onChange={(e) => setFilterNome(e.target.value)}
+                />
+                <TextField
+                    select
+                    label="Sala"
+                    fullWidth
+                    margin="normal"
+                    value={filterSala} 
+                    onChange={(e) => setFilterSala(e.target.value)} 
+                >
+                    <MenuItem value="Todas">Todas</MenuItem> 
+                    <MenuItem value="Online">Online</MenuItem>
+                    <MenuItem value="Presencial">Presencial</MenuItem>
+                </TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button 
+                        variant="contained" 
+                        color="primary" 
+                        onClick={handleFilterClose}
+                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                        >
+                        Cancelar
+                    </Button>
+                    <Button 
+                        variant="contained" 
+                        color="primary" 
+                        onClick={handleFilterUsers}
+                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                        >
+                        Filtrar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }

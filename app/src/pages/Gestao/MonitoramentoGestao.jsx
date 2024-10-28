@@ -22,7 +22,6 @@ import {
     Select,
     CircularProgress,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 
 function MonitoramentoGestao() {
     const [alunos, setAlunos] = useState([]); 
@@ -39,6 +38,11 @@ function MonitoramentoGestao() {
         email: '',
         sala: 'Presencial',
     });
+    const [originalAlunos, setOriginalAlunos] = useState([]);
+    const [filterNome, setFilterNome] = useState('');
+    const [filterSala, setFilterSala] = useState('Todas');
+    const [openFilterDialog, setOpenFilterDialog] = useState(false);
+
     const cookies = new Cookies();
     const token = cookies.get('token'); 
     const navigate = useNavigate();
@@ -58,6 +62,7 @@ function MonitoramentoGestao() {
             return response.json();
         })
         .then(data => {
+            setOriginalAlunos(data.alunos || []);
             setAlunos(data.alunos || []);  
         })
         .catch(error => {
@@ -205,6 +210,35 @@ function MonitoramentoGestao() {
         });
     };    
 
+    const handleFilterOpen = () => {
+        setOpenFilterDialog(true);
+    };
+
+    const handleFilterClose = () => {
+        setOpenFilterDialog(false);
+    };
+
+    const handleFilterUsers = () => {
+        const filteredAlunos = originalAlunos.filter(alunos => {
+            return (
+                (filterNome === '' || alunos.nome.toLowerCase().includes(filterNome.toLowerCase())) &&
+                (filterSala === 'Todas' || alunos.sala === filterSala)
+            );
+        });
+
+        setAlunos(filteredAlunos); 
+        handleFilterClose(); 
+    };
+
+    const generateRandomPassword = (length = 10) => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        let password = '';
+        for (let i = 0; i < length; i++) {
+          password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return password;
+      };
+
     useEffect(() => {
         fetchAlunos();
     }, [token]);
@@ -215,6 +249,13 @@ function MonitoramentoGestao() {
             fetchAluno(selectedCpf);
         }
     }, [selectedCpf]);
+
+    useEffect(() => {
+        if (openCreateDialog) {
+            const randomPassword = generateRandomPassword();
+            setNewAluno((prevState) => ({ ...prevState, password: randomPassword }));
+        }
+    }, [openCreateDialog]);
 
     return (
         <>      
@@ -301,6 +342,7 @@ function MonitoramentoGestao() {
                 display: 'flex',
                 justifyContent: 'center',
                 marginTop: '5vh',
+                gap: 3,
                 }}>
                 <Button 
                     variant="contained" 
@@ -309,6 +351,14 @@ function MonitoramentoGestao() {
                     sx={{ backgroundColor: '#015495'}} 
                 >
                     Adicionar Aluno
+                </Button>
+                <Button 
+                    variant="contained" 
+                    color="error" 
+                    onClick={handleFilterOpen} 
+                    sx={{ backgroundColor: '#015495'}} 
+                >
+                    Filtrar dados
                 </Button>
             </Box>
             <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
@@ -421,17 +471,18 @@ function MonitoramentoGestao() {
                                     fullWidth
                                     margin="normal"
                                 />
-                                <Select
+                                <TextField
+                                    select
                                     label="Sala"
-                                    value={alunoEdit.sala}
-                                    name="sala"
-                                    onChange={handleEditChange}
                                     fullWidth
                                     margin="normal"
+                                    value={alunoEdit.sala}
+                                    name="sala"  
+                                    onChange={handleEditChange}
                                 >
                                     <MenuItem value="Online">Online</MenuItem>
                                     <MenuItem value="Presencial">Presencial</MenuItem>
-                                </Select>
+                                </TextField>
                             </>
                         )}
                     </DialogContent>
@@ -451,6 +502,48 @@ function MonitoramentoGestao() {
                             sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                             Editar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={openFilterDialog} onClose={handleFilterClose}>
+                    <DialogTitle>Filtrar Alunos</DialogTitle>
+                    <DialogContent>
+                    <TextField
+                        label="Nome"
+                        fullWidth
+                        margin="normal"
+                        value={filterNome}
+                        onChange={(e) => setFilterNome(e.target.value)}
+                    />
+                    <TextField
+                        select
+                        label="Sala"
+                        fullWidth
+                        margin="normal"
+                        value={filterSala} 
+                        onChange={(e) => setFilterSala(e.target.value)} 
+                    >
+                        <MenuItem value="Todas">Todas</MenuItem> 
+                        <MenuItem value="Online">Online</MenuItem>
+                        <MenuItem value="Presencial">Presencial</MenuItem>
+                    </TextField>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            onClick={handleFilterClose}
+                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            >
+                            Cancelar
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            onClick={handleFilterUsers}
+                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            >
+                            Filtrar
                         </Button>
                     </DialogActions>
                 </Dialog>

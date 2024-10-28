@@ -23,13 +23,13 @@ const HeaderGestao = () => {
               <Link to="/home">Home</Link>
             </li>
             <li className={getLinkClass('/conteudo')}>
-              <Link to="/conteudo">Gerenciamento de Conteúdo</Link>
+              <Link to="/conteudo">Conteúdo</Link>
             </li>
             <li className={getLinkClass('/monitoramento')}>
-              <Link to="/monitoramento">Monitoramento Acadêmico</Link>
+              <Link to="/monitoramento">Monitoramento</Link>
             </li>
             <li className={getLinkClass('/usuarios')}>
-              <Link to="/usuarios">Controle de Usuários</Link>
+              <Link to="/usuarios">Usuários</Link>
             </li>
             <li>
               <Logout />

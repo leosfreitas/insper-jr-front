@@ -224,6 +224,23 @@ function ControleUsuarios() {
         handleCloseFilterDialog(); 
     };
 
+    const generateRandomPassword = (length = 10) => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        let password = '';
+        for (let i = 0; i < length; i++) {
+          password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return password;
+      };
+
+    useEffect(() => {
+        if (openCreateDialog) {
+            const randomPassword = generateRandomPassword();
+            setNewUser((prevState) => ({ ...prevState, password: randomPassword }));
+        }
+    }, [openCreateDialog]);
+
+
     useEffect(() => {
         fetchUsers();
     }, [token]);
