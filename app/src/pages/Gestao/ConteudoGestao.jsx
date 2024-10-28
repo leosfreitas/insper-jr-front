@@ -31,17 +31,28 @@ import {
 function ConteudoGestao() {
     const cookies = new Cookies();
     const token = cookies.get("token");
-
-    const [avisos, setAvisos] = useState([]);
-    const [grades, setGrades] = useState([]);   
+    const [data, setData] = useState(new Date());
+    const [view, setView] = useState('avisos');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [openGrade, setOpenGrade] = useState(false);
+
+    const [avisos, setAvisos] = useState([]);
     const [openAviso, setOpenAviso] = useState(false);
     const [newAviso, setNewAviso] = useState({ titulo: '', mensagem: '', tipo: 'Geral' });
-    const [data, setData] = useState(new Date());
+    const [openAvisosFilterDialog, setOpenAvisosFilterDialog] = useState(false);
+    const [originalAvisos, setOriginalAvisos] = useState([]);
+    const [filterProfessor, setFilterProfessor] = useState('');
+    const [filterTitulo, setFilterTitulo] = useState('');
+    const [filterTipo, setFilterTipo] = useState('Todos');
+    const [filterHorario, setFilterHorario] = useState('');
+
+    const [grades, setGrades] = useState([]);   
+    const [openGrade, setOpenGrade] = useState(false);
     const [newGrade, setNewGrade] = useState({ horario: '', materia: '', local: '', topico: '', professor: '', sala: 'Presencial', data: data });
-    const [view, setView] = useState('avisos');
+    const [openGradeFilterDialog, setOpenGradeFilterDialog] = useState(false);
+    const [originalGrades, setOriginalGrades] = useState([]);
+    const [filterData, setFilterData] = useState(new Date());
+    const [filterSala, setFilterSala] = useState('Todas');	
 
     const formatDate = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
@@ -52,6 +63,10 @@ function ConteudoGestao() {
 
     const handleDateChange = (date) => {
         setData(date);
+    };
+
+    const handleFilterDate = (date) => {
+        setFilterData(date);
     };
 
     function formatDateView(string) {
@@ -138,6 +153,7 @@ function ConteudoGestao() {
             }
 
             const data = await response.json();
+            setOriginalAvisos(data.avisos);
             setAvisos(data.avisos);  
         } catch (error) {
             setError(error.message); 
@@ -161,6 +177,7 @@ function ConteudoGestao() {
             }
             const data = await response.json();
             setGrades(data.grades);  
+            setOriginalGrades(data.grades);
         } catch (error) {
             setError(error.message); 
         } finally {
@@ -221,6 +238,22 @@ function ConteudoGestao() {
         setOpenAviso(true);
     };
 
+    const OpenAvisosFilterDialog = () => {
+        setOpenAvisosFilterDialog(true);
+    };
+
+    const handleCloseAvisosFilterDialog = () => {
+        setOpenAvisosFilterDialog(false);
+    };
+
+    const OpenGradeFilterDialog = () => {
+        setOpenGradeFilterDialog(true);
+    };
+
+    const handleCloseGradeFilterDialog = () => {
+        setOpenGradeFilterDialog(false);
+    };
+
     const CloseAvisoDialog = () => {
         setOpenAviso(false);
         setError(null);
@@ -229,6 +262,32 @@ function ConteudoGestao() {
     const CloseGradeDialog = () => {
         setOpenGrade(false);
         setError(null);
+    };
+
+    const handleFilterAvisos = () => {
+        const filteredAvisos = originalAvisos.filter(aviso => {
+            return (
+                (filterTitulo === '' || aviso.titulo.toLowerCase().includes(filterTitulo.toLowerCase())) &&
+                (filterTipo === 'Todos' || aviso.tipo === filterTipo)
+            );
+        });
+    
+        setAvisos(filteredAvisos); 
+        handleCloseAvisosFilterDialog(); 
+    };
+
+    const handleFilterGrades = () => {
+        const filteredGrades = originalGrades.filter(grade => {
+            return (
+                (filterHorario === '' || grade.horario.toLowerCase().includes(filterHorario.toLowerCase())) &&
+                (filterData === '' || grade.data === formatDate(filterData)) &&
+                (filterProfessor === '' || grade.professor.toLowerCase().includes(filterProfessor.toLowerCase())) &&
+                (filterSala === 'Todas' || grade.sala === filterSala)
+            );
+        });
+    
+        setGrades(filteredGrades); 
+        handleCloseGradeFilterDialog(); 
     };
 
     useEffect(() => {
@@ -360,6 +419,7 @@ function ConteudoGestao() {
                         display: 'flex',
                         justifyContent: 'center',
                         marginTop: '5vh',
+                        gap: 3,
                         }}>
                         <Button 
                             variant="contained" 
@@ -368,6 +428,14 @@ function ConteudoGestao() {
                             sx={{ backgroundColor: '#015495'}} 
                         >
                             Adicionar Aviso
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={OpenAvisosFilterDialog} 
+                            sx={{ backgroundColor: '#015495'}} 
+                        >
+                            Filtrar dados
                         </Button>
                     </Box>
                     <Dialog open={openAviso} onClose={CloseAvisoDialog}>
@@ -420,6 +488,50 @@ function ConteudoGestao() {
                                         >
                                         Adicionar
                                     </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={openAvisosFilterDialog} onClose={handleCloseAvisosFilterDialog}>
+                        <DialogTitle>Filtrar Avisos</DialogTitle>
+                        <DialogContent>
+                        <TextField
+                            label="Título"
+                            fullWidth
+                            margin="normal"
+                            value={filterTitulo}
+                            onChange={(e) => setFilterTitulo(e.target.value)}
+                        />
+                        <TextField
+                            select
+                            label="Tipo"
+                            fullWidth
+                            margin="normal"
+                            value={filterTipo} 
+                            onChange={(e) => setFilterTipo(e.target.value)} 
+                        >
+                            <MenuItem value="Todos">Todos</MenuItem> 
+                            <MenuItem value="Geral">Geral</MenuItem>
+                            <MenuItem value="Presencial">Presencial</MenuItem>
+                            <MenuItem value="Online">Online</MenuItem>
+                        </TextField>
+
+                        </DialogContent>
+                        <DialogActions>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleCloseAvisosFilterDialog}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                                >
+                                Cancelar
+                            </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleFilterAvisos}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                                >
+                                Filtrar
+                            </Button>
                         </DialogActions>
                     </Dialog>
                 </>
@@ -496,6 +608,7 @@ function ConteudoGestao() {
                         display: 'flex',
                         justifyContent: 'center',
                         marginTop: '5vh',
+                        gap: 3,
                         }}>
                         <Button 
                             variant="contained" 
@@ -504,6 +617,14 @@ function ConteudoGestao() {
                             sx={{ backgroundColor: '#015495'}} 
                         >
                             Adicionar Grade
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={OpenGradeFilterDialog} 
+                            sx={{ backgroundColor: '#015495'}} 
+                        >
+                            Filtrar dados
                         </Button>
                     </Box>
                     <Dialog open={openGrade} onClose={CloseGradeDialog}>
@@ -586,6 +707,64 @@ function ConteudoGestao() {
                                         >
                                         Adicionar
                                     </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={openGradeFilterDialog} onClose={handleCloseGradeFilterDialog}>
+                        <DialogTitle>Filtrar Grade</DialogTitle>
+                        <DialogContent>
+                        
+                        <TextField
+                            label="Horário"
+                            fullWidth
+                            margin="normal"
+                            value={filterHorario} 
+                            onChange={(e) => setFilterHorario(e.target.value)} 
+                        />
+                        <TextField
+                            label="Professor"
+                            fullWidth
+                            margin="normal"
+                            value={filterProfessor} 
+                            onChange={(e) => setFilterProfessor(e.target.value)} 
+                        />
+                        <TextField
+                            select
+                            label="Tipo"
+                            fullWidth
+                            margin="normal"
+                            value={filterSala} 
+                            onChange={(e) => setFilterSala(e.target.value)} 
+                        >
+                            <MenuItem value="Todas">Todas</MenuItem> 
+                            <MenuItem value="Presencial">Presencial</MenuItem>
+                            <MenuItem value="Online">Online</MenuItem>
+                        </TextField>
+                        <DatePicker
+                                selected={filterData}
+                                onChange={handleFilterDate}
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="Selecionar data"
+                                className="date-picker"
+                            />
+
+                        </DialogContent>
+                        <DialogActions>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleCloseGradeFilterDialog}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                                >
+                                Cancelar
+                            </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleFilterGrades}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                                >
+                                Filtrar
+                            </Button>
                         </DialogActions>
                     </Dialog>
                 </>

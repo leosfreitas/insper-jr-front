@@ -39,6 +39,7 @@ function MonitoramentoGestao() {
         email: '',
         sala: 'Presencial',
     });
+
     const cookies = new Cookies();
     const token = cookies.get('token'); 
     const navigate = useNavigate();
@@ -205,6 +206,15 @@ function MonitoramentoGestao() {
         });
     };    
 
+    const generateRandomPassword = (length = 10) => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        let password = '';
+        for (let i = 0; i < length; i++) {
+          password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return password;
+      };
+
     useEffect(() => {
         fetchAlunos();
     }, [token]);
@@ -215,6 +225,13 @@ function MonitoramentoGestao() {
             fetchAluno(selectedCpf);
         }
     }, [selectedCpf]);
+
+    useEffect(() => {
+        if (openCreateDialog) {
+            const randomPassword = generateRandomPassword();
+            setNewAluno((prevState) => ({ ...prevState, password: randomPassword }));
+        }
+    }, [openCreateDialog]);
 
     return (
         <>      
