@@ -22,29 +22,27 @@ import {
     Select,
     CircularProgress,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 
-function MonitoramentoGestao() {
-    const [alunos, setAlunos] = useState([]); 
+function ControleUsuarios() {
+    const [users, setUsers] = useState([]); 
     const [error, setError] = useState(null); 
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
-    const [alunoEdit, setAlunoEdit] = useState(null);
+    const [userEdit, setUserEdit] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [selectedCpf, setSelectedCpf] = useState(null);
-    const [newAluno, setNewAluno] = useState({
+    const [selectedId, setSelectedId] = useState(null);
+    const [newUser, setNewUser] = useState({
         nome: '',
-        password: '',
         cpf: '',
         email: '',
-        sala: 'Presencial',
+        permissao: 'ALUNO',
+        password: '',
     });
     const cookies = new Cookies();
     const token = cookies.get('token'); 
-    const navigate = useNavigate();
 
-    const fetchAlunos = () => {
-        fetch('http://127.0.0.1:8000/alunos/get', {
+    const fetchUsers = () => {
+        fetch('http://127.0.0.1:8000/user/get', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,21 +51,21 @@ function MonitoramentoGestao() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Falha ao buscar alunos');
+                throw new Error('Falha ao buscar usuaários');
             }
             return response.json();
         })
         .then(data => {
-            setAlunos(data.alunos || []);  
+            setUsers(data.users || []);  
         })
         .catch(error => {
             setError(error.message);
         });
     };
 
-    const fetchAluno = async (cpf) => {
+    const fetchUser = async (id) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/alunos/get/${cpf}`, {
+            const response = await fetch(`http://127.0.0.1:8000/user/get/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,55 +73,21 @@ function MonitoramentoGestao() {
                 },
             });
             if (!response.ok) {
-                throw new Error('Falha ao buscar aluno');
+                throw new Error('Falha ao buscar usuário');
             }
             const data = await response.json();
-            setAlunoEdit(data);
+            setUserEdit(data);
         } catch (error) {
-            console.error('Erro ao buscar aluno:', error);
+            console.error('Erro ao buscar usuário:', error);
             setError(error.message);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleEditSave = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/alunos/update/${alunoEdit.cpf}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify(alunoEdit),
-            });
-    
-            if (!response.ok) {
-                throw new Error('Falha ao salvar alterações');
-            }
-            handleCloseEditDialog();
-            if (response.ok) {
-                fetchAlunos();
-            }
-
-        } catch (error) {
-            console.error('Erro ao salvar alterações:', error);
-            setError(error.message);
-        }
-    };
-
-    const handleViewEditar = (cpf) => {
-        setSelectedCpf(cpf);  
-        setOpenEditDialog(true);
-    };
-
-    const handleViewNotas = (cpf) => {
-        navigate(`/monitoramento/notas/${cpf}`);
-    };
-
-    const handleDeleteAluno = (cpf) => {
-        if (window.confirm("Tem certeza que deseja deletar este aluno?")) {
-            fetch(`http://127.0.0.1:8000/alunos/delete/${cpf}`, {
+    const handleUserDelete = (id) => {
+        if (window.confirm("Tem certeza que deseja deletar este usuário?")) {
+            fetch(`http://127.0.0.1:8000/user/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,14 +96,44 @@ function MonitoramentoGestao() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Erro ao deletar o aluno');
+                    throw new Error('Erro ao deletar o usuário');
                 }
-                setAlunos(alunos.filter(aluno => aluno.cpf !== cpf));
+                setUsers(users.filter(user => user._id !== id));
             })
             .catch(error => {
                 setError(error.message); 
             });
         }
+    };
+
+    const handleEditSave = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/user/update/${userEdit._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(userEdit),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Falha ao salvar alterações');
+            }
+            handleCloseEditDialog();
+            if (response.ok) {
+                fetchUsers();
+            }
+
+        } catch (error) {
+            console.error('Erro ao salvar alterações:', error);
+            setError(error.message);
+        }
+    };
+
+    const handleViewEditar = (id) => {
+        setSelectedId(id);  
+        setOpenEditDialog(true);
     };
 
     const handleOpenCreateDialog = () => {
@@ -148,57 +142,57 @@ function MonitoramentoGestao() {
 
     const handleCloseCreateDialog = () => {
         setOpenCreateDialog(false);
-        setNewAluno({
+        setNewUser({
             nome: '',
-            password: '',
             cpf: '',
             email: '',
-            sala: 'Presencial',
+            permissao: 'ALUNO',
+            password: '',
         });
         setError(null);
     };
 
     const handleCloseEditDialog = () => {
-        setSelectedCpf(null);
+        setSelectedId(null);
         setOpenEditDialog(false);
-        setAlunoEdit(null);
+        setUserEdit(null);
         setError(null);
     };
 
     const handleEditChange = (event) => {
         const { name, value } = event.target;
-        setAlunoEdit((prevState) => ({ ...prevState, [name]: value }));
+        setUserEdit((prevState) => ({ ...prevState, [name]: value }));
     };
 
-    const handleCreateAlunoChange = (e) => {
+    const handleCreateUserChange = (e) => {
         const { name, value } = e.target;
-        setNewAluno(prevState => ({ ...prevState, [name]: value }));
+        setNewUser(prevState => ({ ...prevState, [name]: value }));
     };
 
-    const handleCreateAlunoSubmit = () => {
-        if (!newAluno || !newAluno.nome) { 
+    const handleCreateUser = () => {
+        if (!newUser || !newUser.nome) { 
             setError("Por favor, preencha todos os campos obrigatórios.");
             return;
         }
     
-        fetch('http://127.0.0.1:8000/alunos/create', {
+        fetch('http://127.0.0.1:8000/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(newAluno),
+            body: JSON.stringify(newUser),
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Falha ao adicionar aluno');
+                throw new Error('Falha ao adicionar usuário');
             }
             return response.json();
         })
         .then(data => {
-            setAlunos(prevAlunos => [...prevAlunos, data.aluno]);
+            setUsers(prevUsers => [...prevUsers, data.users]);
             handleCloseCreateDialog();
-            fetchAlunos();  
+            fetchUsers();  
         })
         .catch(error => {
             setError(error.message);
@@ -206,15 +200,15 @@ function MonitoramentoGestao() {
     };    
 
     useEffect(() => {
-        fetchAlunos();
+        fetchUsers();
     }, [token]);
     
     useEffect(() => {
-        if (selectedCpf) {
+        if (selectedId) {
             setLoading(true); 
-            fetchAluno(selectedCpf);
+            fetchUser(selectedId);
         }
-    }, [selectedCpf]);
+    }, [selectedId]);
 
     return (
         <>      
@@ -231,7 +225,7 @@ function MonitoramentoGestao() {
                     textAlign: 'center',  
                 }}
             >   
-                <Typography variant="h4">Alunos</Typography>
+                <Typography variant="h4">Usuários</Typography>
             </Box>
             {error ? (
                 <Typography variant="h6" color="error">
@@ -245,40 +239,38 @@ function MonitoramentoGestao() {
                                 <TableCell>
                                     <Typography variant="h5">Nome</Typography>
                                 </TableCell>
-                                <TableCell align='right' sx={{paddingRight: '6%'}}> 
-                                    <Typography variant="h5" >Ações</Typography>
+                                <TableCell>
+                                    <Typography variant="h5">Permissão</Typography>
+                                </TableCell>
+                                <TableCell align='right'> 
+                                    <Typography variant="h5">Ações</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {alunos && alunos.map((aluno) => (
-                            aluno ? (
-                                <TableRow key={aluno.cpf}>
+                        {users && users.map((user) => (
+                            user ? (
+                                <TableRow key={user._id}>
                                     <TableCell>
-                                        <Typography variant="h6">{aluno.nome}</Typography>
+                                        <Typography variant="h6">{user.nome}</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">{user.permissao}</Typography>
                                     </TableCell>
                                     <TableCell align="right"> 
                                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}> 
                                             <Button 
                                                 variant="contained" 
                                                 color="primary" 
-                                                onClick={() => handleViewEditar(aluno.cpf)} 
+                                                onClick={() => handleViewEditar(user._id)} 
                                                 sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
                                             >
                                                 Editar
                                             </Button>
                                             <Button 
                                                 variant="contained" 
-                                                color="primary" 
-                                                onClick={() => handleViewNotas(aluno.cpf)} 
-                                                sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
-                                            >
-                                                Notas
-                                            </Button>
-                                            <Button 
-                                                variant="contained" 
                                                 color="secondary" 
-                                                onClick={() => handleDeleteAluno(aluno.cpf)}
+                                                onClick={() => handleUserDelete(user._id)}
                                                 sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
                                             >
                                                 Remover
@@ -303,7 +295,7 @@ function MonitoramentoGestao() {
                     onClick={handleOpenCreateDialog} 
                     sx={{ backgroundColor: '#015495'}} 
                 >
-                    Adicionar Aluno
+                    Adicionar Usuário
                 </Button>
             </Box>
             <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
@@ -312,8 +304,8 @@ function MonitoramentoGestao() {
                     <TextField
                         label="Nome"
                         name="nome"
-                        value={newAluno.nome}
-                        onChange={handleCreateAlunoChange}
+                        value={newUser.nome}
+                        onChange={handleCreateUserChange}
                         required
                         fullWidth
                         margin="normal"
@@ -322,8 +314,8 @@ function MonitoramentoGestao() {
                         label="Email"
                         name="email"
                         type="email"
-                        value={newAluno.email}
-                        onChange={handleCreateAlunoChange}
+                        value={newUser.email}
+                        onChange={handleCreateUserChange}
                         required
                         fullWidth
                         margin="normal"
@@ -331,30 +323,31 @@ function MonitoramentoGestao() {
                     <TextField
                         label="CPF"
                         name="cpf"
-                        value={newAluno.cpf}
-                        onChange={handleCreateAlunoChange}
+                        value={newUser.cpf}
+                        onChange={handleCreateUserChange}
                         required
                         fullWidth
                         margin="normal"
                     />
                     <TextField
                         select
-                        label="Tipo de Sala"
-                        name="sala"
-                        value={newAluno.sala}
-                        onChange={handleCreateAlunoChange}
+                        label="Permissão"
+                        name="permissao"
+                        value={newUser.permissao}
+                        onChange={handleCreateUserChange}
                         fullWidth
                         margin="normal"
                     >
-                        <MenuItem value="Online">Online</MenuItem>
-                        <MenuItem value="Presencial">Presencial</MenuItem>
+                        <MenuItem value="GESTAO">Gestão</MenuItem>
+                        <MenuItem value="PROFESSOR">Professor</MenuItem>
+                        <MenuItem value="ALUNO">Aluno</MenuItem>
                     </TextField>
                     <TextField
                         label="Senha"
                         name="password"
                         type="password"
-                        value={newAluno.password}
-                        onChange={handleCreateAlunoChange}
+                        value={newUser.password}
+                        onChange={handleCreateUserChange}
                         required
                         fullWidth
                         margin="normal"
@@ -377,7 +370,7 @@ function MonitoramentoGestao() {
                     <Button 
                         variant="contained" 
                         color="primary" 
-                        onClick={handleCreateAlunoSubmit}
+                        onClick={handleCreateUser}
                         sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                         >
                         Adicionar
@@ -386,15 +379,15 @@ function MonitoramentoGestao() {
             </Dialog>
 
             <Dialog open={openEditDialog} onClose={handleCloseEditDialog} maxWidth="sm" fullWidth>
-                    <DialogTitle>Editar Aluno</DialogTitle>
+                    <DialogTitle>Editar Usuário</DialogTitle>
                     <DialogContent>
                         {loading ? (
                             <CircularProgress />
-                        ) : alunoEdit && (
+                        ) : userEdit && (
                             <>
                                 <TextField
                                     label="Nome"
-                                    value={alunoEdit.nome}
+                                    value={userEdit.nome}
                                     name="nome"
                                     onChange={handleEditChange}
                                     fullWidth
@@ -402,7 +395,7 @@ function MonitoramentoGestao() {
                                 />
                                 <TextField
                                     label="CPF"
-                                    value={alunoEdit.cpf}
+                                    value={userEdit.cpf}
                                     name="cpf"
                                     disabled
                                     fullWidth
@@ -410,22 +403,23 @@ function MonitoramentoGestao() {
                                 />
                                 <TextField
                                     label="Email"
-                                    value={alunoEdit.email}
+                                    value={userEdit.email}
                                     name="email"
                                     onChange={handleEditChange}
                                     fullWidth
                                     margin="normal"
                                 />
                                 <Select
-                                    label="Sala"
-                                    value={alunoEdit.sala}
-                                    name="sala"
+                                    label="Permissão"
+                                    value={userEdit.permissao}
+                                    name="permissao"
                                     onChange={handleEditChange}
                                     fullWidth
                                     margin="normal"
                                 >
-                                    <MenuItem value="Online">Online</MenuItem>
-                                    <MenuItem value="Presencial">Presencial</MenuItem>
+                                    <MenuItem value="GESTAO">Gestão</MenuItem>
+                                    <MenuItem value="PROFESSOR">Professor</MenuItem>
+                                    <MenuItem value="ALUNO">Aluno</MenuItem>
                                 </Select>
                             </>
                         )}
@@ -453,4 +447,4 @@ function MonitoramentoGestao() {
     );
 }
 
-export default MonitoramentoGestao;
+export default ControleUsuarios;
