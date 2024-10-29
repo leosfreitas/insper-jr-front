@@ -65,6 +65,15 @@ function MonitoramentoNotas() {
         }
     };
     
+    const getNotaStyle = (notaValue) => {
+        if (notaValue < 5) {
+            return { backgroundColor: '#ff5252', color: 'black' };
+        } else if (notaValue >= 5 && notaValue < 7) {
+            return { backgroundColor: '#ffd54f', color: 'black' };
+        } else {
+            return { backgroundColor: '#66bb6a', color: 'black' };
+        }
+    };
 
     const handleAddNota = () => {
         fetch(`http://127.0.0.1:8000/alunos/addNota/${cpf}`, {
