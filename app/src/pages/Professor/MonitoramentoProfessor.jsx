@@ -99,7 +99,7 @@ function MonitoramentoProfessor() {
                     textAlign: 'center',  
                 }}
             >   
-                <Typography variant="h4">Alunos</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Alunos</Typography>
             </Box>
             {error ? (
                 <Typography variant="h6" color="error">
@@ -111,10 +111,10 @@ function MonitoramentoProfessor() {
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                    <Typography variant="h5">Nome</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Nome</Typography>
                                 </TableCell>
                                 <TableCell align="right" sx={{ paddingRight: '5%' }}>
-                                    <Typography variant="h5">Notas</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Notas</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -125,7 +125,7 @@ function MonitoramentoProfessor() {
                                     <TableCell>
                                         <Typography variant="h6">{aluno.nome}</Typography>
                                     </TableCell>
-                                    <TableCell align="right" sx={{ paddingRight: '4%' }}> 
+                                    <TableCell align="right" sx={{ paddingRight: '3.3%' }}> 
                                         <Button 
                                             variant="contained" 
                                             color="primary" 

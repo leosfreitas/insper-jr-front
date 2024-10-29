@@ -236,7 +236,7 @@ function ConteudoProfessor() {
                     textAlign: 'center',
                 }}
             >
-                <Typography variant="h4">Avisos e Grade Horária</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Avisos e Grade Horária</Typography>
             </Box>
         <Tabs
             value={view} 
@@ -284,61 +284,73 @@ function ConteudoProfessor() {
                 <>  
                     <TableContainer component={Paper} sx={{ height: '45vh' }}>
                         <Table stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>
-                                        <Typography variant="h5">Título</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h5">Autor</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h5">Mensagem</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h5">Tipo</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h5">Ações</Typography>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ textAlign: 'left', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Título</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'left', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Autor</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Mensagem</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Tipo</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+    {Array.isArray(avisos) && avisos.length > 0 ? (
+        avisos.map((aviso) => (
+            <TableRow key={aviso._id}>
+                <TableCell sx={{ textAlign: 'left', width: '20%' }}>
+                    <Typography variant="h6">{aviso.titulo}</Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'left', width: '20%' }}>
+                    <Typography variant="h6">{aviso.autor}</Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                    <Typography variant="h6">{aviso.mensagem}</Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                    <Typography variant="h6">{aviso.tipo}</Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                    <Button 
+                        variant="contained" 
+                        color="error" 
+                        onClick={() => handleDelete(aviso._id)} 
+                        sx={{
+                            backgroundColor: '#b71b1c', 
+                            color: 'white',
+                            borderRadius: '25px', 
+                            padding: '10px 20px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                            transition: 'transform 0.3s', 
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                            },
+                        }}
+                    >
+                        Remover
+                    </Button>
                                     </TableCell>
                                 </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {Array.isArray(avisos) && avisos.length > 0 ? (
-                                    avisos.map((aviso) => (
-                                        <TableRow key={aviso._id}>
-                                            <TableCell>
-                                                <Typography variant="h6">{aviso.titulo}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography variant="h6">{aviso.autor}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography variant="h6">{aviso.mensagem}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography variant="h6">{aviso.tipo}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Button 
-                                                    variant="contained" 
-                                                    color="error" 
-                                                    onClick={() => handleDelete(aviso._id)} 
-                                                    sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
-                                                >
-                                                    Remover
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={5} align="center">
-                                            <Typography variant="h6">Nenhum aviso encontrado</Typography>
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={5} align="center">
+                                    <Typography variant="h6">Nenhum aviso encontrado</Typography>
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+
                         </Table>
                     </TableContainer>
                     <Box sx={{ 
@@ -351,7 +363,17 @@ function ConteudoProfessor() {
                             variant="contained" 
                             color="error" 
                             onClick={OpenAvisoDialog}
-                            sx={{ backgroundColor: '#015495'}} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
                         >
                             Adicionar Aviso
                         </Button>
@@ -359,7 +381,17 @@ function ConteudoProfessor() {
                             variant="contained" 
                             color="error" 
                             onClick={OpenAvisosFilterDialog} 
-                            sx={{ backgroundColor: '#015495'}} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
                         >
                             Filtrar dados
                         </Button>
@@ -466,56 +498,57 @@ function ConteudoProfessor() {
             {view === 'grade' && (
                 <>  
                     <TableContainer component={Paper}  sx={{ height: '45vh', overflowY: 'auto' }}>
-                        <Table stickyHeader>
-                            <TableHead>
-                                    <TableRow>
-                                        <TableCell>
-                                            <Typography variant="h5">Data</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h5">Horário</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h5">Matéria</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h5">Professor</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h5">Sala</Typography>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                            <TableBody>
+                    <Table stickyHeader>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ textAlign: 'left', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'6%' }}>Data</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'left', width: '20%'}}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 ,marginLeft:'5%'}}>Horário</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Matéria</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Professor</Typography>
+                                </TableCell>
+                                <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Sala</Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
                             {Array.isArray(grades) && grades.length > 0 ? (
-                                    grades.map((grade) => (
-                                        <TableRow key={grade._id}>
-                                            <TableCell>
-                                                <Typography variant="h6">{formatDateView(grade.data)}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography variant="h6">{grade.horario}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography variant="h6">{grade.materia}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography variant="h6">{grade.professor}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography variant="h6">{grade.sala}</Typography>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={5} align="center">
-                                            <Typography variant="h6">Nenhuma Grade encontrada</Typography>
+                                grades.map((grade) => (
+                                    <TableRow key={grade._id}>
+                                        <TableCell sx={{ textAlign: 'left', width: '20%' }}>
+                                            <Typography variant="h6">{formatDateView(grade.data)}</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ textAlign: 'left', width: '20%' }}>
+                                            <Typography variant="h6">{grade.horario}</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                            <Typography variant="h6">{grade.materia}</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                            <Typography variant="h6">{grade.professor}</Typography>
+                                        </TableCell>
+                                        <TableCell sx={{ textAlign: 'center', width: '20%' }}>
+                                            <Typography variant="h6">{grade.sala}</Typography>
                                         </TableCell>
                                     </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={5} align="center">
+                                        <Typography variant="h6">Nenhuma Grade encontrada</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+
                     </TableContainer>
                     <Box sx={{ 
                         display: 'flex',
