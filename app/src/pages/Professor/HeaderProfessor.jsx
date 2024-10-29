@@ -23,7 +23,7 @@ const HeaderProfessor = () => {
               <Link to="/home">Home</Link>
             </li>
             <li className={getLinkClass('/conteudo')}>
-              <Link to="/conteudo">Gerenciamento de Conteúdo</Link>
+              <Link to="/conteudo">Conteúdo</Link>
             </li>
             <li>
               <Logout />

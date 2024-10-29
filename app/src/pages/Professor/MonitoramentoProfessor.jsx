@@ -125,37 +125,37 @@ function MonitoramentoProfessor() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {alunos && alunos.map((aluno) => (
-                            aluno ? (
-                                <TableRow key={aluno.cpf}>
-                                    <TableCell>
-                                        <Typography variant="h6">{aluno.nome}</Typography>
-                                    </TableCell>
-                                    <TableCell align="right" sx={{ paddingRight: '3.3%' }}> 
-                                        <Button 
-                                            variant="contained" 
-                                            color="primary" 
-                                            onClick={() => handleViewNotas(aluno.cpf)} 
-                                            sx={{
-                                                backgroundColor: '#015495', 
-                                                color: 'white',
-                                                borderRadius: '25px', 
-                                                padding: '10px 20px',
-                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                                                transition: 'transform 0.3s', 
-                                                '&:hover': {
-                                                    transform: 'scale(1.05)',
-                                                },
-                                            }}
-                                        >
- 
-                                            Visualizar
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ) : null
-                        ))}
+                            {alunos && alunos.map((aluno, index) => (
+                                aluno ? (
+                                    <TableRow key={aluno.cpf} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
+                                        <TableCell>
+                                            <Typography variant="h6">{aluno.nome}</Typography>
+                                        </TableCell>
+                                        <TableCell align="right" sx={{ paddingRight: '3.3%' }}> 
+                                            <Button 
+                                                variant="contained" 
+                                                color="primary" 
+                                                onClick={() => handleViewNotas(aluno.cpf)} 
+                                                sx={{
+                                                    backgroundColor: '#015495', 
+                                                    color: 'white',
+                                                    borderRadius: '25px', 
+                                                    padding: '10px 20px',
+                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                    transition: 'transform 0.3s', 
+                                                    '&:hover': {
+                                                        transform: 'scale(1.05)',
+                                                    },
+                                                }}
+                                            >
+                                                Visualizar
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ) : null
+                            ))}
                         </TableBody>
+
                     </Table>
                 </TableContainer>
             )}
@@ -164,7 +164,25 @@ function MonitoramentoProfessor() {
                 justifyContent: 'center',
                 marginTop: '5vh',
                 gap: 3,
-                }}>
+            }}>
+                    <Button 
+                        variant="contained" 
+                        color="error" 
+                        onClick={handleFilterOpen} 
+                                        sx={{
+                        backgroundColor: '#015495', 
+                        color: 'white',
+                        borderRadius: '25px', 
+                        padding: '10px 20px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                        transition: 'transform 0.3s', 
+                        '&:hover': {
+                            transform: 'scale(1.05)',
+                        },
+                    }}
+                    >
+                        Filtrar dados
+                    </Button>
             <Button
                 variant="contained"
                 onClick={handleResetFilter} 
@@ -182,24 +200,6 @@ function MonitoramentoProfessor() {
                 >
                 Resetar Filtro
             </Button>
-                <Button 
-                    variant="contained" 
-                    color="error" 
-                    onClick={handleFilterOpen} 
-                                    sx={{
-                    backgroundColor: '#015495', 
-                    color: 'white',
-                    borderRadius: '25px', 
-                    padding: '10px 20px',
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                    transition: 'transform 0.3s', 
-                    '&:hover': {
-                        transform: 'scale(1.05)',
-                    },
-                }}
-                >
-                    Filtrar dados
-                </Button>
             </Box>
             <Dialog open={openFilterDialog} onClose={handleFilterClose}>
                 <DialogTitle>Filtrar Alunos</DialogTitle>

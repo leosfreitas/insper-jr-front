@@ -321,8 +321,8 @@ function ConteudoProfessor() {
 
                         <TableBody>
     {Array.isArray(avisos) && avisos.length > 0 ? (
-        avisos.map((aviso) => (
-            <TableRow key={aviso._id}>
+        avisos.map((aviso,index) => (
+            <TableRow key={aviso._id}  sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
                 <TableCell sx={{ textAlign: 'left', width: '20%' }}>
                     <Typography variant="h6">{aviso.titulo}</Typography>
                 </TableCell>
@@ -392,23 +392,6 @@ function ConteudoProfessor() {
                         >
                             Adicionar Aviso
                         </Button>
-                        <Button
-                            variant="contained"
-                            onClick={handleResetAvisosFilter} 
-                            sx={{
-                                backgroundColor: '#015495', 
-                                color: 'white',
-                                borderRadius: '25px', 
-                                padding: '10px 20px',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                                transition: 'transform 0.3s', 
-                                '&:hover': {
-                                    transform: 'scale(1.05)',
-                                },
-                            }}
-                        >
-                            Resetar Filtro
-                        </Button>
                         <Button 
                             variant="contained" 
                             color="error" 
@@ -426,6 +409,23 @@ function ConteudoProfessor() {
                             }}
                         >
                             Filtrar dados
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleResetAvisosFilter} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                        >
+                            Resetar Filtro
                         </Button>
                     </Box>
                     <Dialog open={openAviso} onClose={CloseAvisoDialog}>
@@ -552,8 +552,8 @@ function ConteudoProfessor() {
                         </TableHead>
                         <TableBody>
                             {Array.isArray(grades) && grades.length > 0 ? (
-                                grades.map((grade) => (
-                                    <TableRow key={grade._id}>
+                                grades.map((grade,index) => (
+                                    <TableRow key={grade._id}  sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
                                         <TableCell sx={{ textAlign: 'left', width: '20%' }}>
                                             <Typography variant="h6">{formatDateView(grade.data)}</Typography>
                                         </TableCell>
@@ -588,6 +588,24 @@ function ConteudoProfessor() {
                         marginTop: '4vh',
                         gap: 3,
                         }}>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={OpenGradeFilterDialog} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                        >
+                            Filtrar dados
+                        </Button>
                         <Button
                             variant="contained"
                             onClick={handleResetGradesFilter} 
@@ -604,14 +622,6 @@ function ConteudoProfessor() {
                             }}
                         >
                             Resetar Filtro
-                        </Button>
-                        <Button 
-                            variant="contained" 
-                            color="error" 
-                            onClick={OpenGradeFilterDialog} 
-                            sx={{ backgroundColor: '#015495'}} 
-                        >
-                            Filtrar dados
                         </Button>
                     </Box>
                     <Dialog open={openGradeFilterDialog} onClose={handleCloseGradeFilterDialog}>
