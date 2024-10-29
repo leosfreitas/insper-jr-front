@@ -14,10 +14,16 @@ import {
     Paper,
     Box,
     Button,
-    Snackbar, // Importa o Snackbar
-    IconButton
+    Snackbar, 
+    IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    TextField,
+    MenuItem
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'; // Ícone para fechar o Snackbar
+import CloseIcon from '@mui/icons-material/Close'; 
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 function NotasAluno() {
@@ -25,7 +31,12 @@ function NotasAluno() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showChart, setShowChart] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false); // Estado para o Snackbar
+    const [snackbarOpen, setSnackbarOpen] = useState(false); 
+    const [openFilterDialog, setOpenFilterDialog] = useState(false);
+    const [filteredNotas, setFilteredNotas] = useState([]);
+    const [filterAvaliacao, setFilterAvaliacao] = useState('');
+    const [minNota, setMinNota] = useState('');
+    const [maxNota, setMaxNota] = useState('');
     const cookies = new Cookies();
     const token = cookies.get('token');
 
@@ -45,6 +56,7 @@ function NotasAluno() {
             })
             .then((data) => {
                 setNotas(data);
+                setFilteredNotas(Object.entries(data).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
                 setLoading(false);
             })
             .catch((error) => {
@@ -68,7 +80,7 @@ function NotasAluno() {
     };
 
     const getFilteredLineData = () => {
-        return Object.entries(notas).map(([avaliacao, nota]) => ({
+        return filteredNotas.map(([avaliacao, nota]) => ({
             simulado: avaliacao,
             Nota: parseFloat(nota) || 0,
         }));
@@ -76,8 +88,33 @@ function NotasAluno() {
 
     const handleButtonClick = () => {
         setShowChart(!showChart);
-        setSnackbarOpen(true); // Abre o Snackbar ao clicar no botão
+        setSnackbarOpen(true); 
     };
+
+    const handleOpenFilter = () => {
+        setOpenFilterDialog(true);
+    };
+
+    const handleCloseFilter = () => {
+        setOpenFilterDialog(false);
+    };
+
+    const handleFilterNotas = () => {
+        const filtered = Object.entries(notas)
+            .filter(([avaliacao, nota]) => {
+                const notaNum = parseFloat(nota);
+                return (
+                    (filterAvaliacao === '' || avaliacao.toLowerCase().includes(filterAvaliacao.toLowerCase())) &&
+                    (minNota === '' || notaNum >= parseFloat(minNota)) &&
+                    (maxNota === '' || notaNum <= parseFloat(maxNota))
+                );
+            })
+            .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]));
+    
+        setFilteredNotas(filtered);
+        handleCloseFilter();
+    };
+    
 
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -106,7 +143,7 @@ function NotasAluno() {
 
             {error ? (
                 <Alert severity="error">{error}</Alert>
-            ) : Object.keys(notas).length === 0 ? (
+            ) : filteredNotas.length === 0 ? (
                 <Typography variant="h6" sx={{ mt: 3, textAlign: 'center' }}>
                     Nenhuma nota encontrada.
                 </Typography>
@@ -116,7 +153,7 @@ function NotasAluno() {
                         component={Paper} 
                         sx={{
                             margin: '0 auto',
-                            height: '55vh', 
+                            height: '50vh', 
                             overflowY: 'auto', 
                             borderRadius: '16px',
                             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
@@ -134,10 +171,8 @@ function NotasAluno() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {Object.entries(notas).map(([avaliacao, nota], index) => {
-                                    const notaRender = typeof nota === 'object' ? JSON.stringify(nota) : nota;
-                                    const notaValue = parseFloat(notaRender);
-
+                                {filteredNotas.map(([avaliacao, nota], index) => {
+                                    const notaValue = parseFloat(nota);
                                     return (
                                         <TableRow
                                             key={avaliacao}
@@ -151,7 +186,6 @@ function NotasAluno() {
                                             <TableCell align="right" sx={{ paddingRight: '19%' }}>
                                                 <Box
                                                     sx={{
-
                                                         display: 'inline-flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center',
@@ -162,7 +196,7 @@ function NotasAluno() {
                                                         fontSize: '1.3rem',
                                                     }}
                                                 >
-                                                    {notaRender}
+                                                    {nota}
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
@@ -171,26 +205,49 @@ function NotasAluno() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    
-                    {/* Botão posicionado acima e centralizado */}
-                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
+
+                    <Box sx={{ 
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '5vh',
+                        gap: 3,
+                        }}>
                     <Button
                         variant="contained"
                         onClick={handleButtonClick}
                         sx={{
-                            backgroundColor: '#ab2325', // Cor de fundo
-                            color: 'white', // Cor do texto
-                            borderRadius: '25px', // Arredondamento das bordas
-                            padding: '10px 20px', // Espaçamento interno
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Sombra do botão
-                            transition: 'background-color 0.3s, transform 0.3s', // Transição suave para efeitos
+                            backgroundColor: '#015495', 
+                            color: 'white',
+                            borderRadius: '25px', 
+                            padding: '10px 20px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                            transition: 'background-color 0.3s, transform 0.3s', 
                             '&:hover': {
-                                backgroundColor: '#9a191c', // Cor de fundo ao passar o mouse
-                                transform: 'scale(1.05)', // Aumentar levemente ao passar o mouse
+                                backgroundColor: '#9a191c',
+                                transform: 'scale(1.05)',
                             },
                         }}
                     >
                         {showChart ? 'Esconder Gráfico' : 'Ver Gráfico'}
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        onClick={handleOpenFilter} 
+                        sx={{
+                            backgroundColor: '#015495', 
+                            color: 'white',
+                            borderRadius: '25px', 
+                            padding: '10px 20px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                            transition: 'background-color 0.3s, transform 0.3s', 
+                            '&:hover': {
+                                backgroundColor: '#9a191c',
+                                transform: 'scale(1.05)',
+                            },
+                        }}
+                    >
+                        Filtrar Dados
                     </Button>
                     </Box>
 
@@ -214,17 +271,15 @@ function NotasAluno() {
                     </Box>
                     )}
 
-                    {/* Snackbar para feedback do usuário */}
                     <Snackbar
-                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Posição do Snackbar
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
                         open={snackbarOpen}
-                        autoHideDuration={3000} // Duração em milissegundos
+                        autoHideDuration={3000} 
                         onClose={handleSnackbarClose}
-                        message={showChart ? 'Gráfico criado!' : 'Gráfico escondido!'} // Mensagem do Snackbar
+                        message="Exibindo gráfico de desempenho"
                         action={
                             <IconButton
                                 size="small"
-                                aria-label="close"
                                 color="inherit"
                                 onClick={handleSnackbarClose}
                             >
@@ -232,6 +287,65 @@ function NotasAluno() {
                             </IconButton>
                         }
                     />
+                    <Dialog open={openFilterDialog} onClose={handleCloseFilter}>
+                        <DialogTitle>Filtrar Notas</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                label="Avaliação"
+                                fullWidth
+                                variant="standard"
+                                value={filterAvaliacao}
+                                onChange={(e) => setFilterAvaliacao(e.target.value)}
+                                sx={{ marginBottom: 2 }}
+                            />
+                            
+                            <TextField
+                                select
+                                label="Notas Acima de"
+                                fullWidth
+                                variant="standard"
+                                value={minNota}
+                                onChange={(e) => setMinNota(e.target.value)}
+                                sx={{ marginBottom: 2 }}
+                            >
+                                <MenuItem value="">Nenhuma</MenuItem>
+                                {[...Array(10).keys()].map((num) => (
+                                    <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>
+                                ))}
+                            </TextField>
+                            
+                            <TextField
+                                select
+                                label="Notas Abaixo de"
+                                fullWidth
+                                variant="standard"
+                                value={maxNota}
+                                onChange={(e) => setMaxNota(e.target.value)}
+                            >
+                                <MenuItem value="">Nenhuma</MenuItem>
+                                {[...Array(10).keys()].map((num) => (
+                                    <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>
+                                ))}
+                            </TextField>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button 
+                                onClick={handleCloseFilter} 
+                                color="inherit"
+                                variant="contained"
+                                sx={{ marginRight: '10px' }}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button 
+                                onClick={handleFilterNotas} 
+                                color="error" 
+                                variant="contained"
+                            >
+                                Aplicar Filtro
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </>
             )}
         </>

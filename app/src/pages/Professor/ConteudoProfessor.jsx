@@ -251,7 +251,6 @@ function ConteudoProfessor() {
                 backgroundColor: '#f5f5f5',
                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                 padding: '8px',
-                height: '5vh',
             }}
             >
             <Tab

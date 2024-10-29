@@ -49,14 +49,14 @@ function MonitoramentoNotas() {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
+    
             if (!response.ok) {
                 throw new Error('Falha ao buscar aluno');
             }
-
+    
             const data = await response.json();
             setAluno(data);
-            setFilteredNotas(Object.entries(data.notas));
+            setFilteredNotas(Object.entries(data.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
             setLoading(false);
         } catch (error) {
             console.error('Erro ao buscar aluno:', error);
@@ -64,6 +64,7 @@ function MonitoramentoNotas() {
             setLoading(false);
         }
     };
+    
 
     const handleAddNota = () => {
         fetch(`http://127.0.0.1:8000/alunos/addNota/${cpf}`, {
@@ -131,9 +132,13 @@ function MonitoramentoNotas() {
                 (maxNota === '' || notaNum <= parseFloat(maxNota))
             );
         });
-        setFilteredNotas(filtered);
+    
+        const sortedFiltered = filtered.sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]));
+    
+        setFilteredNotas(sortedFiltered);
         handleCloseFilter();
     };
+    
     
     useEffect(() => {
         fetchAluno();

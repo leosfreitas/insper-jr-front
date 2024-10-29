@@ -51,7 +51,7 @@ function MonitoramentoNotasProfessor() {
 
             const data = await response.json();
             setAluno(data);
-            setFilteredNotas(Object.entries(data.notas));
+            setFilteredNotas(Object.entries(data.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
             setLoading(false);
         } catch (error) {
             console.error('Erro ao buscar aluno:', error);
@@ -78,9 +78,13 @@ function MonitoramentoNotasProfessor() {
                 (maxNota === '' || notaNum <= parseFloat(maxNota))
             );
         });
-        setFilteredNotas(filtered);
+    
+        const sortedFiltered = filtered.sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]));
+    
+        setFilteredNotas(sortedFiltered);
         handleCloseFilter();
     };
+    
 
     useEffect(() => {
         fetchAluno();

@@ -163,9 +163,9 @@ function AvisosAluno() {
                                         ))
                                     ) : (
                                         <TableRow>
-                                            <TableCell colSpan={3} align="center">
-                                                <Typography variant="body1">Nenhum aviso geral disponível</Typography>
-                                            </TableCell>
+                                        <TableCell colSpan={5} align="center">
+                                            <Typography variant="h6">Nenhum aviso encontrado</Typography>
+                                        </TableCell>
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -206,8 +206,8 @@ function AvisosAluno() {
                                         ))
                                     ) : (
                                         <TableRow>
-                                            <TableCell colSpan={3} align="center">
-                                                <Typography variant="body1">Nenhum aviso disponível para a sala {sala}</Typography>
+                                            <TableCell colSpan={5} align="center">
+                                                <Typography variant="h6">Nenhum aviso encontrado</Typography>
                                             </TableCell>
                                         </TableRow>
                                     )}
