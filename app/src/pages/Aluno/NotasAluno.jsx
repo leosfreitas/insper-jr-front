@@ -23,7 +23,6 @@ import {
     TextField,
     MenuItem
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'; 
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 function NotasAluno() {

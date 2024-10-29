@@ -278,7 +278,7 @@ function MonitoramentoGestao() {
                     textAlign: 'center',  
                 }}
             >   
-                <Typography variant="h4">Alunos</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Alunos</Typography>
             </Box>
             {error ? (
                 <Typography variant="h6" color="error">
@@ -290,20 +290,20 @@ function MonitoramentoGestao() {
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                    <Typography variant="h5">Nome</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Nome</Typography>
                                 </TableCell>
                                 <TableCell align='center' sx={{paddingRight: '18%'}}>
-                                    <Typography variant="h5">Notas</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Notas</Typography>
                                 </TableCell>
                                 <TableCell align="right" sx={{ paddingRight: '5%' }}> 
-                                    <Typography variant="h5">Ações</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {alunos && alunos.map((aluno) => (
+                        {alunos && alunos.map((aluno, index) => (
                             aluno ? (
-                                <TableRow key={aluno.cpf}>
+                                <TableRow key={aluno.cpf} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
                                     <TableCell>
                                         <Typography variant="h6">{aluno.nome}</Typography>
                                     </TableCell>
@@ -354,9 +354,37 @@ function MonitoramentoGestao() {
                     variant="contained" 
                     color="error" 
                     onClick={handleOpenCreateDialog} 
-                    sx={{ backgroundColor: '#015495'}} 
+                    sx={{
+                        backgroundColor: '#015495', 
+                        color: 'white',
+                        borderRadius: '25px', 
+                        padding: '10px 20px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                        transition: 'transform 0.3s', 
+                        '&:hover': {
+                            transform: 'scale(1.05)',
+                        },
+                    }}
                 >
                     Adicionar Aluno
+                </Button>
+                <Button 
+                    variant="contained" 
+                    color="error" 
+                    onClick={handleFilterOpen} 
+                    sx={{
+                        backgroundColor: '#015495', 
+                        color: 'white',
+                        borderRadius: '25px', 
+                        padding: '10px 20px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                        transition: 'transform 0.3s', 
+                        '&:hover': {
+                            transform: 'scale(1.05)',
+                        },
+                    }}
+                >
+                    Filtrar dados
                 </Button>
                 <Button
                     variant="contained"
@@ -374,14 +402,6 @@ function MonitoramentoGestao() {
                     }}
                     >
                     Resetar Filtro
-                </Button>
-                <Button 
-                    variant="contained" 
-                    color="error" 
-                    onClick={handleFilterOpen} 
-                    sx={{ backgroundColor: '#015495'}} 
-                >
-                    Filtrar dados
                 </Button>
             </Box>
             <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>

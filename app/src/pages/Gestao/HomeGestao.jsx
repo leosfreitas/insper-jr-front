@@ -85,7 +85,7 @@ function HomeGestao() {
                     textAlign: 'center',  
                 }}
             >
-                <Typography variant="h4">Bem vindo</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Bem vindo</Typography>
             </Box>
 
             <Grid container spacing={4} padding={4} direction="column" alignItems="center">
