@@ -325,7 +325,7 @@ function ConteudoGestao() {
                     textAlign: 'center',
                 }}
             >
-                <Typography variant="h4">Avisos e Grade Horária</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Avisos e Grade Horária</Typography>
             </Box>
         <Tabs
             value={view} 
@@ -376,26 +376,26 @@ function ConteudoGestao() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Typography variant="h5">Título</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Título</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h5">Autor</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Autor</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h5">Mensagem</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Mensagem</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h5">Tipo</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Tipo</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h5">Ações</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {Array.isArray(avisos) && avisos.length > 0 ? (
-                                    avisos.map((aviso) => (
-                                        <TableRow key={aviso._id}>
+                                    avisos.map((aviso, index) => (
+                                        <TableRow key={aviso._id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
                                             <TableCell>
                                                 <Typography variant="h6">{aviso.titulo}</Typography>
                                             </TableCell>
@@ -440,9 +440,37 @@ function ConteudoGestao() {
                             variant="contained" 
                             color="error" 
                             onClick={OpenAvisoDialog}
-                            sx={{ backgroundColor: '#015495'}} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }} 
                         >
                             Adicionar Aviso
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={OpenAvisosFilterDialog} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }} 
+                        >
+                            Filtrar dados
                         </Button>
                         <Button
                             variant="contained"
@@ -460,14 +488,6 @@ function ConteudoGestao() {
                             }}
                         >
                             Resetar Filtro
-                        </Button>
-                        <Button 
-                            variant="contained" 
-                            color="error" 
-                            onClick={OpenAvisosFilterDialog} 
-                            sx={{ backgroundColor: '#015495'}} 
-                        >
-                            Filtrar dados
                         </Button>
                     </Box>
                     <Dialog open={openAviso} onClose={CloseAvisoDialog}>
@@ -576,29 +596,29 @@ function ConteudoGestao() {
                             <TableHead>
                                     <TableRow>
                                         <TableCell>
-                                            <Typography variant="h5">Data</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Data</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">Horário</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Horário</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">Matéria</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Matéria</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">Professor</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Professor</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">Sala</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Sala</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5">Ações</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                             <TableBody>
                             {Array.isArray(grades) && grades.length > 0 ? (
-                                    grades.map((grade) => (
-                                        <TableRow key={grade._id}>
+                                    grades.map((grade, index) => (
+                                        <TableRow key={grade._id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
                                             <TableCell>
                                                 <Typography variant="h6">{formatDateView(grade.data)}</Typography>
                                             </TableCell>
@@ -646,9 +666,37 @@ function ConteudoGestao() {
                             variant="contained" 
                             color="error" 
                             onClick={OpenGradeDialog}
-                            sx={{ backgroundColor: '#015495'}} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
                         >
                             Adicionar Grade
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={OpenGradeFilterDialog} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                        >
+                            Filtrar dados
                         </Button>
                         <Button
                             variant="contained"
@@ -666,14 +714,6 @@ function ConteudoGestao() {
                             }}
                         >
                             Resetar Filtro
-                        </Button>
-                        <Button 
-                            variant="contained" 
-                            color="error" 
-                            onClick={OpenGradeFilterDialog} 
-                            sx={{ backgroundColor: '#015495'}} 
-                        >
-                            Filtrar dados
                         </Button>
                     </Box>
                     <Dialog open={openGrade} onClose={CloseGradeDialog}>

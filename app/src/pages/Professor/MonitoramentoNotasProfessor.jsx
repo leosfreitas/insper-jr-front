@@ -68,6 +68,16 @@ function MonitoramentoNotasProfessor() {
         setOpenFilterDialog(false);
     };
 
+    const getNotaStyle = (notaValue) => {
+        if (notaValue < 5) {
+            return { backgroundColor: '#ff5252', color: 'black' };
+        } else if (notaValue >= 5 && notaValue < 7) {
+            return { backgroundColor: '#ffd54f', color: 'black' };
+        } else {
+            return { backgroundColor: '#66bb6a', color: 'black' };
+        }
+    };
+
     const handleFilterNotas = () => {
         const filtered = Object.entries(aluno.notas).filter(([avaliacao, nota]) => {
             const notaNum = parseFloat(nota);
@@ -132,23 +142,39 @@ function MonitoramentoNotasProfessor() {
                                     <TableCell>
                                         <Typography variant="h5">Avaliação</Typography>
                                     </TableCell>
-                                    <TableCell >
+                                    <TableCell align="right" sx={{ paddingRight: '20%' }}>
                                         <Typography variant="h5">Nota</Typography>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {filteredNotas.map(([avaliacao, nota]) => (
-                                    <TableRow key={avaliacao}>
+                            {filteredNotas.map(([avaliacao, nota], index) => {
+                                const notaValue = parseFloat(nota);
+                                return (
+                                    <TableRow key={avaliacao} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
                                         <TableCell>
                                             <Typography variant="h6">{avaliacao}</Typography>
                                         </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{nota}</Typography>
+                                        <TableCell align="right" sx={{ paddingRight: '19%' }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    padding: '10px 25px',
+                                                    borderRadius: '25px',
+                                                    ...getNotaStyle(notaValue),
+                                                    fontWeight: 'bold',
+                                                    fontSize: '1.3rem',
+                                                }}
+                                            >
+                                                {nota}
+                                            </Box>
                                         </TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
+                                );
+                            })}
+                        </TableBody>
                         </Table>
                     </TableContainer>
                     <Box sx={{ 
@@ -157,7 +183,24 @@ function MonitoramentoNotasProfessor() {
                             marginTop: '5vh',
                             gap: 3,
                             }}>
-                                            <Button
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={handleOpenFilter} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}                        >
+                            Filtrar dados
+                        </Button>
+                        <Button
                             variant="contained"
                             onClick={handleResetFilter} 
                             sx={{
@@ -173,14 +216,6 @@ function MonitoramentoNotasProfessor() {
                             }}
                         >
                             Resetar Filtro
-                        </Button>
-                        <Button 
-                            variant="contained" 
-                            color="error" 
-                            onClick={handleOpenFilter} 
-                            sx={{ backgroundColor: '#015495'}} 
-                        >
-                            Filtrar dados
                         </Button>
                     </Box>
                     <Dialog open={openFilterDialog} onClose={handleCloseFilter}>

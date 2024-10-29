@@ -154,6 +154,7 @@ function MonitoramentoNotas() {
         setMaxNota('');
         setFilteredNotas(Object.entries(aluno.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
     };
+
     
     useEffect(() => {
         fetchAluno();
@@ -202,32 +203,47 @@ function MonitoramentoNotas() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {filteredNotas.map(([avaliacao, nota], index) => (
-                                <TableRow key={avaliacao} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
-                                    <TableCell>
-                                        <Typography variant="h6">{avaliacao}</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h6">{nota}</Typography>
-                                    </TableCell>
-                                    <TableCell align="right" sx={{ paddingRight: '4%' }}>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            sx={{ 
-                                                backgroundColor: '#ab2325', 
-                                                '&:hover': { backgroundColor: '#b71c1c' },
-                                                marginLeft: '8px' 
-                                            }} 
-                                            onClick={() => handleRemoveNota(avaliacao)}
-                                        >
-                                            Remover
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {filteredNotas.map(([avaliacao, nota], index) => {
+                                const notaValue = parseFloat(nota);
+                                return (
+                                    <TableRow key={avaliacao} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
+                                        <TableCell>
+                                            <Typography variant="h6">{avaliacao}</Typography>
+                                        </TableCell>
+                                        <TableCell align="right" sx={{ paddingRight: '19%' }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    padding: '10px 25px',
+                                                    borderRadius: '25px',
+                                                    ...getNotaStyle(notaValue),
+                                                    fontWeight: 'bold',
+                                                    fontSize: '1.3rem',
+                                                }}
+                                            >
+                                                {nota}
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell align="right" sx={{ paddingRight: '4%' }}>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                sx={{ 
+                                                    backgroundColor: '#ab2325', 
+                                                    '&:hover': { backgroundColor: '#b71c1c' },
+                                                    marginLeft: '8px' 
+                                                }} 
+                                                onClick={() => handleRemoveNota(avaliacao)}
+                                            >
+                                                Remover
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
                         </TableBody>
-
                         </Table>
                     </TableContainer>
                     <Box sx={{ 
@@ -240,9 +256,37 @@ function MonitoramentoNotas() {
                             variant="contained" 
                             color="error" 
                             onClick={() => setOpenDialog(true)} 
-                            sx={{ backgroundColor: '#015495'}} 
+                                                        sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
                         >   
                             Adicionar Nota
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={handleOpenFilter} 
+                                                        sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                        >
+                            Filtrar Dados
                         </Button>
                         <Button
                             variant="contained"
@@ -260,14 +304,6 @@ function MonitoramentoNotas() {
                             }}
                             >
                             Resetar Filtro
-                        </Button>
-                        <Button 
-                            variant="contained" 
-                            color="error" 
-                            onClick={handleOpenFilter} 
-                            sx={{ backgroundColor: '#015495'}} 
-                        >
-                            Filtrar Dados
                         </Button>
                     </Box>
 

@@ -273,7 +273,7 @@ function ControleUsuarios() {
                     textAlign: 'center',  
                 }}
             >   
-                <Typography variant="h4">Usuários</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Usuários</Typography>
             </Box>
             {error ? (
                 <Typography variant="h6" color="error">
@@ -283,22 +283,22 @@ function ControleUsuarios() {
                 <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}> 
                     <Table stickyHeader>
                         <TableHead>
-                            <TableRow>
+                            <TableRow >
                                 <TableCell>
-                                    <Typography variant="h5">Nome</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Nome</Typography>
                                 </TableCell>
                                 <TableCell>
-                                    <Typography variant="h5">Permissão</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Permissão</Typography>
                                 </TableCell>
                                 <TableCell align='right' sx={{paddingRight: '4.5%'}}> 
-                                    <Typography variant="h5">Ações</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {users && users.map((user) => (
+                        {users && users.map((user, index) => (
                             user ? (
-                                <TableRow key={user._id}>
+                                <TableRow key={user._id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
                                     <TableCell>
                                         <Typography variant="h6">{user.nome}</Typography>
                                     </TableCell>
@@ -342,9 +342,37 @@ function ControleUsuarios() {
                     variant="contained" 
                     color="error" 
                     onClick={handleOpenCreateDialog} 
-                    sx={{ backgroundColor: '#015495'}} 
+                    sx={{
+                        backgroundColor: '#015495', 
+                        color: 'white',
+                        borderRadius: '25px', 
+                        padding: '10px 20px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                        transition: 'transform 0.3s', 
+                        '&:hover': {
+                            transform: 'scale(1.05)',
+                        },
+                    }}
                 >
                     Adicionar Usuário
+                </Button>
+                <Button 
+                    variant="contained" 
+                    color="error" 
+                    onClick={handleOpenFilterDialog} 
+                    sx={{
+                        backgroundColor: '#015495', 
+                        color: 'white',
+                        borderRadius: '25px', 
+                        padding: '10px 20px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                        transition: 'transform 0.3s', 
+                        '&:hover': {
+                            transform: 'scale(1.05)',
+                        },
+                    }}
+                >
+                    Filtrar dados
                 </Button>
                 <Button
                     variant="contained"
@@ -362,14 +390,6 @@ function ControleUsuarios() {
                     }}
                     >
                     Resetar Filtro
-                </Button>
-                <Button 
-                    variant="contained" 
-                    color="error" 
-                    onClick={handleOpenFilterDialog} 
-                    sx={{ backgroundColor: '#015495'}} 
-                >
-                    Filtrar dados
                 </Button>
             </Box>
             <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
