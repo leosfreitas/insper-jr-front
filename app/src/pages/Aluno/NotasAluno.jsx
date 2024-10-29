@@ -120,6 +120,13 @@ function NotasAluno() {
         handleCloseFilter();
     };
 
+    const handleResetFilter = () => {
+        setFilterAvaliacao('');
+        setMinNota('');
+        setMaxNota('');
+        setFilteredNotas(Object.entries(notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
+    };
+
     return (
         <>
             <HeaderAluno />
@@ -231,6 +238,24 @@ function NotasAluno() {
 
             <Button
                 variant="contained"
+                onClick={handleResetFilter} 
+                sx={{
+                    backgroundColor: '#015495', 
+                    color: 'white',
+                    borderRadius: '25px', 
+                    padding: '10px 20px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                    transition: 'transform 0.3s', 
+                    '&:hover': {
+                        transform: 'scale(1.05)',
+                    },
+                }}
+            >
+                Resetar Filtro
+            </Button>
+
+            <Button
+                variant="contained"
                 onClick={handleOpenFilter} 
                 sx={{
                     backgroundColor: '#015495', 
@@ -269,64 +294,63 @@ function NotasAluno() {
 
                 {/* Dialog de filtro */}
                 <Dialog open={openFilterDialog} onClose={handleCloseFilter}>
-                    <DialogTitle>Filtrar Notas</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            select
-                            label="Avaliação"
-                            fullWidth
-                            variant="outlined"
-                            value={filterAvaliacao}
-                            onChange={(e) => setFilterAvaliacao(e.target.value)}
-                            sx={{ marginBottom: 2 }}
-                        >
-                            <MenuItem value="">
-                                <em>Todos</em>
-                            </MenuItem>
-                            {Object.keys(notas).map((avaliacao) => (
-                                <MenuItem key={avaliacao} value={avaliacao}>
-                                    {avaliacao}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <TextField
-                            label="Nota Mínima"
-                            fullWidth
-                            variant="outlined"
-                            type="number"
-                            value={minNota}
-                            onChange={(e) => {
-                                const value = parseFloat(e.target.value);
-                                if (value >= 0 && value <= 10) {
-                                    setMinNota(e.target.value);
-                                } else {
-                                    alert('A nota mínima deve estar entre 0 e 10.');
-                                }
-                            }}
-                            sx={{ marginBottom: 2 }}
-                        />
-                        <TextField
-                            label="Nota Máxima"
-                            fullWidth
-                            variant="outlined"
-                            type="number"
-                            value={maxNota}
-                            onChange={(e) => {
-                                const value = parseFloat(e.target.value);
-                                if (value >= 0 && value <= 10) {
-                                    setMaxNota(e.target.value);
-                                } else {
-                                    alert('A nota máxima deve estar entre 0 e 10.');
-                                }
-                            }}
-                            sx={{ marginBottom: 2 }}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseFilter}>Cancelar</Button>
-                        <Button onClick={handleFilterNotas} color="primary">Aplicar Filtros</Button>
-                    </DialogActions>
-                </Dialog>
+                        <DialogTitle>Filtrar Notas</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                label="Avaliação"
+                                fullWidth
+                                margin="normal"
+                                value={filterAvaliacao}
+                                onChange={(e) => setFilterAvaliacao(e.target.value)}
+                            />
+                            
+                            <TextField
+                                select
+                                label="Notas Acima de"
+                                fullWidth
+                                margin="normal"
+                                value={minNota}
+                                onChange={(e) => setMinNota(e.target.value)}
+                            >
+                                <MenuItem value="">Nenhuma</MenuItem>
+                                {[...Array(10).keys()].map((num) => (
+                                    <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>
+                                ))}
+                            </TextField>
+                            
+                            <TextField
+                                select
+                                label="Notas Abaixo de"
+                                fullWidth
+                                margin="normal"
+                                value={maxNota}
+                                onChange={(e) => setMaxNota(e.target.value)}
+                            >
+                                <MenuItem value="">Nenhuma</MenuItem>
+                                {[...Array(10).keys()].map((num) => (
+                                    <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>
+                                ))}
+                            </TextField>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleCloseFilter}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleFilterNotas}
+                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            >
+                                Filtrar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 
                 </>
             )}
