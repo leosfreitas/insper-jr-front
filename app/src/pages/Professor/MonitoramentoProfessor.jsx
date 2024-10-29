@@ -136,8 +136,19 @@ function MonitoramentoProfessor() {
                                             variant="contained" 
                                             color="primary" 
                                             onClick={() => handleViewNotas(aluno.cpf)} 
-                                            sx={{ backgroundColor: '#015495'}} 
+                                            sx={{
+                                                backgroundColor: '#015495', 
+                                                color: 'white',
+                                                borderRadius: '25px', 
+                                                padding: '10px 20px',
+                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                transition: 'transform 0.3s', 
+                                                '&:hover': {
+                                                    transform: 'scale(1.05)',
+                                                },
+                                            }}
                                         >
+ 
                                             Visualizar
                                         </Button>
                                     </TableCell>
@@ -175,7 +186,17 @@ function MonitoramentoProfessor() {
                     variant="contained" 
                     color="error" 
                     onClick={handleFilterOpen} 
-                    sx={{ backgroundColor: '#015495'}} 
+                                    sx={{
+                    backgroundColor: '#015495', 
+                    color: 'white',
+                    borderRadius: '25px', 
+                    padding: '10px 20px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                    transition: 'transform 0.3s', 
+                    '&:hover': {
+                        transform: 'scale(1.05)',
+                    },
+                }}
                 >
                     Filtrar dados
                 </Button>
