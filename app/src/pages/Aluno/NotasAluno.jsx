@@ -220,9 +220,8 @@ function NotasAluno() {
                     borderRadius: '25px', 
                     padding: '10px 20px',
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                    transition: 'background-color 0.3s, transform 0.3s', 
+                    transition: 'transform 0.3s', 
                     '&:hover': {
-                        backgroundColor: '#9a191c',
                         transform: 'scale(1.05)',
                     },
                 }}
@@ -239,9 +238,8 @@ function NotasAluno() {
                     borderRadius: '25px', 
                     padding: '10px 20px',
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                    transition: 'background-color 0.3s, transform 0.3s', 
+                    transition: 'transform 0.3s', 
                     '&:hover': {
-                        backgroundColor: '#9a191c',
                         transform: 'scale(1.05)',
                     },
                 }}

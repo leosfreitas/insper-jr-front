@@ -93,7 +93,7 @@ function GradeAluno() {
                     position: 'relative', 
                 }}
             >   
-                <Typography variant="h4">Grade Horária</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Grade Horária</Typography>
             </Box>
 
             <Box
@@ -102,7 +102,7 @@ function GradeAluno() {
                     marginTop: '20px', 
                 }}
             >
-                <Typography variant="h6">Selecione a data:</Typography>
+                <Typography variant="h5" sx={{ fontWeight: 600 }}>Selecione a data:</Typography>
                 <FormControl variant="outlined" sx={{ display: 'inline-block', marginTop: '10px' }}>
                     <DatePicker 
                         selected={selectedDate} 

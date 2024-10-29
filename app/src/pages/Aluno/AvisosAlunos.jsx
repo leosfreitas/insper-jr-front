@@ -83,7 +83,7 @@ function AvisosAluno() {
                     textAlign: 'center',
                 }}
             >
-                <Typography variant="h4">Avisos e Comunicados</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Avisos e Comunicados</Typography>
             </Box>
 
             <Box >
@@ -136,13 +136,13 @@ function AvisosAluno() {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h5">Título</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Título</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h5">Autor</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Autor</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '50%' }}>
-                                            <Typography variant="h5">Mensagem</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Mensagem</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -179,13 +179,13 @@ function AvisosAluno() {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h5">Título</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Título</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '25%' }}>
-                                            <Typography variant="h5">Autor</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Autor</Typography>
                                         </TableCell>
                                         <TableCell sx={{ width: '50%' }}>
-                                            <Typography variant="h5">Mensagem</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Mensagem</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>

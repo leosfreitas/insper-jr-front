@@ -164,7 +164,7 @@ function MonitoramentoNotas() {
                     onClick={() => window.location.href = '/monitoramento'}
                 />
                 {aluno ? (
-                    <Typography variant="h4">{aluno.nome}</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: 'bold' }}>{aluno.nome}</Typography>
                 ) : (
                     <Typography variant="h4">Carregando...</Typography> 
                 )}
@@ -176,42 +176,43 @@ function MonitoramentoNotas() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Typography variant="h5">Avaliação</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Avaliação</Typography>
                                     </TableCell>
                                     <TableCell >
-                                        <Typography variant="h5">Nota</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Nota</Typography>
                                     </TableCell>
                                     <TableCell align="right" sx={{ paddingRight: '5%' }}>
-                                        <Typography variant="h5">Ações</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {filteredNotas.map(([avaliacao, nota]) => (
-                                    <TableRow key={avaliacao}>
-                                        <TableCell>
-                                            <Typography variant="h6">{avaliacao}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="h6">{nota}</Typography>
-                                        </TableCell>
-                                        <TableCell align="right" sx={{ paddingRight: '4%' }}>
-                                            <Button
-                                                variant="contained"
-                                                color="secondary"
-                                                sx={{ 
-                                                    backgroundColor: '#ab2325', 
-                                                    '&:hover': { backgroundColor: '#b71c1c' },
-                                                    marginLeft: '8px' 
-                                                }} 
-                                                onClick={() => handleRemoveNota(avaliacao)}
-                                            >
-                                                Remover
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
+                            {filteredNotas.map(([avaliacao, nota], index) => (
+                                <TableRow key={avaliacao} sx={{ backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5' }}>
+                                    <TableCell>
+                                        <Typography variant="h6">{avaliacao}</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h6">{nota}</Typography>
+                                    </TableCell>
+                                    <TableCell align="right" sx={{ paddingRight: '4%' }}>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            sx={{ 
+                                                backgroundColor: '#ab2325', 
+                                                '&:hover': { backgroundColor: '#b71c1c' },
+                                                marginLeft: '8px' 
+                                            }} 
+                                            onClick={() => handleRemoveNota(avaliacao)}
+                                        >
+                                            Remover
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+
                         </Table>
                     </TableContainer>
                     <Box sx={{ 
@@ -260,6 +261,7 @@ function MonitoramentoNotas() {
                         </DialogContent>
                         <DialogActions>
                             <Button 
+                            
                                 variant="contained" 
                                 color="primary" 
                                 onClick={() => setOpenDialog(false)}
