@@ -729,7 +729,7 @@ function ConteudoGestao() {
                     </Box>
                     <Dialog open={openGrade} onClose={CloseGradeDialog}>
                         <DialogTitle>Criar Grade</DialogTitle>
-                            <DialogContent>
+                            <DialogContent sx={{overflowX: 'hidden', overflowY: 'hidden'}}>
                                     <TextField
                                         label="Horário"
                                         value={newGrade.horario}
@@ -782,16 +782,15 @@ function ConteudoGestao() {
                                             <MenuItem value="Presencial">Presencial</MenuItem>
                                         </Select>
                                     </FormControl>
-                                    <Box   sx={{marginLeft: '35%',width:'100%'}}>
-                                <DatePicker
-                                selected={filterData}
-                                onChange={handleFilterDate}
-                                dateFormat="dd/MM/yyyy"
-                                placeholderText="Selecionar data"
-                                className="date-picker"
-                                width = '100%'
-                            />
-                            </Box> 
+                                        <DatePicker
+                                        label = "Data"
+                                        selected={data}
+                                        onChange={handleDateChange}
+                                        dateFormat="dd/MM/yyyy"
+                                        placeholderText="Selecionar data"
+                                        className="date-picker"
+                                        width = '100%'
+                                        />
                             </DialogContent>
                                 <DialogActions>
                                     <Button 
@@ -810,7 +809,7 @@ function ConteudoGestao() {
                     </Dialog>
                     <Dialog open={openGradeFilterDialog} onClose={handleCloseGradeFilterDialog}>
                         <DialogTitle>Filtrar Grade</DialogTitle>
-                        <DialogContent>
+                        <DialogContent sx={{overflowX: 'hidden'}}>
                         
                         <TextField
                             label="Horário"
@@ -838,7 +837,6 @@ function ConteudoGestao() {
                             <MenuItem value="Presencial">Presencial</MenuItem>
                             <MenuItem value="Online">Online</MenuItem>
                         </TextField>
-                        <Box   sx={{marginLeft: '35%',width:'100%'}}>
                                 <DatePicker
                                 selected={filterData}
                                 onChange={handleFilterDate}
@@ -847,8 +845,6 @@ function ConteudoGestao() {
                                 className="date-picker"
                                 width = '100%'
                             />
-                            </Box> 
-
                         </DialogContent>
                         <DialogActions>
                             <Button 

@@ -1,0 +1,25 @@
+/* estilo para o date-picker */
+.date-picker {
+    width: 100%;
+    margin-top: 5%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc; /* cor da borda */
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333; /* cor do texto */
+    transition: all 0.3s ease;
+}
+
+/* adiciona um efeito ao passar o cursor */
+.date-picker:hover {
+    border-color: #007bff; /* cor de borda ao passar o mouse */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); /* sombra sutil */
+}
+
+/* estilo para quando o date-picker está focado */
+.date-picker:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
