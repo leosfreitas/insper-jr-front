@@ -22,73 +22,88 @@ import {
 import HeaderProfessor from './HeaderProfessor';
 
 function MonitoramentoProfessor() {
+    // Estado para armazenar a lista de alunos
     const [alunos, setAlunos] = useState([]); 
+    // Estado para armazenar mensagens de erro
     const [error, setError] = useState(null); 
+    // Estado para controlar a abertura do diálogo de filtro
     const [openFilterDialog, setOpenFilterDialog] = useState(false);
+    // Estado para armazenar o filtro de nome
     const [filterNome, setFilterNome] = useState('');
+    // Estado para armazenar o filtro de sala, com valor inicial como 'Todas'
     const [filterSala, setFilterSala] = useState('Todas');
+    // Estado para armazenar a lista original de alunos
     const [originalAlunos, setOriginalAlunos] = useState([]);
     const cookies = new Cookies();
+    // Obtém o token do cookie para autenticação
     const token = cookies.get('token'); 
     const navigate = useNavigate();
 
+    // Função para buscar a lista de alunos do servidor
     const fetchAlunos = () => {
         fetch('http://127.0.0.1:8000/alunos/get', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}` // Adiciona o token no cabeçalho
             },
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Falha ao buscar alunos');
+                throw new Error('Falha ao buscar alunos'); // Lança erro se a resposta não for bem-sucedida
             }
-            return response.json();
+            return response.json(); // Converte a resposta para JSON
         })
         .then(data => {
+            // Atualiza os estados com os dados retornados
             setOriginalAlunos(data.alunos || []);
             setAlunos(data.alunos || []);  
         })
         .catch(error => {
-            setError(error.message);
+            setError(error.message); // Atualiza o estado de erro caso ocorra um problema
         });
     };
 
+    // Função para navegar até a página de visualização de notas de um aluno específico
     const handleViewNotas = (cpf) => {
-        navigate(`/monitoramento/notas/${cpf}`);
+        navigate(`/monitoramento/notas/${cpf}`); // Redireciona para a rota correspondente
     };
 
+    // Função para abrir o diálogo de filtro
     const handleFilterOpen = () => {
-        setOpenFilterDialog(true);
+        setOpenFilterDialog(true); // Atualiza o estado para abrir o diálogo
     };
 
+    // Função para fechar o diálogo de filtro
     const handleFilterClose = () => {
-        setOpenFilterDialog(false);
+        setOpenFilterDialog(false); // Atualiza o estado para fechar o diálogo
     };
 
+    // Função para aplicar os filtros na lista de alunos
     const handleFilterUsers = () => {
-        const filteredAlunos = originalAlunos.filter(alunos => {
+        const filteredAlunos = originalAlunos.filter(aluno => {
             return (
-                (filterNome === '' || alunos.nome.toLowerCase().includes(filterNome.toLowerCase())) &&
-                (filterSala === 'Todas' || alunos.sala === filterSala)
+                (filterNome === '' || aluno.nome.toLowerCase().includes(filterNome.toLowerCase())) &&
+                (filterSala === 'Todas' || aluno.sala === filterSala) // Aplica os filtros de nome e sala
             );
         });
 
-        setAlunos(filteredAlunos); 
-        handleFilterClose(); 
+        setAlunos(filteredAlunos); // Atualiza a lista de alunos filtrados
+        handleFilterClose(); // Fecha o diálogo após aplicar o filtro
     };
 
+    // Função para resetar os filtros e restaurar a lista original de alunos
     const handleResetFilter = () => {
-        setAlunos(originalAlunos);
-        setFilterNome('');
-        setFilterSala('Todas');
+        setAlunos(originalAlunos); // Restaura a lista original de alunos
+        setFilterNome(''); // Limpa o filtro de nome
+        setFilterSala('Todas'); // Redefine o filtro de sala para 'Todas'
     };
 
-
+    // Hook que busca os alunos ao montar o componente
     useEffect(() => {
-        fetchAlunos();
-    }, [token]);
+        fetchAlunos(); // Chama a função para buscar alunos
+    }, [token]); // Dependência: reexecuta se o token mudar
+
 
     return (
         <>      

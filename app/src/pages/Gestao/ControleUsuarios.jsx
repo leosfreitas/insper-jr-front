@@ -569,18 +569,14 @@ function ControleUsuarios() {
                 </DialogContent>
                 <DialogActions>
                     <Button 
-                        variant="contained" 
                         color="primary" 
                         onClick={handleCloseCreateDialog}
-                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                         >
                         Cancelar
                     </Button>
                     <Button 
-                        variant="contained" 
                         color="primary" 
                         onClick={handleCreateUser}
-                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                         >
                         Adicionar
                     </Button>
@@ -635,18 +631,14 @@ function ControleUsuarios() {
                     </DialogContent>
                     <DialogActions>
                         <Button 
-                            variant="contained" 
                             color="primary" 
                             onClick={handleCloseEditDialog}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                             Cancelar
                         </Button>
                         <Button 
-                            variant="contained" 
                             color="primary" 
                             onClick={handleEditSave}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                             Editar
                         </Button>
@@ -679,18 +671,14 @@ function ControleUsuarios() {
                     </DialogContent>
                     <DialogActions>
                         <Button 
-                            variant="contained" 
                             color="primary" 
                             onClick={handleCloseFilterDialog}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                             Cancelar
                         </Button>
                         <Button 
-                            variant="contained" 
                             color="primary" 
                             onClick={handleFilterUsers}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                             Filtrar
                         </Button>

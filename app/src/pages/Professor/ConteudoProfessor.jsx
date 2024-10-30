@@ -531,7 +531,7 @@ function ConteudoProfessor() {
                                     <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'6%' }}>Data</Typography>
                                 </TableCell>
                                 <TableCell sx={{ textAlign: 'left', width: '20%'}}>
-                                    <Typography variant="h5" sx={{ fontWeight: 600 ,marginLeft:'5%'}}>Horário</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600 ,marginLeft:'4%'}}>Horário</Typography>
                                 </TableCell>
                                 <TableCell sx={{ textAlign: 'center', width: '20%' }}>
                                     <Typography variant="h5" sx={{ fontWeight: 600 }}>Matéria</Typography>
