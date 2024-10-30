@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import HeaderGestao from './HeaderGestao';
 import Cookies from 'universal-cookie';
 import {
@@ -19,9 +18,9 @@ import {
     DialogTitle,
     TextField,
     MenuItem,
-    Select,
     CircularProgress,
 } from '@mui/material';
+import './static/date-picker.css'
 
 function ControleUsuarios() {
     const [users, setUsers] = useState([]); 

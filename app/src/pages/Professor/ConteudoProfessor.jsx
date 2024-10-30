@@ -648,7 +648,6 @@ function ConteudoProfessor() {
                             <MenuItem value="Presencial">Presencial</MenuItem>
                             <MenuItem value="Online">Online</MenuItem>
                         </TextField>
-                              <Box   sx={{marginLeft: '35%',width:'100%'}}>
                                 <DatePicker
                                 selected={filterData}
                                 onChange={handleFilterDate}
@@ -657,8 +656,6 @@ function ConteudoProfessor() {
                                 className="date-picker"
                                 width = '100%'
                             />
-                            </Box> 
-
                         </DialogContent>
                         <DialogActions>
                             <Button 
