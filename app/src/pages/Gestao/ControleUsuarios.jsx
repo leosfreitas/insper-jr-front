@@ -55,7 +55,7 @@ function ControleUsuarios() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Falha ao buscar usuaários');
+                throw new Error('Falha ao buscar usuários');
             }
             return response.json();
         })
@@ -502,17 +502,18 @@ function ControleUsuarios() {
                                     fullWidth
                                     margin="normal"
                                 />
-                                <Select
+                                <TextField
+                                    select
                                     label="Permissão"
-                                    value={userEdit.permissao}
-                                    name="permissao"
-                                    onChange={handleEditChange}
                                     fullWidth
                                     margin="normal"
+                                    name="permissao"
+                                    value={userEdit.permissao} 
+                                    onChange={handleEditChange}
                                 >
                                     <MenuItem value="GESTAO">Gestão</MenuItem>
                                     <MenuItem value="PROFESSOR">Professor</MenuItem>
-                                </Select>
+                                </TextField>
                             </>
                         )}
                     </DialogContent>
