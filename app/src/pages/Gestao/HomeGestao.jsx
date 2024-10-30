@@ -231,7 +231,7 @@ function HomeGestao() {
                             bottom: 5
                         }}
                     >
-                        <XAxis dataKey="subject" />
+                        <XAxis dataKey="subject" tickFormatter={(value, index) => index + 1} />
                         <YAxis />
                         <Tooltip />
                         <Legend />
