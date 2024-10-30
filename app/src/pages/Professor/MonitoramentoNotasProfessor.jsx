@@ -128,9 +128,9 @@ function MonitoramentoNotasProfessor() {
                     onClick={() => window.location.href = '/home'}
                 />
                 {aluno ? (
-                    <Typography variant="h4">{aluno.nome}</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: 'bold' }}>{aluno.nome}</Typography>
                 ) : (
-                    <Typography variant="h4">Carregando...</Typography> 
+                    <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Carregando...</Typography> 
                 )}
             </Box>
             {aluno && (
@@ -140,10 +140,10 @@ function MonitoramentoNotasProfessor() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Typography variant="h5">Avaliação</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Avaliação</Typography>
                                     </TableCell>
                                     <TableCell align="right" sx={{ paddingRight: '20%' }}>
-                                        <Typography variant="h5">Nota</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Nota</Typography>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
