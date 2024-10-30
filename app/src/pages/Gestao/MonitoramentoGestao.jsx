@@ -292,7 +292,7 @@ function MonitoramentoGestao() {
                                 <TableCell>
                                     <Typography variant="h5" sx={{ fontWeight: 600 }}>Nome</Typography>
                                 </TableCell>
-                                <TableCell align='center' sx={{paddingRight: '18%'}}>
+                                <TableCell align='center' sx={{paddingRight: '16%'}}>
                                     <Typography variant="h5" sx={{ fontWeight: 600 }}>Notas</Typography>
                                 </TableCell>
                                 <TableCell align="right" sx={{ paddingRight: '5%' }}> 
@@ -312,7 +312,17 @@ function MonitoramentoGestao() {
                                             variant="contained" 
                                             color="primary" 
                                             onClick={() => handleViewNotas(aluno.cpf)} 
-                                            sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
+                                            sx={{
+                                                backgroundColor: '#015495', 
+                                                color: 'white',
+                                                borderRadius: '25px', 
+                                                padding: '10px 20px',
+                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                transition: 'transform 0.3s', 
+                                                '&:hover': {
+                                                    transform: 'scale(1.05)',
+                                                },
+                                            }}
                                         >
                                             Visualizar
                                         </Button>
@@ -323,7 +333,17 @@ function MonitoramentoGestao() {
                                                 variant="contained" 
                                                 color="primary" 
                                                 onClick={() => handleViewEditar(aluno.cpf)} 
-                                                sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
+                                                sx={{
+                                                    backgroundColor: '#015495', 
+                                                    color: 'white',
+                                                    borderRadius: '25px', 
+                                                    padding: '10px 20px',
+                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                    transition: 'transform 0.3s', 
+                                                    '&:hover': {
+                                                        transform: 'scale(1.05)',
+                                                    },
+                                                }}
                                             >
                                                 Editar
                                             </Button>
@@ -331,7 +351,17 @@ function MonitoramentoGestao() {
                                                 variant="contained" 
                                                 color="secondary" 
                                                 onClick={() => handleDeleteAluno(aluno.cpf)}
-                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                sx={{
+                                                    backgroundColor: '#ab2325', 
+                                                    color: 'white',
+                                                    borderRadius: '25px', 
+                                                    padding: '10px 20px',
+                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                    transition: 'transform 0.3s', 
+                                                    '&:hover': {
+                                                        transform: 'scale(1.05)',
+                                                    },
+                                                }}
                                             >
                                                 Remover
                                             </Button>
@@ -465,22 +495,42 @@ function MonitoramentoGestao() {
                 </DialogContent>
                 <DialogActions>
                     <Button 
-                        variant="contained" 
-                        color="primary" 
+                        variant="text"
                         onClick={handleCloseCreateDialog}
-                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
-                        >
+                        sx={{ 
+                            color: '#015495', 
+                            backgroundColor: 'white', 
+                            boxShadow: 'none', 
+                            marginRight: '10px', 
+                            marginBottom: '10px', 
+                            '&:hover': { 
+                                color: '#013a6b',
+                                backgroundColor: 'white'
+                            } 
+                        }}
+                    >
                         Cancelar
                     </Button>
                     <Button 
-                        variant="contained" 
-                        color="primary" 
+                        variant="text"
                         onClick={handleCreateAlunoSubmit}
-                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
-                        >
+                        sx={{ 
+                            color: '#015495', 
+                            backgroundColor: 'white', 
+                            boxShadow: 'none', 
+                            marginBottom: '10px', 
+                            '&:hover': { 
+                                color: '#013a6b', 
+                                backgroundColor: 'white'
+                            } 
+                        }}
+                    >
                         Adicionar
                     </Button>
                 </DialogActions>
+
+
+
             </Dialog>
 
             <Dialog open={openEditDialog} onClose={handleCloseEditDialog} maxWidth="sm" fullWidth>
@@ -531,18 +581,36 @@ function MonitoramentoGestao() {
                     </DialogContent>
                     <DialogActions>
                         <Button 
-                            variant="contained" 
-                            color="primary" 
+                            variant="text" 
                             onClick={handleCloseEditDialog}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            sx={{ 
+                                color: '#015495', 
+                                backgroundColor: 'white', 
+                                boxShadow: 'none', 
+                                marginRight: '10px', 
+                                marginBottom: '10px', 
+                                '&:hover': { 
+                                    color: '#013a6b',
+                                    backgroundColor: 'white'
+                                } 
+                            }}
                             >
                             Cancelar
                         </Button>
                         <Button 
-                            variant="contained" 
-                            color="primary" 
+                            variant="text" 
                             onClick={handleEditSave}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            sx={{ 
+                                color: '#015495', 
+                                backgroundColor: 'white', 
+                                boxShadow: 'none', 
+                                marginRight: '10px', 
+                                marginBottom: '10px', 
+                                '&:hover': { 
+                                    color: '#013a6b',
+                                    backgroundColor: 'white'
+                                } 
+                            }}
                             >
                             Editar
                         </Button>
@@ -573,18 +641,36 @@ function MonitoramentoGestao() {
                     </DialogContent>
                     <DialogActions>
                         <Button 
-                            variant="contained" 
-                            color="primary" 
+                            variant="text" 
                             onClick={handleFilterClose}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            sx={{ 
+                                color: '#015495', 
+                                backgroundColor: 'white', 
+                                boxShadow: 'none', 
+                                marginRight: '10px', 
+                                marginBottom: '10px', 
+                                '&:hover': { 
+                                    color: '#013a6b',
+                                    backgroundColor: 'white'
+                                } 
+                            }}
                             >
                             Cancelar
                         </Button>
                         <Button 
-                            variant="contained" 
-                            color="primary" 
+                            variant="text" 
                             onClick={handleFilterUsers}
-                            sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+                            sx={{ 
+                                color: '#015495', 
+                                backgroundColor: 'white', 
+                                boxShadow: 'none', 
+                                marginRight: '10px', 
+                                marginBottom: '10px', 
+                                '&:hover': { 
+                                    color: '#013a6b',
+                                    backgroundColor: 'white'
+                                } 
+                            }}
                             >
                             Filtrar
                         </Button>

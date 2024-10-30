@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import HeaderProfessor from './HeaderProfessor';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
 import Cookies from 'universal-cookie';
 import { 
     Button, 
@@ -26,6 +27,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+
 } from '@mui/material';
 
 function ConteudoProfessor() {
@@ -463,18 +465,14 @@ function ConteudoProfessor() {
                             </DialogContent>
                                 <DialogActions>
                                     <Button 
-                                        variant="contained" 
                                         color="primary" 
                                         onClick={CloseAvisoDialog}
-                                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                         >
                                         Cancelar
                                     </Button>
                                     <Button 
-                                        variant="contained" 
                                         color="primary" 
                                         onClick={handleSubmit}
-                                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                         >
                                         Adicionar
                                     </Button>
@@ -507,18 +505,14 @@ function ConteudoProfessor() {
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleCloseAvisosFilterDialog}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleFilterAvisos}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Filtrar
                             </Button>
@@ -654,29 +648,28 @@ function ConteudoProfessor() {
                             <MenuItem value="Presencial">Presencial</MenuItem>
                             <MenuItem value="Online">Online</MenuItem>
                         </TextField>
-                        <DatePicker
+                              <Box   sx={{marginLeft: '35%',width:'100%'}}>
+                                <DatePicker
                                 selected={filterData}
                                 onChange={handleFilterDate}
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="Selecionar data"
                                 className="date-picker"
+                                width = '100%'
                             />
+                            </Box> 
 
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleCloseGradeFilterDialog}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleFilterGrades}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Filtrar
                             </Button>

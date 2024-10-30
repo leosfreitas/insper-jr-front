@@ -226,18 +226,14 @@ function MonitoramentoProfessor() {
                 </DialogContent>
                 <DialogActions>
                     <Button 
-                        variant="contained" 
                         color="primary" 
                         onClick={handleFilterClose}
-                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                         >
                         Cancelar
                     </Button>
                     <Button 
-                        variant="contained" 
                         color="primary" 
                         onClick={handleFilterUsers}
-                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                         >
                         Filtrar
                     </Button>

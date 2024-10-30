@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, Legend,LineChart } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, Legend } from 'recharts';
 import HeaderGestao from './HeaderGestao';
 import Cookies from 'universal-cookie';
 import { Box, Typography, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
@@ -9,12 +9,13 @@ function HomeGestao() {
     const [barData, setBarData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('geral');
+    const [pieFilter, setPieFilter] = useState('total'); // Filtro inicial como 'total' para exibir total de alunos
     const cookies = new Cookies();
     const token = cookies.get('token');
 
     const fetchData = async () => {
         try {
-            const [alunospresenicalResponse, alunosOnlineResponse, professoresResponse, gestaoResponse, notasGeraisResponse, notasPresencialResponse, notasOnlineResponse] = await Promise.all([
+            const [alunosPresencialResponse, alunosOnlineResponse, professoresResponse, gestaoResponse, notasGeraisResponse, notasPresencialResponse, notasOnlineResponse] = await Promise.all([
                 fetch("http://127.0.0.1:8000/info/getNumeroAlunosPresencial", { method: 'GET', headers: { 'Authorization': `Bearer ${token}` } }),
                 fetch("http://127.0.0.1:8000/info/getNumeroAlunosOnline", { method: 'GET', headers: { 'Authorization': `Bearer ${token}` } }),
                 fetch("http://127.0.0.1:8000/info/getNumeroProfessores", { method: 'GET', headers: { 'Authorization': `Bearer ${token}` } }),
@@ -24,8 +25,8 @@ function HomeGestao() {
                 fetch("http://127.0.0.1:8000/info/getNotasOnline", { method: 'GET', headers: { 'Authorization': `Bearer ${token}` } })
             ]);
 
-            const alunos_presenciais = await alunospresenicalResponse.json();
-            const alunos_online = await alunosOnlineResponse.json();
+            const alunosPresenciais = await alunosPresencialResponse.json();
+            const alunosOnline = await alunosOnlineResponse.json();
             const professores = await professoresResponse.json();
             const gestao = await gestaoResponse.json();
             const notasGerais = await notasGeraisResponse.json();
@@ -33,8 +34,8 @@ function HomeGestao() {
             const notasOnline = await notasOnlineResponse.json();
 
             setData([
-                { name: "Alunos Presencial", value: alunos_presenciais },
-                { name: "Alunos Online", value: alunos_online },
+                { name: "Alunos Presencial", value: alunosPresenciais },
+                { name: "Alunos Online", value: alunosOnline },
                 { name: "Professores", value: professores },
                 { name: "Gestão", value: gestao }
             ]);
@@ -64,11 +65,27 @@ function HomeGestao() {
         fetchData();
     }, []);
 
-    const getFilteredBarData = () => {
-        return barData; // Retorna os dados presenciais e online para o gráfico
+    const getFilteredPieData = () => {
+        if (pieFilter === 'total') {
+            // Calcula o total de alunos e retorna uma única entrada "Alunos"
+            const totalAlunos = data
+                .filter(item => item.name.includes('Alunos'))
+                .reduce((sum, item) => sum + item.value, 0);
+            return [
+                { name: "Alunos", value: totalAlunos },
+                { name: "Professores", value: data.find(item => item.name === 'Professores')?.value || 0 },
+                { name: "Gestão", value: data.find(item => item.name === 'Gestão')?.value || 0 }
+            ];
+        }
+        if (pieFilter === 'students') return data.filter(item => item.name.includes('Alunos'));
+        return data; // Exibe todos
     };
-    const COLORS = ['#0000FF', '#FF0000', '#FFD700', '#006400']; // Azul, Vermelho, Amarelo, Verde Escuro
 
+    const getFilteredBarData = () => {
+        return barData;
+    };
+
+    const COLORS = ['#0000FF', '#FF0000', '#FFD700', '#006400']; // Azul, Vermelho, Amarelo, Verde Escuro
 
     return (
         <>
@@ -89,6 +106,7 @@ function HomeGestao() {
             </Box>
 
             <Grid container spacing={4} padding={4} direction="column" alignItems="center">
+                
 
                 {/* Gráfico de pizza para Alunos, Professores e Gestão */}
                 <Grid item xs={12} style={{ width: '80%' }}>
@@ -106,12 +124,26 @@ function HomeGestao() {
                             width: '100%'
                         }}
                     >
+
+                <Grid item xs={12} style={{ width: '50%' }}  sx={{marginBottom:2}}>
+                    <FormControl fullWidth>
+                        <InputLabel id="pie-filter-label" sx={{marginTop:-1}}></InputLabel>
+                        <Select
+                            labelId="pie-filter-label"
+                            value={pieFilter}
+                            onChange={(e) => setPieFilter(e.target.value)}
+                        >
+                            <MenuItem value="total">Total de Alunos, Professores e Gestão</MenuItem>
+                            <MenuItem value="students">Alunos Presenciais e Alunos Online</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
                         <Typography variant="h6" gutterBottom>
-                            Distribuição de Alunos, Professores e Gestão
+                            Distribuição de Tipos de Usuários
                         </Typography>
                         <PieChart width={500} height={400}>
                             <Pie
-                                data={data}
+                                data={getFilteredPieData()}
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
@@ -120,7 +152,7 @@ function HomeGestao() {
                                 fill="#8884d8"
                                 dataKey="value"
                             >
-                                {data.map((entry, index) => (
+                                {getFilteredPieData().map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
@@ -148,7 +180,7 @@ function HomeGestao() {
                         {/* Componente de filtro */}
                         <Grid item xs={12} style={{ width: '50%' }}  sx={{marginTop:1}}>
                             <FormControl fullWidth>
-                                <InputLabel id="filter-label" sx={{marginTop:-1}}>Selecione o Filtro</InputLabel>
+                                <InputLabel id="filter-label" sx={{marginTop:-1}}></InputLabel>
                                 <Select
                                     labelId="filter-label"
                                     value={filter}
@@ -160,26 +192,25 @@ function HomeGestao() {
                             </FormControl>
                         </Grid>
                         <Typography variant="h6" gutterBottom>
-                            {filter === 'geral' ? 'Notas Gerais' : 'Notas Presencial vs Online'}
+                            Comparação de Notas
                         </Typography>
                         <BarChart
-                            width={1000}
+                            width={600}
                             height={400}
-                            data={getFilteredBarData()} // Usa os dados filtrados
-                            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                            data={getFilteredBarData()}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5
+                            }}
                         >
                             <XAxis dataKey="subject" />
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            {filter === 'geral' ? (
-                                <Bar dataKey="Geral" fill={COLORS[0]} />
-                            ) : (
-                                <>
-                                    <Bar dataKey="Presencial" fill={COLORS[3]}  />
-                                    <Bar dataKey="Online" fill={COLORS[1]}  />
-                                </>
-                            )}
+                            <Bar dataKey={filter === 'geral' ? 'Geral' : 'Presencial'} fill="#0000FF" />
+                            {filter === 'separado' && <Bar dataKey="Online" fill="#FF0000" />}
                         </BarChart>
                     </Box>
                 </Grid>
