@@ -4,6 +4,12 @@ import HeaderGestao from './HeaderGestao';
 import Cookies from 'universal-cookie';
 import { Box, Typography, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
+/**
+ * Componente principal da página de gestão que exibe dados estatísticos sobre alunos e professores.
+ *
+ * @function HomeGestao
+ * @returns {JSX.Element} Elemento JSX representando a interface de gestão.
+ */
 function HomeGestao() {
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
@@ -13,6 +19,13 @@ function HomeGestao() {
     const cookies = new Cookies();
     const token = cookies.get('token');
 
+    /**
+     * Função assíncrona que busca dados de alunos, professores e notas de diversas fontes.
+     *
+     * @async
+     * @function fetchData
+     * @returns {Promise<void>}
+     */
     const fetchData = async () => {
         try {
             const [alunosPresencialResponse, alunosOnlineResponse, professoresResponse, gestaoResponse, notasGeraisResponse, notasPresencialResponse, notasOnlineResponse] = await Promise.all([
@@ -48,6 +61,15 @@ function HomeGestao() {
         }
     };
 
+    /**
+     * Processa os dados das notas para gerar um conjunto de dados para o gráfico de barras.
+     *
+     * @function processBarData
+     * @param {Array<Object>} notasGerais - Array de notas gerais dos alunos.
+     * @param {Array<Object>} notasPresencial - Array de notas dos alunos presenciais.
+     * @param {Array<Object>} notasOnline - Array de notas dos alunos online.
+     * @returns {void}
+     */
     const processBarData = (notasGerais, notasPresencial, notasOnline) => {
         const subjects = Object.keys(notasPresencial[0]);
         const processedBarData = subjects.map(subject => {
@@ -65,6 +87,12 @@ function HomeGestao() {
         fetchData();
     }, []);
 
+    /**
+     * Filtra os dados do gráfico de pizza com base no filtro selecionado.
+     *
+     * @function getFilteredPieData
+     * @returns {Array<Object>} Dados filtrados para o gráfico de pizza.
+     */
     const getFilteredPieData = () => {
         if (pieFilter === 'total') {
             const totalAlunos = data
@@ -80,6 +108,12 @@ function HomeGestao() {
         return data;
     };
 
+    /**
+     * Obtém os dados filtrados para o gráfico de barras.
+     *
+     * @function getFilteredBarData
+     * @returns {Array<Object>} Dados filtrados para o gráfico de barras.
+     */
     const getFilteredBarData = () => {
         return barData;
     };

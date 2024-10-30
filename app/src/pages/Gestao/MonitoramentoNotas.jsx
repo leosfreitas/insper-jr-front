@@ -17,32 +17,55 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Select,
     MenuItem,
 } from '@mui/material';
 import HeaderGestao from './HeaderGestao';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts'; // Importar os componentes do Recharts
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts'; // Importa componentes do Recharts para gráficos
 
+/**
+ * Componente MonitoramentoNotas.
+ * 
+ * Este componente é responsável por monitorar e gerenciar as notas de um aluno.
+ * Ele permite adicionar, remover e filtrar notas, bem como visualizar gráficos de desempenho.
+ *
+ * @returns {JSX.Element} O componente MonitoramentoNotas.
+ */
 function MonitoramentoNotas() {
+    // Extrai o CPF do aluno da URL
     const { cpf } = useParams();
+    
+    // Estado para armazenar informações do aluno
     const [aluno, setAluno] = useState(null);
+    // Estado para armazenar erros
     const [error, setError] = useState(null);
+    // Estado para controlar o carregamento dos dados
     const [loading, setLoading] = useState(true);
+    // Estado para armazenar nova nota a ser adicionada
     const [newNota, setNewNota] = useState({ avaliacao: '', nota: '' });
+    // Estado para controlar a abertura do diálogo de adicionar nota
     const [openDialog, setOpenDialog] = useState(false);
-    const [openChartDialog, setOpenChartDialog] = useState(false); // Adicionando estado para o gráfico
-    const [chartData, setChartData] = useState([]); // Dados do gráfico
+    // Estado para controlar a abertura do diálogo do gráfico
+    const [openChartDialog, setOpenChartDialog] = useState(false);
+    // Dados do gráfico
+    const [chartData, setChartData] = useState([]);
+    // Filtros para notas
     const [filterNota, setFilterNota] = useState('');
     const [filterAvaliacao, setFilterAvaliacao] = useState('');
     const [filteredNotas, setFilteredNotas] = useState([]);
     const [minNota, setMinNota] = useState('');
     const [maxNota, setMaxNota] = useState('');
-
+    // Estado para controlar a abertura do diálogo de filtro
     const [openFilterDialog, setOpenFilterDialog] = useState(false);
+    
     const cookies = new Cookies();
     const token = cookies.get('token');
 
+    /**
+     * Função para buscar as informações do aluno pelo CPF.
+     * 
+     * Realiza uma chamada à API para obter os dados do aluno e suas notas.
+     */
     const fetchAluno = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/alunos/get/${cpf}`, {
@@ -68,6 +91,11 @@ function MonitoramentoNotas() {
         }
     };
 
+    /**
+     * Função para formatar os dados das notas para o gráfico.
+     * 
+     * @returns {Array} Um array de objetos contendo simulado e nota.
+     */
     const getFilteredLineData = () => {
         return Object.entries(aluno.notas).map(([simulado, nota]) => ({
             simulado,
@@ -75,13 +103,25 @@ function MonitoramentoNotas() {
         }));
     };
 
+    /**
+     * Função para abrir o diálogo do gráfico de notas.
+     */
     const handleOpenChart = () => {
         setChartData(getFilteredLineData());
         setOpenChartDialog(true);
     };
 
+    /**
+     * Função para fechar o diálogo do gráfico.
+     */
     const handleCloseChart = () => setOpenChartDialog(false);
 
+    /**
+     * Função para determinar o estilo da célula com base no valor da nota.
+     * 
+     * @param {number} notaValue - O valor da nota.
+     * @returns {Object} Um objeto com estilos CSS.
+     */
     const getNotaStyle = (notaValue) => {
         if (notaValue < 5) {
             return { backgroundColor: '#ff5252', color: 'black' };
@@ -92,6 +132,9 @@ function MonitoramentoNotas() {
         }
     };
 
+    /**
+     * Função para adicionar uma nova nota ao aluno.
+     */
     const handleAddNota = () => {
         fetch(`http://127.0.0.1:8000/alunos/addNota/${cpf}`, {
             method: 'POST',
@@ -116,6 +159,11 @@ function MonitoramentoNotas() {
             });
     };
 
+    /**
+     * Função para remover uma nota do aluno.
+     * 
+     * @param {string} avaliacao - A avaliação a ser removida.
+     */
     const handleRemoveNota = (avaliacao) => {
         fetch(`http://127.0.0.1:8000/alunos/removeNota/${cpf}`, {
             method: 'DELETE',
@@ -140,14 +188,23 @@ function MonitoramentoNotas() {
             });
     };
 
+    /**
+     * Função para abrir o diálogo de filtro.
+     */
     const handleOpenFilter = () => {
         setOpenFilterDialog(true);
     };
 
+    /**
+     * Função para fechar o diálogo de filtro.
+     */
     const handleCloseFilter = () => {
         setOpenFilterDialog(false);
     };
 
+    /**
+     * Função para filtrar as notas com base nos critérios definidos.
+     */
     const handleFilterNotas = () => {
         const filtered = Object.entries(aluno.notas).filter(([avaliacao, nota]) => {
             const notaNum = parseFloat(nota);
@@ -163,6 +220,9 @@ function MonitoramentoNotas() {
         handleCloseFilter();
     };
 
+    /**
+     * Função para redefinir os filtros das notas.
+     */
     const handleFilterReset = () => {
         setFilterAvaliacao('');
         setMinNota('');
@@ -170,6 +230,7 @@ function MonitoramentoNotas() {
         setFilteredNotas(Object.entries(aluno.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
     };
 
+    // Efeito para buscar os dados do aluno ao montar o componente
     useEffect(() => {
         fetchAluno();
     }, [token, cpf]);

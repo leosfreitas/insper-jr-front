@@ -19,10 +19,16 @@ import {
     DialogTitle,
     TextField,
     MenuItem,
-    Select,
     CircularProgress,
 } from '@mui/material';
 
+/**
+ * Componente MonitoramentoGestao que gerencia o monitoramento de alunos.
+ * Permite visualizar, editar, criar e deletar registros de alunos, além de aplicar filtros.
+ * 
+ * @component
+ * @returns {JSX.Element} O componente que renderiza a interface de gestão de alunos.
+ */
 function MonitoramentoGestao() {
     const [alunos, setAlunos] = useState([]); 
     const [error, setError] = useState(null); 
@@ -47,6 +53,14 @@ function MonitoramentoGestao() {
     const token = cookies.get('token'); 
     const navigate = useNavigate();
 
+
+    /**
+     * Função para buscar a lista de alunos do servidor.
+     * Atualiza os estados 'alunos' e 'originalAlunos' com os dados retornados.
+     * Define mensagens de erro em caso de falha.
+     * 
+     * @returns {Promise<void>}
+     */
     const fetchAlunos = () => {
         fetch('http://127.0.0.1:8000/alunos/get', {
             method: 'GET',
@@ -70,6 +84,14 @@ function MonitoramentoGestao() {
         });
     };
 
+    /**
+     * Função para buscar um aluno específico pelo CPF.
+     * Atualiza o estado 'alunoEdit' com os dados do aluno encontrado.
+     * Define mensagens de erro em caso de falha.
+     * 
+     * @param {string} cpf - O CPF do aluno a ser buscado.
+     * @returns {Promise<void>}
+     */
     const fetchAluno = async (cpf) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/alunos/get/${cpf}`, {
@@ -92,6 +114,13 @@ function MonitoramentoGestao() {
         }
     };
 
+     /**
+     * Função para salvar as alterações feitas em um aluno editado.
+     * Atualiza os dados do aluno no servidor e recarrega a lista de alunos.
+     * Define mensagens de erro em caso de falha.
+     * 
+     * @returns {Promise<void>}
+     */
     const handleEditSave = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/alunos/update/${alunoEdit.cpf}`, {
@@ -117,15 +146,32 @@ function MonitoramentoGestao() {
         }
     };
 
+    /**
+     * Função para abrir o diálogo de edição para um aluno selecionado.
+     * 
+     * @param {string} cpf - O CPF do aluno a ser editado.
+     */
     const handleViewEditar = (cpf) => {
         setSelectedCpf(cpf);  
         setOpenEditDialog(true);
     };
 
+    /**
+     * Função para navegar para a página de notas de um aluno selecionado.
+     * 
+     * @param {string} cpf - O CPF do aluno cujas notas serão visualizadas.
+     */
     const handleViewNotas = (cpf) => {
         navigate(`/monitoramento/notas/${cpf}`);
     };
 
+    /**
+     * Função para deletar um aluno após confirmação do usuário.
+     * Atualiza a lista de alunos após a exclusão.
+     * Define mensagens de erro em caso de falha.
+     * 
+     * @param {string} cpf - O CPF do aluno a ser deletado.
+     */
     const handleDeleteAluno = (cpf) => {
         if (window.confirm("Tem certeza que deseja deletar este aluno?")) {
             fetch(`http://127.0.0.1:8000/alunos/delete/${cpf}`, {
@@ -147,10 +193,17 @@ function MonitoramentoGestao() {
         }
     };
 
+    /**
+     * Função para abrir o diálogo de criação de aluno.
+     */
     const handleOpenCreateDialog = () => {
         setOpenCreateDialog(true);
     };
 
+    /**
+     * Função para fechar o diálogo de criação de aluno.
+     * Reseta os campos do novo aluno e limpa mensagens de erro.
+     */
     const handleCloseCreateDialog = () => {
         setOpenCreateDialog(false);
         setNewAluno({
@@ -163,6 +216,10 @@ function MonitoramentoGestao() {
         setError(null);
     };
 
+    /**
+     * Função para fechar o diálogo de edição de aluno.
+     * Reseta o aluno editado e limpa mensagens de erro.
+     */
     const handleCloseEditDialog = () => {
         setSelectedCpf(null);
         setOpenEditDialog(false);
@@ -170,16 +227,31 @@ function MonitoramentoGestao() {
         setError(null);
     };
 
+    /**
+     * Função para lidar com as mudanças nos campos do formulário de edição.
+     * 
+     * @param {Object} event - O evento de mudança do campo.
+     */
     const handleEditChange = (event) => {
         const { name, value } = event.target;
         setAlunoEdit((prevState) => ({ ...prevState, [name]: value }));
     };
 
+    /**
+     * Função para lidar com as mudanças nos campos do formulário de criação de aluno.
+     * 
+     * @param {Object} e - O evento de mudança do campo.
+     */
     const handleCreateAlunoChange = (e) => {
         const { name, value } = e.target;
         setNewAluno(prevState => ({ ...prevState, [name]: value }));
     };
 
+    /**
+     * Função para enviar os dados de criação de um novo aluno.
+     * Verifica campos obrigatórios e envia os dados para o servidor.
+     * Define mensagens de erro em caso de falha.
+     */
     const handleCreateAlunoSubmit = () => {
         if (!newAluno || !newAluno.nome) { 
             setError("Por favor, preencha todos os campos obrigatórios.");
@@ -210,14 +282,24 @@ function MonitoramentoGestao() {
         });
     };    
 
+    /**
+     * Função para abrir o diálogo de filtragem de alunos.
+     */
     const handleFilterOpen = () => {
         setOpenFilterDialog(true);
     };
 
+    /**
+     * Função para fechar o diálogo de filtragem de alunos.
+     */
     const handleFilterClose = () => {
         setOpenFilterDialog(false);
     };
 
+    /**
+     * Função para aplicar os filtros selecionados na lista de alunos.
+     * Atualiza o estado 'alunos' com os resultados filtrados.
+     */
     const handleFilterUsers = () => {
         const filteredAlunos = originalAlunos.filter(alunos => {
             return (
@@ -230,12 +312,21 @@ function MonitoramentoGestao() {
         handleFilterClose(); 
     };
 
+    /**
+     * Função para resetar os filtros aplicados.
+     */
     const handleFilterReset = () => {
         setFilterNome('');
         setFilterSala('Todas');
         setAlunos(originalAlunos);
     };
 
+    /**
+     * Gera uma senha aleatória com um comprimento especificado.
+     * 
+     * @param {number} [length=10] - O comprimento da senha gerada.
+     * @returns {string} A senha gerada.
+     */
     const generateRandomPassword = (length = 10) => {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
         let password = '';
@@ -245,10 +336,16 @@ function MonitoramentoGestao() {
         return password;
       };
 
+    /**
+     * Efeito colateral que busca alunos quando o componente é montado ou quando o token muda.
+     */
     useEffect(() => {
         fetchAlunos();
     }, [token]);
-    
+
+    /**
+     * Efeito colateral que busca um aluno quando o CPF selecionado muda.
+     */
     useEffect(() => {
         if (selectedCpf) {
             setLoading(true); 
@@ -256,6 +353,9 @@ function MonitoramentoGestao() {
         }
     }, [selectedCpf]);
 
+    /**
+     * Efeito colateral que gera uma senha aleatória quando o diálogo de criação é aberto.
+     */
     useEffect(() => {
         if (openCreateDialog) {
             const randomPassword = generateRandomPassword();
