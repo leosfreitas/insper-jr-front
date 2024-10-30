@@ -133,30 +133,30 @@ function AvisosAluno() {
                 {value === 0 && ( 
                         <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}>
                             <Table stickyHeader>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell sx={{ width: '25%' }}>
+                            <TableHead>
+                                    <TableRow sx={{ display: 'flex', justifyContent: 'space-between', width: '100%',alignItems: 'space-between' }}>
+                                        <TableCell sx={{ flex: 1 }}>
                                             <Typography variant="h5" sx={{ fontWeight: 600 }}>Título</Typography>
                                         </TableCell>
-                                        <TableCell sx={{ width: '25%' }}>
+                                        <TableCell sx={{ flex: 1 }}>
                                             <Typography variant="h5" sx={{ fontWeight: 600 }}>Autor</Typography>
                                         </TableCell>
-                                        <TableCell sx={{ width: '50%' }}>
+                                        <TableCell sx={{ flex: 1 }}>
                                             <Typography variant="h5" sx={{ fontWeight: 600 }}>Mensagem</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {avisosGeral.length > 0 ? (
-                                        avisosGeral.map((aviso) => (
-                                            <TableRow key={aviso._id}>
-                                                <TableCell>
+                                        avisosGeral.map((aviso,index) => (
+                                            <TableRow key={aviso._id} sx={{ display: 'flex', justifyContent: 'space-between', width: '100%',alignItems: 'space-between' ,backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5',}}>
+                                                <TableCell sx={{ flex: 1 }}>
                                                     <Typography variant="h6">{aviso.titulo}</Typography>
                                                 </TableCell>
-                                                <TableCell>
+                                                <TableCell sx={{ flex: 1 }}>
                                                     <Typography variant="h6">{aviso.autor}</Typography>
                                                 </TableCell>
-                                                <TableCell>
+                                                <TableCell sx={{ flex: 1 }}>
                                                     <Typography variant="h6">{aviso.mensagem}</Typography>
                                                 </TableCell>
                                             </TableRow>
@@ -176,23 +176,24 @@ function AvisosAluno() {
                 {value === 1 && ( 
                         <TableContainer component={Paper} sx={{ height: '50vh', overflowY: 'auto' }}>
                             <Table stickyHeader>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell sx={{ width: '25%' }}>
+                            <TableHead>
+                                    <TableRow sx={{ display: 'flex', justifyContent: 'space-between', width: '100%',alignItems: 'space-between' }}>
+                                        <TableCell sx={{ flex: 1 }}>
                                             <Typography variant="h5" sx={{ fontWeight: 600 }}>Título</Typography>
                                         </TableCell>
-                                        <TableCell sx={{ width: '25%' }}>
+                                        <TableCell sx={{ flex: 1 }}>
                                             <Typography variant="h5" sx={{ fontWeight: 600 }}>Autor</Typography>
                                         </TableCell>
-                                        <TableCell sx={{ width: '50%' }}>
+                                        <TableCell sx={{ flex: 1 }}>
                                             <Typography variant="h5" sx={{ fontWeight: 600 }}>Mensagem</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
+
                                 <TableBody>
                                     {avisosSala.length > 0 ? (
-                                        avisosSala.map((aviso) => (
-                                            <TableRow key={aviso._id}>
+                                        avisosSala.map((aviso,index) => (
+                                            <TableRow key={aviso._id} sx={{backgroundColor: index % 2 === 0 ? 'white' : '#f5f5f5',}}>
                                                 <TableCell>
                                                     <Typography variant="h6">{aviso.titulo}</Typography>
                                                 </TableCell>

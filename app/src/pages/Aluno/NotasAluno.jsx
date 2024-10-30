@@ -272,7 +272,6 @@ function NotasAluno() {
             </Button>
         </Box>
 
-                    {/* Dialog do gráfico */}
                     <Dialog open={openChartDialog} onClose={handleCloseChart} fullWidth maxWidth="md">
                         <DialogTitle sx={{ textAlign: 'center' }}>Gráfico de Desempenho</DialogTitle>
                         <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -291,7 +290,6 @@ function NotasAluno() {
                         </DialogActions>
                     </Dialog>
 
-                {/* Dialog de filtro */}
                 <Dialog open={openFilterDialog} onClose={handleCloseFilter}>
                         <DialogTitle>Filtrar Notas</DialogTitle>
                         <DialogContent>
@@ -333,18 +331,14 @@ function NotasAluno() {
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleCloseFilter}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}}
                             >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleFilterNotas}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                                 Filtrar
                             </Button>
