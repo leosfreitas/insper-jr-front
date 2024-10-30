@@ -4,18 +4,34 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../pages/static/Logo.png';
 import VerifyPermission from './VerifyPermission';
 
-
+/**
+ * Componente para exibir uma página 404 - Não Encontrada.
+ *
+ * Este componente é exibido quando o usuário tenta acessar uma
+ * rota que não existe. Ele fornece opções para redirecionar
+ * o usuário de volta à página inicial ou à página de login,
+ * dependendo de suas permissões.
+ *
+ * @returns {JSX.Element} Um elemento JSX representando a página de erro 404.
+ */
 const NotFound = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Navegação programática
 
+    // Verifica as permissões do usuário
     const { permission, isCheckingPermission } = VerifyPermission();
 
+    /**
+     * Manipulador de evento para redirecionamento.
+     *
+     * Este método redireciona o usuário para a página inicial
+     * se ele tiver permissão, ou para a página de login se não tiver.
+     */
     const handleRedirect = () => {
         console.log(permission);
         if (permission !== null) {
-            navigate('/home');
+            navigate('/home'); // Redireciona para a página inicial se a permissão for válida
         } else {
-            navigate('/login');
+            navigate('/login'); // Redireciona para a página de login se não houver permissão
         }
     };
 
