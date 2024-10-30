@@ -35,14 +35,17 @@ Certifique-se de ter o Node.js instalado. Você pode baixá-lo em [nodejs.org](h
 1. Clone o repositório:
    ```bash
    git clone https://github.com/leosfreitas/insper-jr-front
+
+2. Acesse o diretório do aplicativo:
+   ```bash
    cd app
 
-2. Instale as dependências:
+3. Instale as dependências:
    ```bash
     npm install
 
-3. Inicie o servidor de desenvolvimento:
+4. Inicie o servidor de desenvolvimento:
     ```bash
     npm run dev
 
-4. Abra o navegador e acesse `http://localhost:5173` para ver o aplicativo em execução.
+5. Abra o navegador e acesse `http://localhost:5173` para ver o aplicativo em execução.
