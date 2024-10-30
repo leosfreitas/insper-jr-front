@@ -3,18 +3,23 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import HeaderAluno from './HeaderAluno';
 import Cookies from 'universal-cookie';
-import { Grid, Card, CardContent, Typography, Container, Alert, Box, IconButton, FormControl, InputLabel } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Container, Alert, Box, IconButton, FormControl } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import './static/DatePickerStyler.css';
 
+// Componente principal que exibe a grade horária do aluno
 function GradeAluno() {
+    // Estados para armazenar a data selecionada, a lista de aulas, o status de carregamento e erros
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [grades, setGrades] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    // Objeto para lidar com cookies e recuperar o token de autenticação do usuário
     const cookies = new Cookies();
     const token = cookies.get("token");
 
+    // Função para formatar a data no padrão 'DD-MM-YYYY' para uso na requisição de dados
     const formatDate = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -22,10 +27,12 @@ function GradeAluno() {
         return `${day}-${month}-${year}`;
     };
 
+    // Atualiza a data selecionada quando o usuário escolhe uma nova data no calendário
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
 
+    // Componente customizado para o botão de seleção de data, estilizado com um ícone de calendário
     const CustomDateInput = forwardRef(({ onClick }, ref) => (
         <IconButton onClick={onClick} ref={ref} sx={{
             backgroundColor: '#ab2325', 
@@ -41,15 +48,18 @@ function GradeAluno() {
         </IconButton>
     ));
 
+    // Hook useEffect para buscar a lista de aulas do aluno sempre que a data selecionada ou o token mudar
     useEffect(() => {
+        // Função assíncrona para buscar dados da grade de aulas do aluno da API
         const fetchGrades = async () => {
-            setLoading(true);
+            setLoading(true); // Inicia o estado de carregamento
             try {
+                // Requisição para obter a grade baseada na data selecionada
                 const response = await fetch(`http://127.0.0.1:8000/grade/${formatDate(selectedDate)}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${token}`, // Token de autenticação
                     },
                 });
                 if (!response.ok) {
@@ -58,6 +68,7 @@ function GradeAluno() {
                 const data = await response.json();
                 console.log("Dados recebidos da API:", data);
 
+                // Verifica se a resposta da API é um array de dados válidos
                 if (Array.isArray(data)) {
                     setGrades(data);
                 } else {
@@ -70,11 +81,11 @@ function GradeAluno() {
                 setError(error.message);
                 setGrades([]);
             } finally {
-                setLoading(false);
+                setLoading(false); // Finaliza o estado de carregamento
             }
         };
 
-        fetchGrades();
+        fetchGrades(); // Chama a função para buscar as grades
     }, [token, selectedDate]);
 
     return (

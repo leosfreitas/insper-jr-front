@@ -18,113 +18,121 @@ import {
     MenuItem,
     Button,
     Box,
-
 } from '@mui/material';
 import HeaderProfessor from './HeaderProfessor';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts'; // Importar os componentes do Recharts
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts'; // Importa os componentes do Recharts
 
 function MonitoramentoNotasProfessor() {
-    const { cpf } = useParams();
-    const [aluno, setAluno] = useState(null);
-    const [error, setError] = useState(null);
-    const [openFilterDialog, setOpenFilterDialog] = useState(false);
-    const [filterAvaliacao, setFilterAvaliacao] = useState('');
-    const [filteredNotas, setFilteredNotas] = useState(null);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [openChartDialog, setOpenChartDialog] = useState(false); // Adicionando estado para o gráfico
-    const [chartData, setChartData] = useState([]); // Dados do gráfico
-    const [minNota, setMinNota] = useState('');
-    const [maxNota, setMaxNota] = useState('');
-    const [loading, setLoading] = useState(true);
-    const cookies = new Cookies();
-    const token = cookies.get('token');
+    const { cpf } = useParams(); // Obtém o CPF do aluno a partir da URL
+    const [aluno, setAluno] = useState(null); // Estado para armazenar os dados do aluno
+    const [error, setError] = useState(null); // Estado para armazenar mensagens de erro
+    const [openFilterDialog, setOpenFilterDialog] = useState(false); // Estado para controle do diálogo de filtro
+    const [filterAvaliacao, setFilterAvaliacao] = useState(''); // Estado para filtro de avaliações
+    const [filteredNotas, setFilteredNotas] = useState(null); // Estado para armazenar notas filtradas
+    const [openDialog, setOpenDialog] = useState(false); // Estado para controle de um diálogo adicional
+    const [openChartDialog, setOpenChartDialog] = useState(false); // Estado para controle do diálogo do gráfico
+    const [chartData, setChartData] = useState([]); // Estado para armazenar os dados do gráfico
+    const [minNota, setMinNota] = useState(''); // Estado para filtro de nota mínima
+    const [maxNota, setMaxNota] = useState(''); // Estado para filtro de nota máxima
+    const [loading, setLoading] = useState(true); // Estado para controle de carregamento
+    const cookies = new Cookies(); // Instância de Cookies para gerenciar cookies
+    const token = cookies.get('token'); // Obtém o token de autenticação
 
+    // Função para buscar os dados do aluno do servidor
     const fetchAluno = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/alunos/get/${cpf}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`, // Adiciona o token no cabeçalho
                 },
             });
 
             if (!response.ok) {
-                throw new Error('Falha ao buscar aluno');
+                throw new Error('Falha ao buscar aluno'); // Lança erro se a resposta não for bem-sucedida
             }
 
-            const data = await response.json();
-            setAluno(data);
-            setFilteredNotas(Object.entries(data.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
-            setLoading(false);
+            const data = await response.json(); // Converte a resposta para JSON
+            setAluno(data); // Atualiza o estado com os dados do aluno
+            setFilteredNotas(Object.entries(data.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))); // Armazena notas filtradas e ordenadas
+            setLoading(false); // Atualiza o estado de carregamento
         } catch (error) {
-            console.error('Erro ao buscar aluno:', error);
-            setError(error.message);
-            setLoading(false);
+            console.error('Erro ao buscar aluno:', error); // Loga erro no console
+            setError(error.message); // Atualiza o estado de erro
+            setLoading(false); // Atualiza o estado de carregamento
         }
     };
+
+    // Função para preparar os dados para o gráfico
     const getFilteredLineData = () => {
         return Object.entries(aluno.notas).map(([simulado, nota]) => ({
             simulado,
-            Nota: parseFloat(nota),
+            Nota: parseFloat(nota), // Converte as notas para número
         }));
     };
 
+    // Função para abrir o diálogo do gráfico
     const handleOpenChart = () => {
-        setChartData(getFilteredLineData());
-        setOpenChartDialog(true);
+        setChartData(getFilteredLineData()); // Define os dados do gráfico
+        setOpenChartDialog(true); // Abre o diálogo do gráfico
     };
 
+    // Função para fechar o diálogo do gráfico
     const handleCloseChart = () => setOpenChartDialog(false);
 
+    // Função para abrir o diálogo de filtro
     const handleOpenFilter = () => {
-        setOpenFilterDialog(true);
+        setOpenFilterDialog(true); // Abre o diálogo de filtro
     };
 
+    // Função para fechar o diálogo de filtro
     const handleCloseFilter = () => {
-        setOpenFilterDialog(false);
+        setOpenFilterDialog(false); // Fecha o diálogo de filtro
     };
 
+    // Função para determinar o estilo da célula de nota com base no valor da nota
     const getNotaStyle = (notaValue) => {
         if (notaValue < 5) {
-            return { backgroundColor: '#ff5252', color: 'black' };
+            return { backgroundColor: '#ff5252', color: 'black' }; // Vermelho para notas abaixo de 5
         } else if (notaValue >= 5 && notaValue < 7) {
-            return { backgroundColor: '#ffd54f', color: 'black' };
+            return { backgroundColor: '#ffd54f', color: 'black' }; // Amarelo para notas entre 5 e 7
         } else {
-            return { backgroundColor: '#66bb6a', color: 'black' };
+            return { backgroundColor: '#66bb6a', color: 'black' }; // Verde para notas 7 ou superiores
         }
     };
 
+    // Função para filtrar as notas com base nos critérios definidos
     const handleFilterNotas = () => {
         const filtered = Object.entries(aluno.notas).filter(([avaliacao, nota]) => {
             const notaNum = parseFloat(nota);
             
             return (
-                (filterAvaliacao === '' || avaliacao.toLowerCase().includes(filterAvaliacao.toLowerCase())) &&
-                (minNota === '' || notaNum >= parseFloat(minNota)) &&
-                (maxNota === '' || notaNum <= parseFloat(maxNota))
+                (filterAvaliacao === '' || avaliacao.toLowerCase().includes(filterAvaliacao.toLowerCase())) && // Filtro de avaliação
+                (minNota === '' || notaNum >= parseFloat(minNota)) && // Filtro de nota mínima
+                (maxNota === '' || notaNum <= parseFloat(maxNota)) // Filtro de nota máxima
             );
         });
     
-        const sortedFiltered = filtered.sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]));
+        const sortedFiltered = filtered.sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])); // Ordena as notas filtradas
     
-        setFilteredNotas(sortedFiltered);
-        handleCloseFilter();
+        setFilteredNotas(sortedFiltered); // Atualiza as notas filtradas
+        handleCloseFilter(); // Fecha o diálogo de filtro
     };
 
+    // Função para resetar os filtros
     const handleResetFilter = () => {
-        setFilterAvaliacao('');
-        setMinNota('');
-        setMaxNota('');
-        setFilteredNotas(Object.entries(aluno.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1])));
+        setFilterAvaliacao(''); // Limpa o filtro de avaliação
+        setMinNota(''); // Limpa o filtro de nota mínima
+        setMaxNota(''); // Limpa o filtro de nota máxima
+        setFilteredNotas(Object.entries(aluno.notas).sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))); // Restaura notas originais
     };
 
-    
-
+    // Hook que busca os dados do aluno ao montar o componente
     useEffect(() => {
-        fetchAluno();
-    }, [token, cpf]);
+        fetchAluno(); // Chama a função para buscar o aluno
+    }, [token, cpf]); // Dependências: reexecuta se o token ou CPF mudar
 
     return (
         <>
@@ -201,6 +209,23 @@ function MonitoramentoNotasProfessor() {
                             marginTop: '5vh',
                             gap: 3,
                             }}>
+                   <Button
+                            variant="contained"
+                            onClick={handleOpenChart} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                            >
+                            Ver Gráfico
+                        </Button>
                         <Button 
                             variant="contained" 
                             color="error" 
@@ -234,23 +259,6 @@ function MonitoramentoNotasProfessor() {
                             }}
                         >
                             Resetar Filtro
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={handleOpenChart} 
-                            sx={{
-                                backgroundColor: '#015495', 
-                                color: 'white',
-                                borderRadius: '25px', 
-                                padding: '10px 20px',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                                transition: 'transform 0.3s', 
-                                '&:hover': {
-                                    transform: 'scale(1.05)',
-                                },
-                            }}
-                            >
-                            Ver Gráfico
                         </Button>
                     </Box>
                     <Dialog open={openFilterDialog} onClose={handleCloseFilter}>
@@ -295,18 +303,14 @@ function MonitoramentoNotasProfessor() {
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleCloseFilter}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}}
                             >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleFilterNotas}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                                 Filtrar
                             </Button>
