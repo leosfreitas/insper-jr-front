@@ -22,6 +22,12 @@ import {
 } from '@mui/material';
 import './static/date-picker.css'
 
+/**
+ * Componente para controle de usuários.
+ *
+ * @function ControleUsuarios
+ * @returns {JSX.Element} O componente que gerencia usuários.
+ */
 function ControleUsuarios() {
     const [users, setUsers] = useState([]); 
     const [error, setError] = useState(null); 
@@ -44,6 +50,11 @@ function ControleUsuarios() {
     const cookies = new Cookies();
     const token = cookies.get('token'); 
 
+    /**
+     * Função para buscar a lista de usuários da API.
+     *
+     * @returns {void}
+     */
     const fetchUsers = () => {
         fetch('http://127.0.0.1:8000/user/get', {
             method: 'GET',
@@ -67,6 +78,12 @@ function ControleUsuarios() {
         });
     };
 
+    /**
+     * Função assíncrona para buscar um usuário específico da API.
+     *
+     * @param {string} id - O ID do usuário a ser buscado.
+     * @returns {Promise<void>}
+     */
     const fetchUser = async (id) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/user/get/${id}`, {
@@ -89,6 +106,12 @@ function ControleUsuarios() {
         }
     };
 
+    /**
+     * Função para deletar um usuário.
+     *
+     * @param {string} id - O ID do usuário a ser deletado.
+     * @returns {void}
+     */
     const handleUserDelete = (id) => {
         if (window.confirm("Tem certeza que deseja deletar este usuário?")) {
             fetch(`http://127.0.0.1:8000/user/delete/${id}`, {
@@ -110,6 +133,11 @@ function ControleUsuarios() {
         }
     };
 
+    /**
+     * Função para salvar as alterações de um usuário editado.
+     *
+     * @returns {Promise<void>}
+     */
     const handleEditSave = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/user/update/${userEdit._id}`, {
@@ -135,23 +163,49 @@ function ControleUsuarios() {
         }
     };
 
+    /**
+     * Função para visualizar e editar um usuário.
+     *
+     * @param {string} id - O ID do usuário a ser editado.
+     * @returns {void}
+     */
     const handleViewEditar = (id) => {
         setSelectedId(id);  
         setOpenEditDialog(true);
     };
 
+    /**
+     * Função para abrir o diálogo de criação de usuário.
+     *
+     * @returns {void}
+     */
     const handleOpenCreateDialog = () => {
         setOpenCreateDialog(true);
     };
 
+    /**
+     * Função para abrir o diálogo de filtro de usuários.
+     *
+     * @returns {void}
+     */
     const handleOpenFilterDialog = () => {
         setOpenFilterDialog(true);
     };
 
+    /**
+     * Função para fechar o diálogo de filtro de usuários.
+     *
+     * @returns {void}
+     */
     const handleCloseFilterDialog = () => {
         setOpenFilterDialog(false);
     };
 
+    /**
+     * Função para fechar o diálogo de criação de usuário.
+     *
+     * @returns {void}
+     */
     const handleCloseCreateDialog = () => {
         setOpenCreateDialog(false);
         setNewUser({
@@ -164,6 +218,11 @@ function ControleUsuarios() {
         setError(null);
     };
 
+    /**
+     * Função para fechar o diálogo de edição de usuário.
+     *
+     * @returns {void}
+     */
     const handleCloseEditDialog = () => {
         setSelectedId(null);
         setOpenEditDialog(false);
@@ -171,16 +230,33 @@ function ControleUsuarios() {
         setError(null);
     };
 
+    /**
+     * Função para tratar mudanças nos campos do formulário de edição.
+     *
+     * @param {Object} event - O evento de mudança do campo.
+     * @returns {void}
+     */
     const handleEditChange = (event) => {
         const { name, value } = event.target;
         setUserEdit((prevState) => ({ ...prevState, [name]: value }));
     };
 
+    /**
+     * Função para tratar mudanças nos campos do formulário de criação de usuário.
+     *
+     * @param {Object} e - O evento de mudança do campo.
+     * @returns {void}
+     */
     const handleCreateUserChange = (e) => {
         const { name, value } = e.target;
         setNewUser(prevState => ({ ...prevState, [name]: value }));
     };
 
+    /**
+     * Função para criar um novo usuário.
+     *
+     * @returns {void}
+     */
     const handleCreateUser = () => {
         if (!newUser || !newUser.nome) { 
             setError("Por favor, preencha todos os campos obrigatórios.");
@@ -211,6 +287,11 @@ function ControleUsuarios() {
         });
     };    
 
+    /**
+     * Função para filtrar usuários com base nos critérios de nome e permissão.
+     *
+     * @returns {void}
+     */
     const handleFilterUsers = () => {
         const filteredUsers = originalUsers.filter(user => {
             return (
@@ -223,12 +304,23 @@ function ControleUsuarios() {
         handleCloseFilterDialog(); 
     };
 
+    /**
+     * Função para resetar os filtros de usuários.
+     *
+     * @returns {void}
+     */
     const handleFilterReset = () => {
         setUsers(originalUsers);
         setFilterNome('');
         setFilterPermissao('Todas');
     };
 
+    /**
+     * Função para gerar uma senha aleatória.
+     *
+     * @param {number} [length=10] - O comprimento da senha a ser gerada.
+     * @returns {string} A senha gerada.
+     */
     const generateRandomPassword = (length = 10) => {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
         let password = '';
@@ -245,11 +337,16 @@ function ControleUsuarios() {
         }
     }, [openCreateDialog]);
 
-
+    /**
+     * Hook de efeito que busca usuários ao montar o componente.
+     */
     useEffect(() => {
         fetchUsers();
     }, [token]);
     
+    /**
+     * Hook de efeito que busca um usuário específico ao selecionar um ID.
+     */
     useEffect(() => {
         if (selectedId) {
             setLoading(true); 

@@ -4,9 +4,21 @@ import Logout from '../../functions/Logout';
 import Logo from '../static/Logo.png';
 import '../static/Header.css';
 
+/**
+ * Componente que representa o cabeçalho da gestão.
+ *
+ * @function HeaderGestao
+ * @returns {JSX.Element} O componente do cabeçalho com links de navegação.
+ */
 const HeaderGestao = () => {
   const location = useLocation(); 
 
+  /**
+   * Retorna a classe CSS para o link baseado no caminho atual.
+   *
+   * @param {string} path - O caminho para o qual o link aponta.
+   * @returns {string} A classe 'active' se o caminho atual corresponder ao caminho do link, caso contrário, uma string vazia.
+   */
   const getLinkClass = (path) => {
     return location.pathname === path ? 'active' : '';
   };

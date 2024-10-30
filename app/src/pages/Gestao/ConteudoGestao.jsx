@@ -28,6 +28,13 @@ import {
     DialogTitle,
 } from '@mui/material';
 
+/**
+ * Componente que gerencia a exibição e manipulação de avisos e grades.
+ * Utiliza cookies para autenticação e fornece funções para criação, recuperação,
+ * filtragem e exclusão de avisos e grades.
+ *
+ * @component
+ */
 function ConteudoGestao() {
     const cookies = new Cookies();
     const token = cookies.get("token");
@@ -54,6 +61,12 @@ function ConteudoGestao() {
     const [filterData, setFilterData] = useState(new Date());
     const [filterSala, setFilterSala] = useState('Todas');	
 
+    /**
+     * Formata uma data no formato 'DD-MM-AAAA'.
+     *
+     * @param {Date} date - A data a ser formatada.
+     * @returns {string} A data formatada como uma string.
+     */
     const formatDate = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0'); 
@@ -61,18 +74,39 @@ function ConteudoGestao() {
         return `${day}-${month}-${year}`;
     };
 
+    /**
+     * Atualiza a data atual.
+     *
+     * @param {Date} date - A nova data a ser definida.
+     */
     const handleDateChange = (date) => {
         setData(date);
     };
 
+    /**
+     * Atualiza a data do filtro.
+     *
+     * @param {Date} date - A nova data do filtro a ser definida.
+     */
     const handleFilterDate = (date) => {
         setFilterData(date);
     };
 
+    /**
+     * Formata uma string de data, substituindo '-' por '/'.
+     *
+     * @param {string} string - A string de data a ser formatada.
+     * @returns {string} A string de data formatada.
+     */
     function formatDateView(string) {
         return string.replace(/-/g, "/");
     }
 
+    /**
+     * Manipula a criação de uma nova grade.
+     *
+     * @param {Event} e - O evento de submissão do formulário.
+     */
     const handleGrade = async (e) => {
         e.preventDefault();
         try {
@@ -109,6 +143,11 @@ function ConteudoGestao() {
         }
     };
 
+    /**
+     * Manipula a criação de um novo aviso.
+     *
+     * @param {Event} e - O evento de submissão do formulário.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -137,6 +176,16 @@ function ConteudoGestao() {
         }
     };
 
+    /**
+     * Recupera a lista de avisos da API.
+     * Define o estado de loading para true durante a busca e, em seguida, tenta buscar os avisos.
+     * Se a requisição for bem-sucedida, os avisos são armazenados nos estados `originalAvisos` e `avisos`.
+     * Se ocorrer um erro, a mensagem de erro é armazenada no estado `error`.
+     *
+     * @async
+     * @function fetchAvisos
+     * @returns {Promise<void>} 
+     */
     const fetchAvisos = async () => {
         setLoading(true); 
         try {
@@ -162,6 +211,16 @@ function ConteudoGestao() {
         }
     };
 
+    /**
+     * Recupera a lista de grades da API.
+     * Define o estado de loading para true durante a busca e, em seguida, tenta buscar as grades.
+     * Se a requisição for bem-sucedida, as grades são armazenadas nos estados `originalGrades` e `grades`.
+     * Se ocorrer um erro, a mensagem de erro é armazenada no estado `error`.
+     *
+     * @async
+     * @function fetchGrades
+     * @returns {Promise<void>}
+     */
     const fetchGrades = async () => {
         setLoading(true); 
         try {
@@ -185,7 +244,15 @@ function ConteudoGestao() {
         }
     };
                     
-
+    /**
+     * Exclui um aviso baseado no ID fornecido.
+     * Se a requisição de deleção for bem-sucedida, a lista de avisos é atualizada.
+     *
+     * @async
+     * @function handleDelete
+     * @param {string} id - O ID do aviso a ser excluído.
+     * @returns {Promise<void>}
+     */
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/avisos/delete/${id}`, {
@@ -208,6 +275,15 @@ function ConteudoGestao() {
         }
     };
 
+    /**
+     * Exclui uma grade baseada no ID fornecido.
+     * Se a requisição de deleção for bem-sucedida, a lista de grades é atualizada.
+     *
+     * @async
+     * @function handleGradeDelete
+     * @param {string} id - O ID da grade a ser excluída.
+     * @returns {Promise<void>}
+     */
     const handleGradeDelete = async (id) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/grade/delete/${id}`, {
@@ -230,40 +306,87 @@ function ConteudoGestao() {
         }
     };
 
+    /**
+     * Abre o diálogo para criar ou editar uma grade.
+     *
+     * @function OpenGradeDialog
+     */
     const OpenGradeDialog = () => {
         setOpenGrade(true);
     };
 
+    /**
+     * Abre o diálogo para criar ou editar um aviso.
+     *
+     * @function OpenAvisoDialog
+     */
     const OpenAvisoDialog = () => {
         setOpenAviso(true);
     };
 
+
+    /**
+     * Abre o diálogo de filtro para avisos.
+     *
+     * @function OpenAvisosFilterDialog
+     */
     const OpenAvisosFilterDialog = () => {
         setOpenAvisosFilterDialog(true);
     };
 
+    /**
+     * Fecha o diálogo de filtro para avisos.
+     *
+     * @function handleCloseAvisosFilterDialog
+     */
     const handleCloseAvisosFilterDialog = () => {
         setOpenAvisosFilterDialog(false);
     };
 
+    /**
+     * Abre o diálogo de filtro para grades.
+     *
+     * @function OpenGradeFilterDialog
+     */
     const OpenGradeFilterDialog = () => {
         setOpenGradeFilterDialog(true);
     };
 
+    /**
+     * Fecha o diálogo de filtro para grades.
+     *
+     * @function handleCloseGradeFilterDialog
+     */
     const handleCloseGradeFilterDialog = () => {
         setOpenGradeFilterDialog(false);
     };
 
+    /**
+     * Fecha o diálogo de aviso e reseta o estado de erro.
+     *
+     * @function CloseAvisoDialog
+     */
     const CloseAvisoDialog = () => {
         setOpenAviso(false);
         setError(null);
     };
 
+    /**
+     * Fecha o diálogo de grade e reseta o estado de erro.
+     *
+     * @function CloseGradeDialog
+     */
     const CloseGradeDialog = () => {
         setOpenGrade(false);
         setError(null);
     };
 
+    /**
+     * Filtra os avisos com base nos critérios fornecidos.
+     * Atualiza o estado de avisos com os avisos filtrados e fecha o diálogo de filtro.
+     *
+     * @function handleFilterAvisos
+     */
     const handleFilterAvisos = () => {
         const filteredAvisos = originalAvisos.filter(aviso => {
             return (
@@ -276,6 +399,12 @@ function ConteudoGestao() {
         handleCloseAvisosFilterDialog(); 
     };
 
+    /**
+     * Filtra as grades com base nos critérios fornecidos.
+     * Atualiza o estado de grades com as grades filtradas e fecha o diálogo de filtro.
+     *
+     * @function handleFilterGrades
+     */
     const handleFilterGrades = () => {
         const filteredGrades = originalGrades.filter(grade => {
             return (
@@ -290,6 +419,11 @@ function ConteudoGestao() {
         handleCloseGradeFilterDialog(); 
     };
 
+    /**
+     * Reseta os filtros de avisos para os valores padrão.
+     *
+     * @function handleResetFilterAvisos
+     */
     const handleResetFilterAvisos = () => {
         setFilterTitulo('');
         setFilterTipo('Todos');
@@ -297,6 +431,11 @@ function ConteudoGestao() {
 
     };
 
+    /**
+     * Reseta os filtros de grades para os valores padrão.
+     *
+     * @function handleResetFilterGrades
+     */
     const handleResetFilterGrades = () => { 
         setFilterHorario('');
         setFilterData('');
@@ -305,6 +444,12 @@ function ConteudoGestao() {
         setGrades(originalGrades);
     };
 
+    /**
+     * Executa as funções de busca de avisos e grades ao montar o componente.
+     *
+     * @function useEffect
+     * @returns {void}
+     */
     useEffect(() => {
         fetchAvisos();
         fetchGrades();
