@@ -237,24 +237,6 @@ function NotasAluno() {
 
             <Button
                 variant="contained"
-                onClick={handleResetFilter} 
-                sx={{
-                    backgroundColor: '#015495', 
-                    color: 'white',
-                    borderRadius: '25px', 
-                    padding: '10px 20px',
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                    transition: 'transform 0.3s', 
-                    '&:hover': {
-                        transform: 'scale(1.05)',
-                    },
-                }}
-            >
-                Resetar Filtro
-            </Button>
-
-            <Button
-                variant="contained"
                 onClick={handleOpenFilter} 
                 sx={{
                     backgroundColor: '#015495', 
@@ -269,6 +251,24 @@ function NotasAluno() {
                 }}
             >
                 Filtrar Dados
+            </Button>
+
+            <Button
+                variant="contained"
+                onClick={handleResetFilter} 
+                sx={{
+                    backgroundColor: '#015495', 
+                    color: 'white',
+                    borderRadius: '25px', 
+                    padding: '10px 20px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                    transition: 'transform 0.3s', 
+                    '&:hover': {
+                        transform: 'scale(1.05)',
+                    },
+                }}
+            >
+                Resetar Filtro
             </Button>
         </Box>
 
