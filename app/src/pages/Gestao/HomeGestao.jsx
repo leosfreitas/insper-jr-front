@@ -8,7 +8,7 @@ function HomeGestao() {
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState('geral');
+    const [filter, setFilter] = useState('separado');
     const [pieFilter, setPieFilter] = useState('total');
     const cookies = new Cookies();
     const token = cookies.get('token');
@@ -179,8 +179,8 @@ function HomeGestao() {
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
                         >
-                            <MenuItem value="geral">Geral</MenuItem>
                             <MenuItem value="separado">Separado</MenuItem>
+                            <MenuItem value="geral">Geral</MenuItem>
                         </Select>
                     </FormControl>
                     <Typography variant="h6" gutterBottom>
