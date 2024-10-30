@@ -382,13 +382,13 @@ function ConteudoGestao() {
                                         <Typography variant="h5" sx={{ fontWeight: 600 }}>Autor</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Mensagem</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'40%'}}>Mensagem</Typography>
                                     </TableCell>
                                     <TableCell>
                                         <Typography variant="h5" sx={{ fontWeight: 600 }}>Tipo</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'15%'}}>Ações</Typography>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -403,7 +403,7 @@ function ConteudoGestao() {
                                                 <Typography variant="h6">{aviso.autor}</Typography>
                                             </TableCell>
                                             <TableCell>
-                                                <Typography variant="h6">{aviso.mensagem}</Typography>
+                                                <Typography variant="h6" sx={{marginLeft:'5%'}}>{aviso.mensagem}</Typography>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography variant="h6">{aviso.tipo}</Typography>
@@ -413,7 +413,16 @@ function ConteudoGestao() {
                                                     variant="contained" 
                                                     color="error" 
                                                     onClick={() => handleDelete(aviso._id)} 
-                                                    sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                    sx={{
+                                                        backgroundColor: '#ab2325', 
+                                                        color: 'white',
+                                                        borderRadius: '25px', 
+                                                        padding: '10px 20px',
+                                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                        transition: 'transform 0.3s', 
+                                                        '&:hover': {
+                                                            transform: 'scale(1.05)',
+                                                        }}}
                                                 >
                                                     Remover
                                                 </Button>
@@ -525,18 +534,14 @@ function ConteudoGestao() {
                             </DialogContent>
                                 <DialogActions>
                                     <Button 
-                                        variant="contained" 
                                         color="primary" 
                                         onClick={CloseAvisoDialog}
-                                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                         >
                                         Cancelar
                                     </Button>
                                     <Button 
-                                        variant="contained" 
                                         color="primary" 
                                         onClick={handleSubmit}
-                                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                         >
                                         Adicionar
                                     </Button>
@@ -569,18 +574,14 @@ function ConteudoGestao() {
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleCloseAvisosFilterDialog}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleFilterAvisos}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Filtrar
                             </Button>
@@ -596,22 +597,22 @@ function ConteudoGestao() {
                             <TableHead>
                                     <TableRow>
                                         <TableCell>
-                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Data</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'8%' }}>Data</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Horário</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'6%' }}>Horário</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Matéria</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'4%' }}>Matéria</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Professor</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'4%' }}>Professor</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Sala</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 ,marginLeft:'9%'}}>Sala</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'6%'}}>Ações</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -639,7 +640,17 @@ function ConteudoGestao() {
                                                     variant="contained" 
                                                     color="error" 
                                                     onClick={() => handleGradeDelete(grade._id)} 
-                                                    sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                    sx={{
+                                                        backgroundColor: '#ab2325', 
+                                                        color: 'white',
+                                                        borderRadius: '25px', 
+                                                        padding: '10px 20px',
+                                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                        transition: 'transform 0.3s', 
+                                                        '&:hover': {
+                                                            transform: 'scale(1.05)',
+                                                        },
+                                                    }}
                                                 >
                                                     Remover
                                                 </Button>
@@ -771,28 +782,27 @@ function ConteudoGestao() {
                                             <MenuItem value="Presencial">Presencial</MenuItem>
                                         </Select>
                                     </FormControl>
-                                    <DatePicker
-                                        selected={data}
-                                        onChange={handleDateChange}
-                                        dateFormat="dd/MM/yyyy"
-                                        placeholderText="Selecionar data"
-                                        className="date-picker"
-                                    />
+                                    <Box   sx={{marginLeft: '35%',width:'100%'}}>
+                                <DatePicker
+                                selected={filterData}
+                                onChange={handleFilterDate}
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="Selecionar data"
+                                className="date-picker"
+                                width = '100%'
+                            />
+                            </Box> 
                             </DialogContent>
                                 <DialogActions>
                                     <Button 
-                                        variant="contained" 
                                         color="primary" 
                                         onClick={CloseGradeDialog}
-                                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                         >
                                         Cancelar
                                     </Button>
                                     <Button 
-                                        variant="contained" 
                                         color="primary" 
                                         onClick={handleGrade}
-                                        sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                         >
                                         Adicionar
                                     </Button>
@@ -828,29 +838,28 @@ function ConteudoGestao() {
                             <MenuItem value="Presencial">Presencial</MenuItem>
                             <MenuItem value="Online">Online</MenuItem>
                         </TextField>
-                        <DatePicker
+                        <Box   sx={{marginLeft: '35%',width:'100%'}}>
+                                <DatePicker
                                 selected={filterData}
                                 onChange={handleFilterDate}
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="Selecionar data"
                                 className="date-picker"
+                                width = '100%'
                             />
+                            </Box> 
 
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleCloseGradeFilterDialog}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleFilterGrades}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Filtrar
                             </Button>

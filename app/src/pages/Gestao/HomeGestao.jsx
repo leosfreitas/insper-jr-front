@@ -9,7 +9,7 @@ function HomeGestao() {
     const [barData, setBarData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('geral');
-    const [pieFilter, setPieFilter] = useState('total'); // Filtro inicial como 'total' para exibir total de alunos
+    const [pieFilter, setPieFilter] = useState('total');
     const cookies = new Cookies();
     const token = cookies.get('token');
 
@@ -67,7 +67,6 @@ function HomeGestao() {
 
     const getFilteredPieData = () => {
         if (pieFilter === 'total') {
-            // Calcula o total de alunos e retorna uma única entrada "Alunos"
             const totalAlunos = data
                 .filter(item => item.name.includes('Alunos'))
                 .reduce((sum, item) => sum + item.value, 0);
@@ -78,14 +77,14 @@ function HomeGestao() {
             ];
         }
         if (pieFilter === 'students') return data.filter(item => item.name.includes('Alunos'));
-        return data; // Exibe todos
+        return data;
     };
 
     const getFilteredBarData = () => {
         return barData;
     };
 
-    const COLORS = ['#0000FF', '#FF0000', '#FFD700', '#006400']; // Azul, Vermelho, Amarelo, Verde Escuro
+    const COLORS = ['#0000FF', '#FF0000', '#FFD700', '#006400'];
 
     return (
         <>
@@ -105,29 +104,26 @@ function HomeGestao() {
                 <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Bem vindo</Typography>
             </Box>
 
-            <Grid container spacing={4} padding={4} direction="column" alignItems="center">
-                
-
-                {/* Gráfico de pizza para Alunos, Professores e Gestão */}
-                <Grid item xs={12} style={{ width: '80%' }}>
-                    <Box 
-                        sx={{
-                            backgroundColor: 'white',
-                            boxShadow: 3,
-                            borderRadius: 2,
-                            padding: 2,
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: '100%'
-                        }}
-                    >
-
-                <Grid item xs={12} style={{ width: '50%' }}  sx={{marginBottom:2}}>
-                    <FormControl fullWidth>
-                        <InputLabel id="pie-filter-label" sx={{marginTop:-1}}></InputLabel>
+            <Grid container spacing={4} padding={4} direction="row" alignItems="center" justifyContent="center">
+    
+            {/* Gráfico de pizza para Alunos, Professores e Gestão */}
+            <Grid item xs={12} md={6} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Box 
+                    sx={{
+                        backgroundColor: 'white',
+                        boxShadow: 3,
+                        borderRadius: 2,
+                        padding: 2,
+                        textAlign: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%'
+                    }}
+                >
+                    <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                        <InputLabel id="pie-filter-label" sx={{ marginTop: -1 }}></InputLabel>
                         <Select
                             labelId="pie-filter-label"
                             value={pieFilter}
@@ -137,84 +133,81 @@ function HomeGestao() {
                             <MenuItem value="students">Alunos Presenciais e Alunos Online</MenuItem>
                         </Select>
                     </FormControl>
-                </Grid>
-                        <Typography variant="h6" gutterBottom>
-                            Distribuição de Tipos de Usuários
-                        </Typography>
-                        <PieChart width={500} height={400}>
-                            <Pie
-                                data={getFilteredPieData()}
-                                cx="50%"
-                                cy="50%"
-                                labelLine={false}
-                                label={({ name, value }) => `${name}: ${value}`}
-                                outerRadius={120}
-                                fill="#8884d8"
-                                dataKey="value"
-                            >
-                                {getFilteredPieData().map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <Tooltip />
-                        </PieChart>
-                    </Box>
-                </Grid>
+                    <Typography variant="h6" gutterBottom>
+                        Distribuição de Tipos de Usuários
+                    </Typography>
+                    <PieChart width={400} height={300}>
+                        <Pie
+                            data={getFilteredPieData()}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, value }) => `${name}: ${value}`}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                        >
+                            {getFilteredPieData().map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <Tooltip />
+                    </PieChart>
+                </Box>
+            </Grid>
 
-                {/* Gráfico de barras para comparação de notas */}
-                <Grid item xs={12} style={{ width: '80%' }}>
-                    <Box 
-                        sx={{
-                            backgroundColor: 'white',
-                            boxShadow: 3,
-                            borderRadius: 2,
-                            padding: 2,
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: '100%'
+            {/* Gráfico de barras para comparação de notas */}
+            <Grid item xs={12} md={6} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Box 
+                    sx={{
+                        backgroundColor: 'white',
+                        boxShadow: 3,
+                        borderRadius: 2,
+                        padding: 2,
+                        textAlign: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%'
+                    }}
+                >
+                    <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                        <InputLabel id="filter-label" sx={{ marginTop: -1 }}></InputLabel>
+                        <Select
+                            labelId="filter-label"
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                        >
+                            <MenuItem value="geral">Geral</MenuItem>
+                            <MenuItem value="separado">Separado</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <Typography variant="h6" gutterBottom>
+                        Comparação de Notas
+                    </Typography>
+                    <BarChart
+                        width={450}
+                        height={300}
+                        data={getFilteredBarData()}
+                        margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5
                         }}
                     >
-                        {/* Componente de filtro */}
-                        <Grid item xs={12} style={{ width: '50%' }}  sx={{marginTop:1}}>
-                            <FormControl fullWidth>
-                                <InputLabel id="filter-label" sx={{marginTop:-1}}></InputLabel>
-                                <Select
-                                    labelId="filter-label"
-                                    value={filter}
-                                    onChange={(e) => setFilter(e.target.value)}
-                                >
-                                    <MenuItem value="geral">Geral</MenuItem>
-                                    <MenuItem value="separado">Separado</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Typography variant="h6" gutterBottom>
-                            Comparação de Notas
-                        </Typography>
-                        <BarChart
-                            width={600}
-                            height={400}
-                            data={getFilteredBarData()}
-                            margin={{
-                                top: 5,
-                                right: 30,
-                                left: 20,
-                                bottom: 5
-                            }}
-                        >
-                            <XAxis dataKey="subject" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey={filter === 'geral' ? 'Geral' : 'Presencial'} fill="#0000FF" />
-                            {filter === 'separado' && <Bar dataKey="Online" fill="#FF0000" />}
-                        </BarChart>
-                    </Box>
-                </Grid>
+                        <XAxis dataKey="subject" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey={filter === 'geral' ? 'Geral' : 'Presencial'} fill="#0000FF" />
+                        {filter === 'separado' && <Bar dataKey="Online" fill="#FF0000" />}
+                    </BarChart>
+                </Box>
             </Grid>
+        </Grid>
+
         </>
     );
 }

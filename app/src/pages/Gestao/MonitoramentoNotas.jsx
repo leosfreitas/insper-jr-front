@@ -209,7 +209,7 @@ function MonitoramentoNotas() {
                                         <Typography variant="h5" sx={{ fontWeight: 600 }}>Avaliação</Typography>
                                     </TableCell>
                                     <TableCell >
-                                        <Typography variant="h5" sx={{ fontWeight: 600, paddingLeft: '8%' }}>Nota</Typography>
+                                        <Typography variant="h5" sx={{ fontWeight: 600, paddingLeft: '4%' }}>Nota</Typography>
                                     </TableCell>
                                     <TableCell align="right" sx={{ paddingRight: '5%' }}>
                                         <Typography variant="h5" sx={{ fontWeight: 600 }}>Ações</Typography>
@@ -245,6 +245,17 @@ function MonitoramentoNotas() {
                                                     variant="contained"
                                                     color="secondary"
                                                     onClick={() => handleRemoveNota(avaliacao)}
+                                                    sx={{
+                                                        backgroundColor: '#ab2325', 
+                                                        color: 'white',
+                                                        borderRadius: '25px', 
+                                                        padding: '10px 20px',
+                                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                        transition: 'transform 0.3s', 
+                                                        '&:hover': {
+                                                            transform: 'scale(1.05)',
+                                                        },
+                                                    }}
                                                 >
                                                     Remover
                                                 </Button>
@@ -263,6 +274,24 @@ function MonitoramentoNotas() {
                         marginTop: '5vh',
                         gap: 3,
                         }}>
+
+                    <Button
+                            variant="contained"
+                            onClick={handleOpenChart} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                            >
+                            Ver gráfico
+                        </Button>
                         <Button 
                             variant="contained" 
                             color="error" 
@@ -280,23 +309,6 @@ function MonitoramentoNotas() {
                             }}
                         >   
                             Adicionar Nota
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={handleOpenChart} 
-                            sx={{
-                                backgroundColor: '#015495', 
-                                color: 'white',
-                                borderRadius: '25px', 
-                                padding: '10px 20px',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-                                transition: 'transform 0.3s', 
-                                '&:hover': {
-                                    transform: 'scale(1.05)',
-                                },
-                            }}
-                            >
-                            Gráfico de Notas
                         </Button>
                         <Button 
                             variant="contained" 
@@ -357,19 +369,15 @@ function MonitoramentoNotas() {
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                            
-                                variant="contained" 
                                 color="primary" 
                                 onClick={() => setOpenDialog(false)}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                                 >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleAddNota}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
+
                                 >
                                 Adicionar
                             </Button>
@@ -417,39 +425,39 @@ function MonitoramentoNotas() {
                         </DialogContent>
                         <DialogActions>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleCloseFilter}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}}
                             >
                                 Cancelar
                             </Button>
                             <Button 
-                                variant="contained" 
                                 color="primary" 
                                 onClick={handleFilterNotas}
-                                sx={{ marginRight: '10px', backgroundColor: '#015495', marginBottom: '10px'}} 
                             >
                                 Filtrar
                             </Button>
                         </DialogActions>
                     </Dialog>
                     
-                    <Dialog open={openChartDialog} onClose={handleCloseChart}>
-                        <DialogTitle>Gráfico de Desempenho</DialogTitle>
-                        <DialogContent>
-                            <LineChart width={500} height={300} data={chartData}>
-                                <XAxis dataKey="simulado" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Line type="monotone" dataKey="Nota" stroke="#8884d8" />
-                            </LineChart>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseChart} color="primary">Fechar</Button>
-                        </DialogActions>
-                    </Dialog>
+                    <Dialog open={openChartDialog} onClose={handleCloseChart} fullWidth maxWidth="xl"> {/* Tamanho máximo do dialog */}
+            <DialogTitle sx={{ textAlign: 'center' }}>Gráfico de Desempenho</DialogTitle>
+            <DialogContent 
+                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }} 
+            >
+                <LineChart width={1200} height={800} data={getFilteredLineData()}> 
+                    <XAxis dataKey="simulado"  tickFormatter={(value, index) => index + 1}  /> 
+                    <YAxis />
+                    <Tooltip />
+                    <Legend align="right" verticalAlign="top" />
+                    <Line type="monotone" dataKey="Nota" stroke="#8884d8" />
+                </LineChart>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: 'center' }}>
+                <Button onClick={handleCloseChart} color="primary">
+                    Fechar
+                </Button>
+            </DialogActions>
+        </Dialog>
                 </>
             )}
         </>
