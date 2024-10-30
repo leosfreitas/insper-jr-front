@@ -272,23 +272,26 @@ function NotasAluno() {
             </Button>
         </Box>
 
-                    <Dialog open={openChartDialog} onClose={handleCloseChart} fullWidth maxWidth="md">
-                        <DialogTitle sx={{ textAlign: 'center' }}>Gráfico de Desempenho</DialogTitle>
-                        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            <LineChart width={500} height={300} data={getFilteredLineData()} >
-                                <XAxis dataKey="simulado" tick={{ textAnchor: 'middle',dx:3 }} />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend  align="right" verticalAlign="top" />
-                                <Line type="monotone" dataKey="Nota" stroke="#8884d8" />
-                            </LineChart>
-                        </DialogContent>
-                        <DialogActions sx={{ justifyContent: 'center' }}>
-                            <Button onClick={handleCloseChart} color="primary">
-                                Fechar
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                <Dialog open={openChartDialog} onClose={handleCloseChart} fullWidth maxWidth="xl"> {/* Tamanho máximo do dialog */}
+            <DialogTitle sx={{ textAlign: 'center' }}>Gráfico de Desempenho</DialogTitle>
+            <DialogContent 
+                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }} 
+            >
+                <LineChart width={1200} height={800} data={getFilteredLineData()}> 
+                    <XAxis dataKey="simulado"  tickFormatter={(value, index) => index + 1}  /> 
+                    <YAxis />
+                    <Tooltip />
+                    <Legend align="right" verticalAlign="top" />
+                    <Line type="monotone" dataKey="Nota" stroke="#8884d8" />
+                </LineChart>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: 'center' }}>
+                <Button onClick={handleCloseChart} color="primary">
+                    Fechar
+                </Button>
+            </DialogActions>
+        </Dialog>
+
 
                 <Dialog open={openFilterDialog} onClose={handleCloseFilter}>
                         <DialogTitle>Filtrar Notas</DialogTitle>

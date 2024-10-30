@@ -17,10 +17,12 @@ import {
     TextField,
     MenuItem,
     Button,
-    Box
+    Box,
+
 } from '@mui/material';
 import HeaderProfessor from './HeaderProfessor';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts'; // Importar os componentes do Recharts
 
 function MonitoramentoNotasProfessor() {
     const { cpf } = useParams();
@@ -29,6 +31,9 @@ function MonitoramentoNotasProfessor() {
     const [openFilterDialog, setOpenFilterDialog] = useState(false);
     const [filterAvaliacao, setFilterAvaliacao] = useState('');
     const [filteredNotas, setFilteredNotas] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [openChartDialog, setOpenChartDialog] = useState(false); // Adicionando estado para o gráfico
+    const [chartData, setChartData] = useState([]); // Dados do gráfico
     const [minNota, setMinNota] = useState('');
     const [maxNota, setMaxNota] = useState('');
     const [loading, setLoading] = useState(true);
@@ -59,6 +64,19 @@ function MonitoramentoNotasProfessor() {
             setLoading(false);
         }
     };
+    const getFilteredLineData = () => {
+        return Object.entries(aluno.notas).map(([simulado, nota]) => ({
+            simulado,
+            Nota: parseFloat(nota),
+        }));
+    };
+
+    const handleOpenChart = () => {
+        setChartData(getFilteredLineData());
+        setOpenChartDialog(true);
+    };
+
+    const handleCloseChart = () => setOpenChartDialog(false);
 
     const handleOpenFilter = () => {
         setOpenFilterDialog(true);
@@ -217,6 +235,23 @@ function MonitoramentoNotasProfessor() {
                         >
                             Resetar Filtro
                         </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleOpenChart} 
+                            sx={{
+                                backgroundColor: '#015495', 
+                                color: 'white',
+                                borderRadius: '25px', 
+                                padding: '10px 20px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                transition: 'transform 0.3s', 
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                            >
+                            Gráfico de Notas
+                        </Button>
                     </Box>
                     <Dialog open={openFilterDialog} onClose={handleCloseFilter}>
                         <DialogTitle>Filtrar Notas</DialogTitle>
@@ -275,6 +310,22 @@ function MonitoramentoNotasProfessor() {
                             >
                                 Filtrar
                             </Button>
+                        </DialogActions>
+                    </Dialog>
+
+                    <Dialog open={openChartDialog} onClose={handleCloseChart}>
+                        <DialogTitle>Gráfico de Desempenho</DialogTitle>
+                        <DialogContent>
+                            <LineChart width={500} height={300} data={chartData}>
+                                <XAxis dataKey="simulado" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Line type="monotone" dataKey="Nota" stroke="#8884d8" />
+                            </LineChart>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseChart} color="primary">Fechar</Button>
                         </DialogActions>
                     </Dialog>
                 </>
