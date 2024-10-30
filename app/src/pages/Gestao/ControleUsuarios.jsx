@@ -311,7 +311,17 @@ function ControleUsuarios() {
                                                 variant="contained" 
                                                 color="primary" 
                                                 onClick={() => handleViewEditar(user._id)} 
-                                                sx={{ marginRight: '10px', backgroundColor: '#015495'}} 
+                                                sx={{
+                                                    backgroundColor: '#015495', 
+                                                    color: 'white',
+                                                    borderRadius: '25px', 
+                                                    padding: '10px 20px',
+                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                    transition: 'transform 0.3s', 
+                                                    '&:hover': {
+                                                        transform: 'scale(1.05)',
+                                                    },
+                                                }}
                                             >
                                                 Editar
                                             </Button>
@@ -319,7 +329,17 @@ function ControleUsuarios() {
                                                 variant="contained" 
                                                 color="secondary" 
                                                 onClick={() => handleUserDelete(user._id)}
-                                                sx={{ backgroundColor: '#ab2325', '&:hover': { backgroundColor: '#b71c1c' } }} 
+                                                sx={{
+                                                    backgroundColor: '#ab2325', 
+                                                    color: 'white',
+                                                    borderRadius: '25px', 
+                                                    padding: '10px 20px',
+                                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                                                    transition: 'transform 0.3s', 
+                                                    '&:hover': {
+                                                        transform: 'scale(1.05)',
+                                                    },
+                                                }}
                                             >
                                                 Remover
                                             </Button>
