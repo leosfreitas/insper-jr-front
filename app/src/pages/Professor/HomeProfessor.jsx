@@ -1,11 +1,13 @@
 import React from 'react';
-import HeaderProfessor from './HeaderProfessor';
-import MonitoramentoProfessor from './MonitoramentoProfessor';
+import HeaderProfessor from './HeaderProfessor'; // Importa o componente HeaderProfessor
+import MonitoramentoProfessor from './MonitoramentoProfessor'; // Importa o componente MonitoramentoProfessor
 
+// Componente funcional para a página inicial do professor
 function HomeProfessor() {
     return (
         <>
-        <MonitoramentoProfessor />
+            {/* Renderiza o componente MonitoramentoProfessor */}
+            <MonitoramentoProfessor />
         </>
     );
 }

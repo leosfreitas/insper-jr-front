@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import HeaderProfessor from './HeaderProfessor';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import HeaderProfessor from './HeaderProfessor'; // Componente de cabeçalho personalizado para a página do professor
+import DatePicker from 'react-datepicker'; // Componente DatePicker para seleção de datas
+import 'react-datepicker/dist/react-datepicker.css'; // Estilização para o DatePicker
 
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie'; // Para manipulação de cookies
 import { 
     Button, 
     Table, 
@@ -27,17 +27,20 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+} from '@mui/material'; // Componentes da biblioteca Material UI
 
-} from '@mui/material';
-
+// Componente principal para o conteúdo do professor
 function ConteudoProfessor() {
     const cookies = new Cookies();
-    const token = cookies.get("token");
+    const token = cookies.get("token"); // Obtém o token dos cookies
+
+    // Hooks de estado para gerenciar o estado do componente
     const [data, setData] = useState(new Date());
-    const [view, setView] = useState('avisos');
+    const [view, setView] = useState('avisos'); // Para alternar entre vistas, por exemplo, 'avisos'
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Estado relacionado aos 'avisos'
     const [avisos, setAvisos] = useState([]);
     const [openAviso, setOpenAviso] = useState(false);
     const [newAviso, setNewAviso] = useState({ titulo: '', mensagem: '', tipo: 'Geral' });
@@ -48,46 +51,50 @@ function ConteudoProfessor() {
     const [filterTipo, setFilterTipo] = useState('Todos');
     const [filterHorario, setFilterHorario] = useState('');
 
+    // Estado relacionado às 'grades'
     const [grades, setGrades] = useState([]);   
     const [openGradeFilterDialog, setOpenGradeFilterDialog] = useState(false);
     const [originalGrades, setOriginalGrades] = useState([]);
     const [filterData, setFilterData] = useState(new Date());
-    const [filterSala, setFilterSala] = useState('Todas');	
+    const [filterSala, setFilterSala] = useState('Todas');
 
+    // Função auxiliar para formatar a data para exibição
     const formatDate = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
         return `${day}-${month}-${year}`;
     };
 
+    // Manipulador de eventos para alterar a data selecionada
     const handleFilterDate = (date) => {
         setFilterData(date);
     };
 
+    // Função para formatar a string de data para visualização
     function formatDateView(string) {
         return string.replace(/-/g, "/");
     }
 
+    // Função para lidar com o envio do formulário para criar um novo 'aviso'
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://127.0.0.1:8000/avisos/create", {
+            const response = await fetch("http://127.0.0.1:8000/avisos/create", { // Faz uma requisição POST para criar um aviso
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}` 
                 },
-                body: JSON.stringify({ titulo: newAviso.titulo , mensagem: newAviso.mensagem, tipo: newAviso.tipo }) 
+                body: JSON.stringify({ titulo: newAviso.titulo, mensagem: newAviso.mensagem, tipo: newAviso.tipo })
             });
 
             if (response.ok) {
                 const data = await response.json();
                 console.log("Aviso criado com sucesso:", data);
-                fetchAvisos();
-                setOpenAviso(false);
-                setNewAviso({ titulo: '', mensagem: '', tipo: 'Geral' });
-                return response.json();
+                fetchAvisos(); // Atualiza os dados dos 'avisos'
+                setOpenAviso(false); // Fecha o diálogo
+                setNewAviso({ titulo: '', mensagem: '', tipo: 'Geral' }); // Reseta os campos do formulário
             } else {
                 const errorData = await response.json();
                 console.log("Erro:", errorData);
@@ -97,6 +104,7 @@ function ConteudoProfessor() {
         }
     };
 
+    // Busca os dados dos 'avisos' do servidor
     const fetchAvisos = async () => {
         setLoading(true); 
         try {
@@ -122,6 +130,7 @@ function ConteudoProfessor() {
         }
     };
 
+    // Busca os dados das 'grades' do servidor
     const fetchGrades = async () => {
         setLoading(true); 
         try {
@@ -143,8 +152,9 @@ function ConteudoProfessor() {
         } finally {
             setLoading(false);
         }
-    };         
+    };
 
+    // Função para lidar com a exclusão de um 'aviso'
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/avisos/delete/${id}`, {
@@ -157,7 +167,7 @@ function ConteudoProfessor() {
 
             if (response.ok) {
                 console.log("Aviso deletado com sucesso");
-                fetchAvisos();
+                fetchAvisos(); // Atualiza os dados dos 'avisos' após a exclusão
             } else {
                 const errorData = await response.json();
                 console.log("Erro ao deletar aviso:", errorData);
@@ -167,6 +177,7 @@ function ConteudoProfessor() {
         }
     };
 
+    // Manipuladores para abrir e fechar diálogos
     const OpenAvisoDialog = () => {
         setOpenAviso(true);
     };
@@ -192,6 +203,7 @@ function ConteudoProfessor() {
         setError(null);
     };
 
+    // Função para filtrar 'avisos'
     const handleFilterAvisos = () => {
         const filteredAvisos = originalAvisos.filter(aviso => {
             return (
@@ -204,6 +216,7 @@ function ConteudoProfessor() {
         handleCloseAvisosFilterDialog(); 
     };
 
+    // Função para filtrar 'grades'
     const handleFilterGrades = () => {
         const filteredGrades = originalGrades.filter(grade => {
             return (
@@ -218,6 +231,7 @@ function ConteudoProfessor() {
         handleCloseGradeFilterDialog(); 
     };
 
+    // Reseta os filtros para 'avisos'
     const handleResetAvisosFilter = () => {
         setAvisos(originalAvisos);
         setFilterTitulo('');
@@ -225,6 +239,7 @@ function ConteudoProfessor() {
         setFilterData('');
     };
 
+    // Reseta os filtros para 'grades'
     const handleResetGradesFilter = () => {
         setGrades(originalGrades);
         setFilterHorario('');
@@ -233,10 +248,12 @@ function ConteudoProfessor() {
         setFilterSala('Todas');
     };
 
+    // useEffect para buscar 'avisos' e 'grades' na montagem do componente e quando o 'token' muda
     useEffect(() => {
         fetchAvisos();
         fetchGrades();
     }, [token]);
+
 
     return (
         <>
