@@ -751,7 +751,7 @@ function ConteudoGestao() {
                                             <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'4%' }}>Matéria</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'4%' }}>Professor</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600,marginLeft:'1%' }}>Professor</Typography>
                                         </TableCell>
                                         <TableCell>
                                             <Typography variant="h5" sx={{ fontWeight: 600 ,marginLeft:'9%'}}>Sala</Typography>

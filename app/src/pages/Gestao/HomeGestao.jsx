@@ -76,11 +76,18 @@ function HomeGestao() {
             const avgPresencial = notasPresencial.reduce((sum, aluno) => sum + parseFloat(aluno[subject] || 0), 0) / notasPresencial.length;
             const avgOnline = notasOnline.reduce((sum, aluno) => sum + parseFloat(aluno[subject] || 0), 0) / notasOnline.length;
             const avgGeral = notasGerais.reduce((sum, aluno) => sum + parseFloat(aluno[subject] || 0), 0) / notasGerais.length;
-
             return { subject, Geral: avgGeral.toFixed(2), Presencial: avgPresencial.toFixed(2), Online: avgOnline.toFixed(2) };
         });
-
         setBarData(processedBarData);
+    };
+        /**
+     * Obtém os dados filtrados para o gráfico de barras.
+     *
+     * @function getFilteredBarData
+     * @returns {Array<Object>} Dados filtrados para o gráfico de barras.
+     */
+    const getFilteredBarData = () => {
+        return barData;
     };
 
     useEffect(() => {
@@ -108,15 +115,6 @@ function HomeGestao() {
         return data;
     };
 
-    /**
-     * Obtém os dados filtrados para o gráfico de barras.
-     *
-     * @function getFilteredBarData
-     * @returns {Array<Object>} Dados filtrados para o gráfico de barras.
-     */
-    const getFilteredBarData = () => {
-        return barData;
-    };
 
     const COLORS = ['#0000FF', '#FF0000', '#FFD700', '#006400'];
 
